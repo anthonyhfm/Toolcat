@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import commands.CommandRegistry
 
 @Composable
 @Preview
@@ -19,6 +20,8 @@ fun App() {
 }
 
 fun main(args: Array<String>) = application {
+    CommandRegistry().executeCommand(args.toList())
+
     Window(onCloseRequest = ::exitApplication) {
         App()
     }
