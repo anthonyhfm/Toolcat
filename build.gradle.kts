@@ -23,6 +23,9 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                implementation("org.jetbrains.compose.material:material-icons-core-desktop:1.4.1")
+
+                runtimeOnly("org.jetbrains.compose.material3:material3-desktop:1.4.1")
             }
         }
         val jvmTest by getting
