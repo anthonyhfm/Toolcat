@@ -22,9 +22,9 @@ import mobile.MobileDeviceRepository
 
 @Composable
 fun DeviceListSidebar(
-    onChange: (selectedDevice: MobileDevice) -> Unit
+    devices: List<MobileDevice>,
+    onChange: (selectedDevice: Int) -> Unit,
 ) {
-    val devices: List<MobileDevice> = MobileDeviceRepository().getConnectedDevices()
     var selectedDevice: Int by remember { mutableStateOf(0) }
 
     LazyColumn(
@@ -41,6 +41,7 @@ fun DeviceListSidebar(
                     .clip(RoundedCornerShape(8.dp))
                     .clickable {
                         selectedDevice = devices.indexOf(device)
+                        onChange(selectedDevice)
                     }
                     .background(Color(157, 212, 186))
                     .padding(10.dp)

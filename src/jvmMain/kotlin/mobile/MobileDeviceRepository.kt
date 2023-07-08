@@ -8,10 +8,10 @@ class MobileDeviceRepository {
     fun getConnectedDevices(): List<MobileDevice> {
         var outputList: List<MobileDevice> = listOf()
 
-        val pingprocess: Process = Runtime.getRuntime().exec("adb devices -l")
-        pingprocess.waitFor()
+        val process: Process = Runtime.getRuntime().exec("adb devices -l")
+        process.waitFor()
 
-        var commandLineOutputLines = BufferedReader(InputStreamReader(pingprocess.inputStream)).readLines()
+        var commandLineOutputLines = BufferedReader(InputStreamReader(process.inputStream)).readLines()
 
         for (i in 0 .. commandLineOutputLines.indexOf("List of devices attached") + 1) {
             commandLineOutputLines = commandLineOutputLines.drop(i)
