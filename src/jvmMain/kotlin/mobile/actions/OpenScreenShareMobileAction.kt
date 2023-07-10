@@ -1,5 +1,6 @@
 package mobile.actions
 
+import androidx.compose.runtime.Composable
 import mobile.MobileDevice
 
 class OpenScreenShareMobileAction : MobileAction {
@@ -8,5 +9,10 @@ class OpenScreenShareMobileAction : MobileAction {
 
     override fun executeAction(mobileDevice: MobileDevice) {
         Runtime.getRuntime().exec("scrcpy --serial ${mobileDevice.deviceName} --window-title=\"Toolcat Screen Cast (${mobileDevice.deviceName})\"")
+    }
+
+    @Composable
+    override fun viewContribution() {
+
     }
 }
