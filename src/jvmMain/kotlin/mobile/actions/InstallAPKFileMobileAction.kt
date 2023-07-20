@@ -1,6 +1,6 @@
 package mobile.actions
 
-import com.darkrockstudios.libraries.mpfilepicker.FilePicker
+import androidx.compose.runtime.Composable
 import composeWindow
 import mobile.MobileDevice
 import java.awt.FileDialog
@@ -11,6 +11,11 @@ class InstallAPKFileMobileAction : MobileAction {
         get() = "Install .APK File"
 
     override fun executeAction(mobileDevice: MobileDevice) {
-        
+        print("")
+    }
+
+    @Composable
+    override fun viewContribution() {
+        TODO("Not yet implemented")
     }
 }
