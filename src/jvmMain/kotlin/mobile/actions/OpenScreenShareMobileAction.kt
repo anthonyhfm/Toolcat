@@ -8,7 +8,7 @@ class OpenScreenShareMobileAction : MobileAction {
         get() = "Open Screen Mirroring"
 
     override fun executeAction(mobileDevice: MobileDevice) {
-        Runtime.getRuntime().exec("scrcpy --serial ${mobileDevice.deviceName} --window-title=\"Toolcat Screen Mirror (${mobileDevice.deviceName})\"")
+        Runtime.getRuntime().exec("scrcpy --serial ${mobileDevice.serial} --window-title=\"Toolcat Screen Mirror (${mobileDevice.serial})\"")
     }
 
     @Composable

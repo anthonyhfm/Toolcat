@@ -1,6 +1,5 @@
 package mobile
 
-import kotlinx.coroutines.yield
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -32,7 +31,7 @@ class MobileDeviceRepository {
 
             outputList = outputList.plus(
                 MobileDevice(
-                    deviceName = deviceMatchResult?.groupValues?.get(1),
+                    serial = deviceMatchResult?.groupValues?.get(1),
                     product = productMatchResult?.groupValues?.get(1),
                     model = modelMatchResult?.groupValues?.get(1)
                 )
