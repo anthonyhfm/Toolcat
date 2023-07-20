@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import mobile.MobileDevice
 import mobile.MobileDeviceRepository
@@ -43,7 +44,7 @@ fun DeviceListSidebar(
                         selectedDevice = devices.indexOf(device)
                         onChange(selectedDevice)
                     }
-                    .background(Color(157, 212, 186))
+                    .background(Color(117, 129, 201))
                     .padding(10.dp)
                     .fillMaxWidth(),
 
@@ -65,7 +66,11 @@ fun DeviceListSidebar(
                 }
 
                 device.deviceName?.run {
-                    Text(this)
+                    Text(
+                        text = this,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.White
+                    )
                 }
             }
         }

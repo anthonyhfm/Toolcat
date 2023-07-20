@@ -24,6 +24,7 @@ kotlin {
             dependencies {
                 implementation(compose.desktop.currentOs)
                 implementation("org.jetbrains.compose.material:material-icons-core-desktop:1.4.1")
+                implementation("com.darkrockstudios:mpfilepicker:1.2.0")
 
                 runtimeOnly("org.jetbrains.compose.material3:material3-desktop:1.4.1")
             }
