@@ -1,22 +1,13 @@
 package ui.views
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
-import mobile.MobileDevice
-import mobile.MobileDeviceRepository
-import ui.components.DeviceActionsSidebar
-import ui.components.DeviceListSidebar
 
 data class NavigationItem(
     val name: String,
@@ -24,12 +15,8 @@ data class NavigationItem(
     val view: @Composable () -> Unit,
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainView() {
-    val deviceList: List<MobileDevice> = MobileDeviceRepository().getConnectedDevices()
-    // var selectedMobileDevice: MobileDevice by remember { mutableStateOf(deviceList[0]) }
-
     var selectedView by remember { mutableStateOf(0) }
 
     val navigationItems: List<NavigationItem> = listOf(
@@ -41,7 +28,7 @@ fun MainView() {
         NavigationItem(
             name = "Apps",
             icon = { Icon(painterResource("icons/apps.svg"), "") },
-            view = { DevicesView() }
+            view = { AppsView() }
         ),
         NavigationItem(
             name = "Cast",
