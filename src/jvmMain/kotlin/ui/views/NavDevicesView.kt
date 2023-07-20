@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import mobile.MobileDevice
 import mobile.MobileDeviceRepository
+import mobile.getManufacturerName
+import mobile.getProductName
 import ui.components.Tooltip
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -56,13 +58,11 @@ fun DeviceListItem(mobileDevice: MobileDevice) {
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        mobileDevice.model?.let {
-            Text(
-                text = it,
-                fontWeight = FontWeight.Light,
-                fontSize = 18.sp
-            )
-        }
+        Text(
+            text = mobileDevice.getManufacturerName() + " " + mobileDevice.getProductName(),
+            fontWeight = FontWeight.Light,
+            fontSize = 18.sp
+        )
 
         mobileDevice.deviceName?.let {
             Text(
