@@ -4,17 +4,25 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import commands.CommandRegistry
 import ui.views.MainView
+import ui.window.WindowHandler
 
 var composeWindow: ComposeWindow? = null
 
 fun main(args: Array<String>) = application {
     CommandRegistry().executeCommand(args.toList())
 
-    Window(onCloseRequest = ::exitApplication, title = "Toolcat by Anthony Hofmeister") {
+    Window(
+        onCloseRequest = ::exitApplication,
+        title = "Toolcat",
+        undecorated = WindowHandler.useCustomDecoration(),
+        transparent = WindowHandler.useCustomDecoration()
+    ) {
         composeWindow = this.window
 
-        MaterialTheme {
-            MainView()
+        WindowHandler.windowContent(this) {
+            MaterialTheme {
+                MainView()
+            }
         }
     }
 }
