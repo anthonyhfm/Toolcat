@@ -21,19 +21,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import mobile.MobileDevice
-import mobile.MobileDeviceRepository
-import mobile.getManufacturerName
-import mobile.getProductName
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import mobile.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CastView() {
     var dropdownExpanded by remember { mutableStateOf(false) }
-    val deviceList: List<MobileDevice> by remember {
+    var deviceList: List<MobileDevice> by remember {
         mutableStateOf(
-            MobileDeviceRepository().getConnectedDevices()
+            listOf()
         )
+    }
+
+    GlobalScope.launch {
+        deviceList = MobileDeviceRepository.getConnectedDevices()
     }
 
     var selectedDevice: Int by remember { mutableStateOf(0) }
@@ -89,7 +92,7 @@ fun CastView() {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = deviceList[selectedDevice].getManufacturerName() + " " + deviceList[selectedDevice].getProductName(),
+                            text = deviceList[selectedDevice].getName(),
                             fontSize = 16.sp,
                             color = Color.Black
                         )
@@ -104,7 +107,9 @@ fun CastView() {
 
                 FilledIconButton(
                     onClick = {
-                        Runtime.getRuntime().exec("scrcpy --serial ${deviceList[selectedDevice].serial} --window-title=\"Toolcat Screen Mirror (${deviceList[selectedDevice].getProductName()})\"")
+                        GlobalScope.launch {
+                            Runtime.getRuntime().exec("scrcpy --serial ${deviceList[selectedDevice].serial} --window-title=\"Toolcat Screen Mirror (${deviceList[selectedDevice].getProductName()})\"")
+                        }
                     }
                 ) {
                     Icon(
@@ -120,15 +125,24 @@ fun CastView() {
             ) {
                 deviceList.forEach {
                     DropdownMenuItem(
-                        text = { Text(it.getManufacturerName() + " " + it.getProductName()) },
+                        text = { Text(it.getName()) },
                         onClick = {
                             dropdownExpanded = false
+                            selectedDevice = deviceList.indexOf(it)
                         },
                         leadingIcon = {
-                            Icon(
-                                painterResource("icons/adb.svg"),
-                                contentDescription = null
-                            )
+                            when (it.deviceType) {
+                                DeviceType.ANDROID -> Icon(
+                                    painterResource("icons/adb.svg"),
+                                    contentDescription = null
+                                )
+
+                                DeviceType.IOS -> Icon(
+                                    painterResource("icons/apple.svg"),
+                                    contentDescription = null,
+                                    modifier = Modifier.height(24.dp)
+                                )
+                            }
                         }
                     )
                 }

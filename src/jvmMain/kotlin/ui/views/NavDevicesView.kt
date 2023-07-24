@@ -21,10 +21,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import mobile.MobileDevice
-import mobile.MobileDeviceRepository
-import mobile.getManufacturerName
-import mobile.getProductName
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import mobile.*
 import ui.components.Tooltip
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -50,13 +51,32 @@ fun DeviceListItem(mobileDevice: MobileDevice) {
 
             contentAlignment = Alignment.Center
         ) {
-            Icon(painter = painterResource("icons/adb.svg"), contentDescription = "ADB Icon", tint = MaterialTheme.colorScheme.background)
+            when (mobileDevice.deviceType) {
+                DeviceType.ANDROID -> {
+                    Icon(
+                        painter = painterResource("icons/adb.svg"),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.background
+                    )
+                }
+
+                DeviceType.IOS -> {
+                    Icon(
+                        painter = painterResource("icons/apple.svg"),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.background,
+                        modifier = Modifier.height(18.dp)
+                    )
+                }
+            }
+
+
         }
 
         Spacer(modifier = Modifier.width(8.dp))
 
         Text(
-            text = mobileDevice.getManufacturerName() + " " + mobileDevice.getProductName(),
+            text = mobileDevice.getName(),
             fontWeight = FontWeight.Light,
             fontSize = 18.sp
         )
@@ -175,17 +195,22 @@ fun NoDevicesFoundView(onRefresh: () -> Unit) {
     }
 }
 
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun DevicesView() {
     var deviceList: List<MobileDevice> by remember {
-        mutableStateOf(
-            MobileDeviceRepository().getConnectedDevices()
-        )
+        mutableStateOf(listOf())
+    }
+
+    GlobalScope.launch {
+        deviceList = MobileDeviceRepository.getConnectedDevices()
     }
 
     if (deviceList.isEmpty()) {
         NoDevicesFoundView(onRefresh = {
-            deviceList = MobileDeviceRepository().getConnectedDevices()
+            GlobalScope.launch {
+                deviceList = MobileDeviceRepository.getConnectedDevices()
+            }
         })
     }
     else {

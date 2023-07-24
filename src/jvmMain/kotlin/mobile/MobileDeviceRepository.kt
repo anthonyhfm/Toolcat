@@ -3,8 +3,32 @@ package mobile
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-class MobileDeviceRepository {
-    fun getConnectedDevices(): List<MobileDevice> {
+object MobileDeviceRepository {
+    fun getConnectedIOSDevices(): List<MobileDevice> {
+        var outputList: List<MobileDevice> = listOf()
+
+        val process: Process = Runtime.getRuntime().exec("idevice_id -l")
+        process.waitFor()
+
+        var commandLineOutputLines = BufferedReader(InputStreamReader(process.inputStream)).readLines()
+
+        for (line in commandLineOutputLines) {
+            if (line.isEmpty() || line.isBlank()) {
+                continue
+            }
+
+            outputList = outputList.plus(
+                MobileDevice(
+                    uuid = line,
+                    deviceType = DeviceType.IOS
+                )
+            )
+        }
+
+        return outputList
+    }
+
+    fun getConnectedAndroidDevices(): List<MobileDevice> {
         var outputList: List<MobileDevice> = listOf()
 
         val process: Process = Runtime.getRuntime().exec("adb devices -l")
@@ -33,9 +57,24 @@ class MobileDeviceRepository {
                 MobileDevice(
                     serial = deviceMatchResult?.groupValues?.get(1),
                     product = productMatchResult?.groupValues?.get(1),
-                    model = modelMatchResult?.groupValues?.get(1)
+                    model = modelMatchResult?.groupValues?.get(1),
+                    deviceType = DeviceType.ANDROID
                 )
             )
+        }
+
+        return outputList
+    }
+
+    fun getConnectedDevices(): List<MobileDevice> {
+        var outputList: List<MobileDevice> = listOf()
+
+        getConnectedAndroidDevices().forEach {
+            outputList = outputList.plus(it)
+        }
+
+        getConnectedIOSDevices().forEach {
+            outputList = outputList.plus(it)
         }
 
         return outputList
