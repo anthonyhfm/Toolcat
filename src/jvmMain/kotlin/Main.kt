@@ -6,8 +6,6 @@ import commands.CommandRegistry
 import ui.views.MainView
 import ui.window.WindowHandler
 
-var composeWindow: ComposeWindow? = null
-
 fun main(args: Array<String>) = application {
     CommandRegistry().executeCommand(args.toList())
 
@@ -17,8 +15,6 @@ fun main(args: Array<String>) = application {
         undecorated = WindowHandler.useCustomDecoration(),
         transparent = WindowHandler.useCustomDecoration()
     ) {
-        composeWindow = this.window
-
         WindowHandler.windowContent(this) {
             MaterialTheme {
                 MainView()

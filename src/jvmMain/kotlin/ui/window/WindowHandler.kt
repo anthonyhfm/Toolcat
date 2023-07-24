@@ -20,13 +20,18 @@ object WindowHandler {
     @Composable
     fun windowContent(window: FrameWindowScope, content: @Composable () -> Unit) {
         if (useCustomDecoration()) {
-            Column(
-                modifier = Modifier.clip(RoundedCornerShape(8.dp))
-            ) {
-                val os = System.getProperty("os.name").lowercase(Locale.getDefault())
+            val os = System.getProperty("os.name").lowercase(Locale.getDefault())
+            val isMacOS = os.contains("mac os x")
 
-                if (os.contains("windows")) {
+            Column(
+                modifier = Modifier.clip(RoundedCornerShape(if (isMacOS) 12.dp else 8.dp))
+            ) {
+
+                if (isMacOS.not()) {
                     WindowsTitleBar(window)
+                }
+                else {
+                    MacOSTitleBar(window)
                 }
 
                 content()
