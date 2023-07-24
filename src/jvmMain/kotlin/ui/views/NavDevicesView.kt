@@ -203,13 +203,17 @@ fun DevicesView() {
     }
 
     GlobalScope.launch {
-        deviceList = MobileDeviceRepository.getConnectedDevices()
+        MobileDeviceRepository.fetchConnectedDevices()
+
+        deviceList = MobileDeviceRepository.deviceList
     }
 
     if (deviceList.isEmpty()) {
         NoDevicesFoundView(onRefresh = {
             GlobalScope.launch {
-                deviceList = MobileDeviceRepository.getConnectedDevices()
+                MobileDeviceRepository.fetchConnectedDevices()
+
+                deviceList = MobileDeviceRepository.deviceList
             }
         })
     }

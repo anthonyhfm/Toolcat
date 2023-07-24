@@ -36,7 +36,9 @@ fun CastView() {
     }
 
     GlobalScope.launch {
-        deviceList = MobileDeviceRepository.getConnectedDevices()
+        MobileDeviceRepository.fetchConnectedDevices()
+
+        deviceList = MobileDeviceRepository.deviceList
     }
 
     var selectedDevice: Int by remember { mutableStateOf(0) }

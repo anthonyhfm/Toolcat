@@ -1,16 +1,19 @@
 package mobile
 
+import settings.GlobalSettings
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
 object MobileDeviceRepository {
+    var deviceList: List<MobileDevice> = listOf()
+
     fun getConnectedIOSDevices(): List<MobileDevice> {
         var outputList: List<MobileDevice> = listOf()
 
         val process: Process = Runtime.getRuntime().exec("idevice_id -l")
         process.waitFor()
 
-        var commandLineOutputLines = BufferedReader(InputStreamReader(process.inputStream)).readLines()
+        val commandLineOutputLines = BufferedReader(InputStreamReader(process.inputStream)).readLines()
 
         for (line in commandLineOutputLines) {
             if (line.isEmpty() || line.isBlank()) {
@@ -66,17 +69,19 @@ object MobileDeviceRepository {
         return outputList
     }
 
-    fun getConnectedDevices(): List<MobileDevice> {
+    fun fetchConnectedDevices() {
         var outputList: List<MobileDevice> = listOf()
 
         getConnectedAndroidDevices().forEach {
             outputList = outputList.plus(it)
         }
 
-        getConnectedIOSDevices().forEach {
-            outputList = outputList.plus(it)
+        if (GlobalSettings.iosSupportEnabled) {
+            getConnectedIOSDevices().forEach {
+                outputList = outputList.plus(it)
+            }
         }
 
-        return outputList
+        deviceList = outputList
     }
 }

@@ -114,5 +114,4 @@ fun WindowsTitleBar(window: FrameWindowScope) {
             }
         }
     }
-
 }
