@@ -104,7 +104,7 @@ fun CastView() {
 
                 FilledIconButton(
                     onClick = {
-
+                        Runtime.getRuntime().exec("scrcpy --serial ${deviceList[selectedDevice].serial} --window-title=\"Toolcat Screen Mirror (${deviceList[selectedDevice].getProductName()})\"")
                     }
                 ) {
                     Icon(
