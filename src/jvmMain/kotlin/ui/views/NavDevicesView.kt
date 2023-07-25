@@ -1,5 +1,6 @@
 package ui.views
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -27,10 +28,13 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mobile.*
 import ui.components.Tooltip
+import ui.views.dialogs.DeviceInformationDialog
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DeviceListItem(mobileDevice: MobileDevice) {
+    var showInformationDialog by remember { mutableStateOf(false) }
+
     Row(
         modifier = Modifier
             .clip(CircleShape)
@@ -108,10 +112,19 @@ fun DeviceListItem(mobileDevice: MobileDevice) {
             Tooltip(tip = "Device Information") {
                 IconButton(
                     onClick = {
-                        // TODO: Show Information Dialog
+                        showInformationDialog = true
                     },
                     content = {
                         Icon(Icons.Default.Info, "Information about the Device")
+                    }
+                )
+            }
+
+            if (showInformationDialog) {
+                DeviceInformationDialog(
+                    mobileDevice = mobileDevice,
+                    onClose = {
+                        showInformationDialog = false
                     }
                 )
             }

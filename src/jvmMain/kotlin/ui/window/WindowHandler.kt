@@ -11,6 +11,8 @@ import androidx.compose.ui.window.FrameWindowScope
 import java.util.*
 
 object WindowHandler {
+    var titleBarOffset: Int = 0
+
     fun useCustomDecoration(): Boolean {
         val os = System.getProperty("os.name").lowercase(Locale.getDefault())
 
@@ -22,6 +24,8 @@ object WindowHandler {
         if (useCustomDecoration()) {
             val os = System.getProperty("os.name").lowercase(Locale.getDefault())
             val isMacOS = os.contains("mac os x")
+
+            titleBarOffset = if (isMacOS) 30 else 32
 
             Column(
                 modifier = Modifier.clip(RoundedCornerShape(if (isMacOS) 12.dp else 8.dp))
