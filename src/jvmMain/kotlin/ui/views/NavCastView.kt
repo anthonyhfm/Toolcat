@@ -21,11 +21,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mobile.*
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, DelicateCoroutinesApi::class)
 @Composable
 fun CastView() {
     var dropdownExpanded by remember { mutableStateOf(false) }
@@ -109,9 +110,7 @@ fun CastView() {
 
                 FilledIconButton(
                     onClick = {
-                        GlobalScope.launch {
-                            Runtime.getRuntime().exec("scrcpy --serial ${deviceList[selectedDevice].serial} --window-title=\"Toolcat Screen Mirror (${deviceList[selectedDevice].getProductName()})\"")
-                        }
+                        deviceList[selectedDevice].openScreenMirror()
                     }
                 ) {
                     Icon(
