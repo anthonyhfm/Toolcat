@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.sp
 import settings.GlobalSettings
 import settings.SettingsViewModel
 
-class EnableIosSupport : SettingsViewModel {
+class EnableIosSupportSettingsModel : SettingsViewModel {
     @Composable
     override fun content() {
         var checked by remember { mutableStateOf(GlobalSettings.iosSupportEnabled) }
