@@ -61,3 +61,23 @@ fun MobileDevice.getName(): String {
         }
     }
 }
+
+fun MobileDevice.getSystemVersion(): String {
+    return when (this.deviceType) {
+        DeviceType.ANDROID -> {
+            val systemVersionProcess: Process = Runtime.getRuntime().exec("adb -s ${this.serial} shell getprop ro.build.version.release")
+            systemVersionProcess.waitFor()
+            val systemVersion = BufferedReader(InputStreamReader(systemVersionProcess.inputStream)).readLine()
+
+            val apiLevelProcess: Process = Runtime.getRuntime().exec("adb -s ${this.serial} shell getprop ro.build.version.sdk")
+            apiLevelProcess.waitFor()
+            val apiLevel = BufferedReader(InputStreamReader(apiLevelProcess.inputStream)).readLine()
+
+            "$systemVersion (API $apiLevel)"
+        }
+
+        DeviceType.IOS -> {
+            "TBD"
+        }
+    }
+}
