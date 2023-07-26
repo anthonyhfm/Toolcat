@@ -77,7 +77,10 @@ fun MobileDevice.getSystemVersion(): String {
         }
 
         DeviceType.IOS -> {
-            "TBD"
+            val process: Process = Runtime.getRuntime().exec("ideviceinfo -u ${this.uuid} -k ProductVersion")
+            process.waitFor()
+
+            BufferedReader(InputStreamReader(process.inputStream)).readLine()
         }
     }
 }
