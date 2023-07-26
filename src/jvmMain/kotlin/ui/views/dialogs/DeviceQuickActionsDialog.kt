@@ -6,7 +6,14 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -16,11 +23,59 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.*
 import mobile.MobileDevice
+import mobile.getName
+import mobile.quickactions.QuickActionSize
+import mobile.quickactions.quickActionList
+
+@Composable
+fun QuickActionsList(mobileDevice: MobileDevice) {
+    val largeActions = quickActionList.filter {
+        it.actionSize == QuickActionSize.LARGE
+    }
+
+    val smallActions = quickActionList.filter {
+        it.actionSize == QuickActionSize.SMALL
+    }
+
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        items(largeActions) {
+            Row(
+                modifier = Modifier
+                    .height(100.dp),
+            ) {
+                Box(Modifier.weight(1F)) {
+                    it.content(mobileDevice)
+                }
+            }
+        }
+
+        items(smallActions.count()) {
+            if (it % 2 == 0) {
+                Row(
+                    modifier = Modifier
+                        .height(100.dp),
+
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Box(Modifier.weight(1F)) {
+                        smallActions[it].content(mobileDevice)
+                    }
+
+                    if (smallActions.getOrNull(it + 1) != null) {
+                        Box(Modifier.weight(1F)) {
+                            smallActions[it + 1].content(mobileDevice)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 @OptIn(ExperimentalComposeUiApi::class, DelicateCoroutinesApi::class)
 @Composable
@@ -68,9 +123,62 @@ fun DeviceQuickActionsDialog(mobileDevice: MobileDevice, onClose: () -> Unit) {
                             .background(MaterialTheme.colors.background)
                             .fillMaxHeight()
                             .width(320.dp)
-                            .padding(24.dp)
+                            .padding(16.dp)
                     ) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .height(80.dp),
 
+                                verticalArrangement = Arrangement.Center
+                            ) {
+                                Row(
+                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                                ) {
+                                    IconButton(
+                                        onClick = {
+                                            GlobalScope.launch {
+                                                isSheetVisible = false
+                                                isDialogVisible = false
+                                                delay(250)
+                                                onClose()
+                                            }
+                                        }
+                                    ) {
+                                        Icon(Icons.Default.ArrowBack, null)
+                                    }
+
+                                    Column(
+                                        modifier = Modifier
+                                            .padding(bottom = 24.dp)
+                                    ) {
+                                        var name by remember { mutableStateOf<String>("") }
+
+                                        DisposableEffect(Unit) {
+                                            val job = GlobalScope.launch(Dispatchers.Default) {
+                                                name = mobileDevice.getName()
+                                            }
+                                            onDispose { job.cancel() }
+                                        }
+
+                                        Text(
+                                            text = "Quick Actions",
+                                            fontSize = 28.sp
+                                        )
+                                        Text(
+                                            text = name,
+                                            fontSize = 12.sp,
+                                            color = Color.Gray
+                                        )
+                                    }
+                                }
+                            }
+
+                            QuickActionsList(mobileDevice)
+                        }
                     }
                 }
 
