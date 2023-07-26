@@ -1,5 +1,9 @@
 package ui.views.dialogs
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,12 +22,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import mobile.MobileDevice
 import mobile.hardware.getBatteryLevel
+import kotlin.time.Duration.Companion.seconds
 
 data class DeviceInformationData(
     val title: String,
@@ -55,72 +57,94 @@ fun DeviceInformationSlot(title: String, value: String) {
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun DeviceInformationDialog(mobileDevice: MobileDevice, onClose: () -> Unit) {
-    BaseDialog {
-        Box(
-            modifier = Modifier
-                .background(Color.Black.copy(alpha = 0.6f))
-                .fillMaxSize(),
+    var isDialogVisible by remember { mutableStateOf(false ) }
 
-            contentAlignment = Alignment.Center
+    BaseDialog {
+        AnimatedVisibility(
+            visible = isDialogVisible,
+            enter = fadeIn(
+                initialAlpha = 0f
+            ),
+            exit = fadeOut(
+                animationSpec = tween(durationMillis = 250),
+                targetAlpha = 0f
+            )
         ) {
             Box(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(24.dp))
-                    .background(MaterialTheme.colors.background)
-                    .padding(24.dp)
+                    .background(Color.Black.copy(alpha = 0.6f))
+                    .fillMaxSize(),
+
+                contentAlignment = Alignment.Center
             ) {
-                Column(
-                    horizontalAlignment = Alignment.End,
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-
+                Box(
                     modifier = Modifier
-                        .width(360.dp)
+                        .clip(RoundedCornerShape(24.dp))
+                        .background(MaterialTheme.colors.background)
+                        .padding(24.dp)
                 ) {
-                    Text(
-                        text = "Device Information",
-                        fontSize = 22.sp,
-                        textAlign = TextAlign.Center,
+                    Column(
+                        horizontalAlignment = Alignment.End,
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+
                         modifier = Modifier
-                            .fillMaxWidth()
-                    )
-                    Spacer(Modifier.height(12.dp))
+                            .width(360.dp)
+                    ) {
+                        Text(
+                            text = "Device Information",
+                            fontSize = 22.sp,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        )
+                        Spacer(Modifier.height(12.dp))
 
-                    LazyColumn {
-                        items(deviceInformationList) {
-                            var valueState by remember { mutableStateOf<String?>(null) }
+                        LazyColumn {
+                            items(deviceInformationList) {
+                                var valueState by remember { mutableStateOf<String?>(null) }
 
-                            DisposableEffect(Unit) {
-                                val job = GlobalScope.launch(Dispatchers.Default) {
-                                    val value = it.fetch(mobileDevice)
-                                    valueState = value
+                                DisposableEffect(Unit) {
+                                    val job = GlobalScope.launch(Dispatchers.Default) {
+                                        val value = it.fetch(mobileDevice)
+                                        valueState = value
+                                    }
+                                    onDispose { job.cancel() }
                                 }
-                                onDispose { job.cancel() }
-                            }
 
-                            val value = valueState
-                            if (value != null) {
-                                DeviceInformationSlot(title = it.title, value = value)
+                                val value = valueState
+                                if (value != null) {
+                                    DeviceInformationSlot(title = it.title, value = value)
 
-                                if (deviceInformationList.indexOf(it) != deviceInformationList.count() - 1) {
-                                    Divider(modifier = Modifier.padding(8.dp))
+                                    if (deviceInformationList.indexOf(it) != deviceInformationList.count() - 1) {
+                                        Divider(modifier = Modifier.padding(8.dp))
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    Row(
-                        horizontalArrangement = Arrangement.End
-                    ) {
-                        TextButton(
-                            onClick = {
-                                onClose()
-                            }
+                        Row(
+                            horizontalArrangement = Arrangement.End
                         ) {
-                            Text("Close")
+                            TextButton(
+                                onClick = {
+                                    isDialogVisible = false
+
+                                    GlobalScope.launch {
+                                        delay(250)
+                                        onClose()
+                                    }
+                                }
+                            ) {
+                                Text("Close")
+                            }
                         }
                     }
                 }
             }
+        }
+
+        LaunchedEffect(Unit) {
+            isDialogVisible = true
         }
     }
 }
