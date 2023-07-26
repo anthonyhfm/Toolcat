@@ -25,7 +25,7 @@ object WindowHandler {
             val os = System.getProperty("os.name").lowercase(Locale.getDefault())
             val isMacOS = os.contains("mac os x")
 
-            titleBarOffset = if (isMacOS) 30 else 32
+            titleBarOffset = if (isMacOS) 60 else 32
 
             Column(
                 modifier = Modifier.clip(RoundedCornerShape(if (isMacOS) 12.dp else 8.dp))
