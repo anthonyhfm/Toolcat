@@ -10,10 +10,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mobile.*
 
+@OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun AppsView() {
     var dropdownExpanded by remember { mutableStateOf(false) }
@@ -23,13 +25,13 @@ fun AppsView() {
         )
     }
 
+    var selectedDevice: Int by remember { mutableStateOf(0) }
+
     GlobalScope.launch {
         MobileDeviceRepository.fetchConnectedDevices()
 
         deviceList = MobileDeviceRepository.deviceList
     }
-
-    var selectedDevice: Int by remember { mutableStateOf(0) }
 
     Column(
         modifier = Modifier
@@ -42,60 +44,71 @@ fun AppsView() {
                     .fillMaxWidth()
                     .padding(12.dp),
             ) {
-                OutlinedButton(
-                    onClick = {
-                        dropdownExpanded = true
-                    }
-                ) {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        verticalAlignment = Alignment.CenterVertically
+                Box {
+                    OutlinedButton(
+                        onClick = {
+                            dropdownExpanded = true
+                        }
                     ) {
-                        Text(
-                            text = deviceList[selectedDevice].getName(),
-                            fontSize = 16.sp,
-                            color = Color.Black
-                        )
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = deviceList[selectedDevice].getName(),
+                                fontSize = 16.sp,
+                                color = Color.Black
+                            )
 
-                        Icon(
-                            painterResource("icons/expand_more.svg"),
-                            null,
-                            tint = Color.Black
-                        )
+                            Icon(
+                                painterResource("icons/expand_more.svg"),
+                                null,
+                                tint = Color.Black
+                            )
+                        }
                     }
-                }
 
-                DropdownMenu(
-                    expanded = dropdownExpanded,
-                    onDismissRequest = { dropdownExpanded = false }
-                ) {
-                    deviceList.forEach {
-                        DropdownMenuItem(
-                            text = { Text(it.getName()) },
-                            onClick = {
-                                dropdownExpanded = false
-                                selectedDevice = deviceList.indexOf(it)
-                            },
-                            leadingIcon = {
-                                when (it.deviceType) {
-                                    DeviceType.ANDROID -> Icon(
-                                        painterResource("icons/adb.svg"),
-                                        contentDescription = null
-                                    )
+                    DropdownMenu(
+                        expanded = dropdownExpanded,
+                        onDismissRequest = { dropdownExpanded = false }
+                    ) {
+                        deviceList.forEach {
+                            DropdownMenuItem(
+                                text = { Text(it.getName()) },
+                                onClick = {
+                                    dropdownExpanded = false
+                                    selectedDevice = deviceList.indexOf(it)
+                                },
+                                leadingIcon = {
+                                    when (it.deviceType) {
+                                        DeviceType.ANDROID -> Icon(
+                                            painterResource("icons/adb.svg"),
+                                            contentDescription = null
+                                        )
 
-                                    DeviceType.IOS -> Icon(
-                                        painterResource("icons/apple.svg"),
-                                        contentDescription = null,
-                                        modifier = Modifier.height(24.dp)
-                                    )
+                                        DeviceType.IOS -> Icon(
+                                            painterResource("icons/apple.svg"),
+                                            contentDescription = null,
+                                            modifier = Modifier.height(24.dp)
+                                        )
+                                    }
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             }
+        }
 
-
+        if (deviceList.isNotEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+                GlobalScope.launch {
+                    deviceList[selectedDevice].getApplications()
+                }
+            }
         }
     }
 }

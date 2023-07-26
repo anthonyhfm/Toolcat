@@ -9,7 +9,7 @@
 ### Mac OS
 
 ```shell
-brew install libimobiledevice
+brew install libimobiledevice ideviceinstaller
 ```
 
 ### Windows
