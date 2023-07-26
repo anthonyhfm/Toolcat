@@ -29,11 +29,13 @@ import kotlinx.coroutines.launch
 import mobile.*
 import ui.components.Tooltip
 import ui.views.dialogs.DeviceInformationDialog
+import ui.views.dialogs.DeviceQuickActionsDialog
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DeviceListItem(mobileDevice: MobileDevice) {
     var showInformationDialog by remember { mutableStateOf(false) }
+    var showQuickActionsDialog by remember { mutableStateOf(false) }
 
     Row(
         modifier = Modifier
@@ -101,10 +103,19 @@ fun DeviceListItem(mobileDevice: MobileDevice) {
             Tooltip(tip = "Quick Actions") {
                 IconButton(
                     onClick = {
-                        // TODO: Show Quick Actions Dialog
+                        showQuickActionsDialog = true
                     },
                     content = {
                         Icon(painterResource("icons/bolt.svg"), "Quick Actions for device settings and other stuffs")
+                    }
+                )
+            }
+
+            if (showQuickActionsDialog) {
+                DeviceQuickActionsDialog(
+                    mobileDevice = mobileDevice,
+                    onClose = {
+                        showQuickActionsDialog = false
                     }
                 )
             }
