@@ -87,16 +87,21 @@ fun DeviceInformationDialog(mobileDevice: MobileDevice, onClose: () -> Unit) {
 
                     LazyColumn {
                         items(deviceInformationList) {
-                            var value: String? by remember { mutableStateOf(null) }
+                            var valueState by remember { mutableStateOf<String?>(null) }
 
-                            GlobalScope.launch {
-                                value = it.fetch(mobileDevice)
+                            DisposableEffect(Unit) {
+                                val job = GlobalScope.launch(Dispatchers.Default) {
+                                    val value = it.fetch(mobileDevice)
+                                    valueState = value
+                                }
+                                onDispose { job.cancel() }
                             }
 
+                            val value = valueState
                             if (value != null) {
-                                DeviceInformationSlot(title = it.title, value = value!!)
+                                DeviceInformationSlot(title = it.title, value = value)
 
-                                if (deviceInformationList.indexOf(it) != deviceInformationList.count() -1) {
+                                if (deviceInformationList.indexOf(it) != deviceInformationList.count() - 1) {
                                     Divider(modifier = Modifier.padding(8.dp))
                                 }
                             }
