@@ -150,7 +150,8 @@ fun DeviceList(deviceList: List<MobileDevice>) {
             .fillMaxSize()
             .padding(24.dp),
 
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(deviceList) {
             DeviceListItem(it)

@@ -47,8 +47,8 @@ object MobileDeviceRepository {
             if (line.isEmpty() || line.isBlank()) {
                 continue
             }
-
-            val deviceRegex = Regex("""^(\w+)\s+device\b""")
+            
+            val deviceRegex = Regex("""^(\w+(-\d+)?)\s+device\b""")
             val productRegex = Regex("""product:(\w+)""")
             val modelRegex = Regex("""model:(\w+)""")
 
@@ -61,6 +61,7 @@ object MobileDeviceRepository {
                     serial = deviceMatchResult?.groupValues?.get(1),
                     product = productMatchResult?.groupValues?.get(1),
                     model = modelMatchResult?.groupValues?.get(1),
+                    isEmulator = deviceMatchResult?.groupValues?.get(1)!!.contains("emulator"),
                     deviceType = DeviceType.ANDROID
                 )
             )

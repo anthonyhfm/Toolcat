@@ -13,16 +13,21 @@ data class MobileDevice(
     val serial: String? = null,
     val product: String? = null,
     val model: String? = null,
-    val uuid: String? = null
+    val uuid: String? = null,
+    val isEmulator: Boolean = false
 )
 
 fun MobileDevice.getProductName(): String {
     return when (this.deviceType) {
         DeviceType.ANDROID -> {
-            val process: Process = Runtime.getRuntime().exec("adb -s ${this.serial} shell getprop ro.product.model")
-            process.waitFor()
+            if (this.isEmulator) {
+                "Emulator"
+            } else {
+                val process: Process = Runtime.getRuntime().exec("adb -s ${this.serial} shell getprop ro.product.model")
+                process.waitFor()
 
-            return BufferedReader(InputStreamReader(process.inputStream)).readLine()
+                BufferedReader(InputStreamReader(process.inputStream)).readLine()
+            }
         }
 
         DeviceType.IOS -> {
@@ -37,10 +42,15 @@ fun MobileDevice.getProductName(): String {
 fun MobileDevice.getManufacturerName(): String {
     return when (this.deviceType) {
         DeviceType.ANDROID -> {
-            val process: Process = Runtime.getRuntime().exec("adb -s ${this.serial} shell getprop ro.product.manufacturer")
-            process.waitFor()
+            if (this.isEmulator) {
+                "AVD"
+            }
+            else {
+                val process: Process = Runtime.getRuntime().exec("adb -s ${this.serial} shell getprop ro.product.manufacturer")
+                process.waitFor()
 
-            return BufferedReader(InputStreamReader(process.inputStream)).readLine()
+                BufferedReader(InputStreamReader(process.inputStream)).readLine()
+            }
         }
 
         DeviceType.IOS -> "Apple"

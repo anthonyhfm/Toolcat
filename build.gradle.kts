@@ -26,6 +26,9 @@ kotlin {
                 implementation("org.jetbrains.compose.material:material-icons-core-desktop:1.4.1")
                 implementation("org.jetbrains.compose.material3:material3-desktop:1.4.1")
 
+                // Reserved for upcoming feature
+                // implementation("com.github.serezhka:java-airplay-lib:1.0.5")
+
                 runtimeOnly("org.jetbrains.compose.material3:material3-desktop:1.4.1")
             }
         }
