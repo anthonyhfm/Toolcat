@@ -65,7 +65,8 @@ class BaseModelPopupPositionProvider : PopupPositionProvider {
 @Composable
 fun BaseDialog(content: @Composable () -> Unit) {
     Popup(
-        popupPositionProvider = BaseModelPopupPositionProvider()
+        popupPositionProvider = BaseModelPopupPositionProvider(),
+        focusable = true
     ) {
         Box(
             modifier = Modifier
