@@ -47,13 +47,13 @@ compose.desktop {
             macOS {
                 bundleID = "dev.anthonyhfm.toolcat"
 
-                iconFile.set(project.file("desktop-icons/mac-icon.icns"))
+                iconFile.set(project.file("src/jvmMain/resources/desktop-icons/mac-icon.icns"))
             }
             windows {
-                iconFile.set(project.file("desktop-icons/windows-icon.ico"))
+                iconFile.set(project.file("src/jvmMain/resources/desktop-icons/windows-icon.ico"))
             }
             linux {
-                iconFile.set(project.file("desktop-icons/linux-icon.png"))
+                iconFile.set(project.file("src/jvmMain/resources/desktop-icons/linux-icon.png"))
 
                 menuGroup = "Development"
             }
