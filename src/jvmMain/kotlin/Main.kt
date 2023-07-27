@@ -3,10 +3,13 @@ import androidx.compose.ui.awt.ComposeWindow
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import commands.CommandRegistry
+import settings.GlobalSettings
 import ui.views.MainView
 import ui.window.WindowHandler
 
 fun main(args: Array<String>) = application {
+    GlobalSettings.loadGlobalSettings()
+
     CommandRegistry().executeCommand(args.toList())
 
     Window(

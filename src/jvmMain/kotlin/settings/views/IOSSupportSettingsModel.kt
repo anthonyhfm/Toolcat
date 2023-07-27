@@ -51,6 +51,7 @@ class IOSSupportSettingsModel : SettingsViewModel {
                     checked = it
 
                     GlobalSettings.iosSupportEnabled = checked
+                    GlobalSettings.saveGlobalSettings()
                 }
             )
         }
