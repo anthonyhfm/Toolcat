@@ -4,17 +4,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.Switch
 import androidx.compose.material.Text
+import androidx.compose.material3.Switch
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import settings.GlobalSettings
 import settings.SettingsViewModel
 
-class EnableIosSupportSettingsModel : SettingsViewModel {
+class IOSSupportSettingsModel : SettingsViewModel {
     @Composable
     override fun content() {
         var checked by remember { mutableStateOf(GlobalSettings.iosSupportEnabled) }
@@ -27,10 +29,21 @@ class EnableIosSupportSettingsModel : SettingsViewModel {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "Support iOS Devices",
-                fontSize = 18.sp
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Text(
+                    text = "Support iOS Devices",
+                    fontSize = 18.sp
+                )
+
+                Text(
+                    text = "Experimental",
+                    fontWeight = FontWeight.Thin,
+                    fontStyle = FontStyle.Italic
+                )
+            }
 
             Switch(
                 checked = checked,
