@@ -25,19 +25,37 @@ import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.*
+import mobile.DeviceType
 import mobile.MobileDevice
 import mobile.getName
+import mobile.quickactions.QuickActionAvailability
 import mobile.quickactions.QuickActionSize
 import mobile.quickactions.quickActionList
 
 @Composable
 fun QuickActionsList(mobileDevice: MobileDevice) {
     val largeActions = quickActionList.filter {
-        it.actionSize == QuickActionSize.LARGE
+        when (mobileDevice.deviceType) {
+            DeviceType.ANDROID -> {
+                it.actionSize == QuickActionSize.LARGE && (it.availability == QuickActionAvailability.ANDROID || it.availability == QuickActionAvailability.BOTH)
+            }
+
+            DeviceType.IOS -> {
+                it.actionSize == QuickActionSize.LARGE && (it.availability == QuickActionAvailability.IOS || it.availability == QuickActionAvailability.BOTH)
+            }
+        }
     }
 
     val smallActions = quickActionList.filter {
-        it.actionSize == QuickActionSize.SMALL
+        when (mobileDevice.deviceType) {
+            DeviceType.ANDROID -> {
+                it.actionSize == QuickActionSize.SMALL && (it.availability == QuickActionAvailability.ANDROID || it.availability == QuickActionAvailability.BOTH)
+            }
+
+            DeviceType.IOS -> {
+                it.actionSize == QuickActionSize.SMALL && (it.availability == QuickActionAvailability.IOS || it.availability == QuickActionAvailability.BOTH)
+            }
+        }
     }
 
     LazyColumn(
