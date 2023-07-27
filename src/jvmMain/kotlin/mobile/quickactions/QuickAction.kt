@@ -18,6 +18,4 @@ interface QuickAction {
 
     @Composable
     fun content(mobileDevice: MobileDevice)
-
-    fun execute(mobileDevice: MobileDevice)
 }

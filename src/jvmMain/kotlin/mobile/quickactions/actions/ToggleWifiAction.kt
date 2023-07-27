@@ -30,10 +30,6 @@ class ToggleWifiAction : QuickAction {
     override val actionSize = QuickActionSize.SMALL
     override val availability = QuickActionAvailability.ANDROID
 
-    override fun execute(mobileDevice: MobileDevice) {
-        throw NotImplementedException("Not used in the ToggleWifiAction")
-    }
-
     @OptIn(DelicateCoroutinesApi::class)
     @Composable
     override fun content(mobileDevice: MobileDevice) {
