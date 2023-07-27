@@ -20,7 +20,7 @@ fun SettingsView() {
             .fillMaxSize()
             .padding(vertical = 32.dp),
 
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         items(settingsClusterList) {
             Row(
@@ -34,11 +34,19 @@ fun SettingsView() {
                 )
             }
 
+            Spacer(modifier = Modifier.height(12.dp))
+
             Column(
-                modifier = Modifier.fillMaxWidth(0.8F).padding(horizontal = 32.dp)
+                modifier = Modifier.fillMaxWidth(0.8F),
+
+                verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                it.settings.forEach {
-                    it.content()
+                it.settings.forEach { vm ->
+                    vm.content()
+
+                    if (it.settings.indexOf(vm) != it.settings.count() -1) {
+                        Divider()
+                    }
                 }
             }
         }

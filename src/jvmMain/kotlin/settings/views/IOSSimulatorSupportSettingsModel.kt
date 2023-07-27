@@ -16,10 +16,10 @@ import androidx.compose.ui.unit.sp
 import settings.GlobalSettings
 import settings.SettingsViewModel
 
-class IOSSupportSettingsModel : SettingsViewModel {
+class IOSSimulatorSupportSettingsModel : SettingsViewModel {
     @Composable
     override fun content() {
-        var checked by remember { mutableStateOf(GlobalSettings.iosSupportEnabled) }
+        var checked by remember { mutableStateOf(GlobalSettings.iosSimulatorSupportEnabled) }
 
         Row(
             modifier = Modifier
@@ -34,7 +34,7 @@ class IOSSupportSettingsModel : SettingsViewModel {
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = "Primitive iOS Device Support",
+                    text = "Advanced iOS Simulator Support",
                     fontSize = 18.sp
                 )
 
