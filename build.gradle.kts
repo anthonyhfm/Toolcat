@@ -40,9 +40,23 @@ compose.desktop {
     application {
         mainClass = "MainKt"
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Dmg, TargetFormat.Exe, TargetFormat.AppImage)
             packageName = "Toolcat"
             packageVersion = "1.0.0"
+
+            macOS {
+                bundleID = "dev.anthonyhfm.toolcat"
+
+                iconFile.set(project.file("desktop-icons/mac-icon.icns"))
+            }
+            windows {
+                iconFile.set(project.file("desktop-icons/windows-icon.ico"))
+            }
+            linux {
+                iconFile.set(project.file("desktop-icons/linux-icon.png"))
+
+                menuGroup = "Development"
+            }
         }
     }
 }
