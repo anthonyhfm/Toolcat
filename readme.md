@@ -18,23 +18,15 @@
 brew install libimobiledevice ideviceinstaller
 ```
 
-### Windows
-1. Install WSL2
-2. Install the Debian Distribution
-3. Install the Tools with this CLI Command:
+### Linux
 
+Ubuntu:
 ```shell
-sudo apt-get install \
-	build-essential \
-	pkg-config \
-	checkinstall \
-	git \
-	autoconf \
-	automake \
-	libtool-bin \
-	libplist-dev \
-	libusbmuxd-dev \
-	libimobiledevice-glue-dev \
-	libssl-dev \
-	usbmuxd
+sudo apt-get update
+sudo apt-get install usbmuxd libimobiledevice6 libimobiledevice-utils ideviceinstaller
 ```
+
+### Windows
+- Install the Android CLI Tools
+
+_iOS Support is currently not given under Windows_
