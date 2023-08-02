@@ -1,4 +1,4 @@
-package ui.views.dialogs
+package ui.dialogs
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.Spring
@@ -28,9 +28,9 @@ import kotlinx.coroutines.*
 import mobile.DeviceType
 import mobile.MobileDevice
 import mobile.getName
-import mobile.quickactions.QuickActionAvailability
-import mobile.quickactions.QuickActionSize
-import mobile.quickactions.quickActionList
+import quickactions.QuickActionAvailability
+import quickactions.QuickActionSize
+import quickactions.quickActionList
 
 @Composable
 fun QuickActionsList(mobileDevice: MobileDevice) {

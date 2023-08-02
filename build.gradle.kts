@@ -1,3 +1,4 @@
+import org.jetbrains.compose.desktop.application.dsl.MacOSSigningSettings
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {

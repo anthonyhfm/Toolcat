@@ -1,6 +1,9 @@
-package mobile
+package mobile.firmware
 
-import mobile.hardware.getBatteryLevel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.runBlocking
+import mobile.DeviceType
+import mobile.MobileDevice
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -58,4 +61,44 @@ fun MobileDevice.getApplications(): Array<MobileApplication> {
     }
 
     return appList.toTypedArray()
+}
+
+fun MobileDevice.launchApplication(mobileApplication: MobileApplication) {
+    when (this.deviceType) {
+        DeviceType.ANDROID -> {
+            Runtime.getRuntime().exec("adb -s ${this.serial} shell monkey -p ${mobileApplication.id} 1")
+        }
+
+        DeviceType.IOS -> TODO("Launching Applications is currently not supported with iOS Devices")
+    }
+}
+
+fun MobileDevice.installApplication(path: String) {
+    when (this.deviceType) {
+        DeviceType.ANDROID -> {
+            Runtime.getRuntime().exec("adb -s ${this.serial} install $path")
+        }
+
+        DeviceType.IOS -> TODO("Installing Applications is currently not supported with iOS Devices")
+    }
+}
+
+fun MobileDevice.clearApplicationData(mobileApplication: MobileApplication) {
+    when (this.deviceType) {
+        DeviceType.ANDROID -> {
+            Runtime.getRuntime().exec("adb -s ${this.serial} shell pm clear ${mobileApplication.id}")
+        }
+
+        DeviceType.IOS -> TODO("Clearing Application Data is currently not supported with iOS Devices")
+    }
+}
+
+fun MobileDevice.uninstallApplication(mobileApplication: MobileApplication) {
+    when (this.deviceType) {
+        DeviceType.ANDROID -> {
+            Runtime.getRuntime().exec("adb -s ${this.serial} uninstall ${mobileApplication.id}")
+        }
+
+        DeviceType.IOS -> TODO("Uninstalling Applications is currently not supported with iOS Devices")
+    }
 }

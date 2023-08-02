@@ -1,4 +1,4 @@
-package ui.views.dialogs
+package ui.dialogs
 
 import mobile.getManufacturerName
 import mobile.getProductName

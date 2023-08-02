@@ -1,4 +1,4 @@
-package ui.views.dialogs
+package ui.dialogs
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween

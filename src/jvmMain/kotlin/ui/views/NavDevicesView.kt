@@ -28,8 +28,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mobile.*
 import ui.components.Tooltip
-import ui.views.dialogs.DeviceInformationDialog
-import ui.views.dialogs.DeviceQuickActionsDialog
+import ui.dialogs.DeviceInformationDialog
+import ui.dialogs.DeviceQuickActionsDialog
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -227,10 +227,12 @@ fun DevicesView() {
         mutableStateOf(listOf())
     }
 
-    GlobalScope.launch {
-        MobileDeviceRepository.fetchConnectedDevices()
+    LaunchedEffect(Unit) {
+        launch(Dispatchers.IO) {
+            MobileDeviceRepository.fetchConnectedDevices()
 
-        deviceList = MobileDeviceRepository.deviceList
+            deviceList = MobileDeviceRepository.deviceList
+        }
     }
 
     if (deviceList.isEmpty()) {

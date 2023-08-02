@@ -1,4 +1,4 @@
-package mobile.quickactions.actions
+package quickactions.actions
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,9 +30,9 @@ import mobile.firmware.disableWifi
 import mobile.firmware.enableWifi
 import mobile.firmware.getScreenshot
 import mobile.firmware.getWiFiActivated
-import mobile.quickactions.QuickAction
-import mobile.quickactions.QuickActionAvailability
-import mobile.quickactions.QuickActionSize
+import quickactions.QuickAction
+import quickactions.QuickActionAvailability
+import quickactions.QuickActionSize
 import org.jetbrains.skiko.toBitmap
 import utils.TransferableImage
 import java.awt.Toolkit

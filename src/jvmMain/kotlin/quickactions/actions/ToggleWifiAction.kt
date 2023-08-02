@@ -1,4 +1,4 @@
-package mobile.quickactions.actions
+package quickactions.actions
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,27 +14,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import jdk.jshell.spi.ExecutionControl
+import jdk.jshell.spi.ExecutionControl.NotImplementedException
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mobile.MobileDevice
-import mobile.firmware.*
-import mobile.quickactions.QuickAction
-import mobile.quickactions.QuickActionAvailability
-import mobile.quickactions.QuickActionSize
+import mobile.firmware.disableWifi
+import mobile.firmware.enableWifi
+import mobile.firmware.getWiFiActivated
+import quickactions.QuickAction
+import quickactions.QuickActionAvailability
+import quickactions.QuickActionSize
 
-class ToggleBluetoothAction : QuickAction {
+class ToggleWifiAction : QuickAction {
     override val actionSize = QuickActionSize.SMALL
     override val availability = QuickActionAvailability.ANDROID
 
     @OptIn(DelicateCoroutinesApi::class)
     @Composable
     override fun content(mobileDevice: MobileDevice) {
-        var bluetoothEnabled: Boolean by remember { mutableStateOf(false) }
+        var wifiEnabled: Boolean by remember { mutableStateOf(true) }
 
         GlobalScope.launch {
-            bluetoothEnabled = mobileDevice.getBluetoothActivated()
+            wifiEnabled = mobileDevice.getWiFiActivated()
         }
 
         Column(
@@ -48,7 +50,7 @@ class ToggleBluetoothAction : QuickAction {
                 modifier = Modifier
                     .clip(CircleShape)
                     .background(
-                        when (bluetoothEnabled) {
+                        when (wifiEnabled) {
                             true -> Color(18, 109, 255)
                             false -> Color.Gray.copy(alpha = 0.4F)
                         }
@@ -56,38 +58,38 @@ class ToggleBluetoothAction : QuickAction {
                     .aspectRatio(1F)
                     .weight(1F)
                     .clickable {
-                        if (bluetoothEnabled) {
-                            GlobalScope.launch { mobileDevice.disableBluetooth() }
+                        if (wifiEnabled) {
+                            GlobalScope.launch { mobileDevice.disableWifi() }
                         } else {
-                            GlobalScope.launch { mobileDevice.enableBluetooth() }
+                            GlobalScope.launch { mobileDevice.enableWifi() }
                         }
 
-                        bluetoothEnabled = !bluetoothEnabled
+                        wifiEnabled = !wifiEnabled
                     },
 
                 contentAlignment = Alignment.Center
             ) {
-                when (bluetoothEnabled) {
+                when (wifiEnabled) {
                     true -> Icon(
-                        painter = painterResource("icons/actions/bluetooth.svg"),
-                        contentDescription = "Bluetooth is enabled",
+                        painter = painterResource("icons/actions/wifi.svg"),
+                        contentDescription = "Wi-Fi is enabled",
                         tint = Color.White,
                         modifier = Modifier.size(28.dp)
                     )
 
                     false -> Icon(
-                        painter = painterResource("icons/actions/bluetooth_disabled.svg"),
-                        contentDescription = "Bluetooth is disabled",
+                        painter = painterResource("icons/actions/wifi_off.svg"),
+                        contentDescription = "Wi-Fi is disabled",
                         modifier = Modifier.size(28.dp)
                     )
                 }
             }
 
             Text(
-                text = if (bluetoothEnabled) {
-                    "Disable Bluetooth"
+                text = if (wifiEnabled) {
+                    "Disable Wifi"
                 } else {
-                    "Enable Bluetooth"
+                    "Enable Wifi"
                 },
                 maxLines = 1,
                 fontSize = 14.sp

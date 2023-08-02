@@ -1,19 +1,29 @@
 package ui.views
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mobile.*
+import mobile.firmware.*
+import ui.components.Tooltip
+import ui.dialogs.DialogConfirmAppUninstall
 
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
@@ -24,10 +34,11 @@ fun AppsView() {
             listOf()
         )
     }
+    var deviceAppList: List<MobileApplication> by remember { mutableStateOf(listOf()) }
 
     var selectedDevice: Int by remember { mutableStateOf(0) }
 
-    GlobalScope.launch {
+    LaunchedEffect(Unit) {
         MobileDeviceRepository.fetchConnectedDevices()
 
         deviceList = MobileDeviceRepository.deviceList
@@ -78,6 +89,7 @@ fun AppsView() {
                                 onClick = {
                                     dropdownExpanded = false
                                     selectedDevice = deviceList.indexOf(it)
+                                    deviceAppList = deviceList[selectedDevice].getApplications().toList()
                                 },
                                 leadingIcon = {
                                     when (it.deviceType) {
@@ -105,10 +117,130 @@ fun AppsView() {
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                GlobalScope.launch {
-                    deviceList[selectedDevice].getApplications()
+                LaunchedEffect(Unit) {
+                    deviceAppList = deviceList[selectedDevice].getApplications().toList()
+                }
+
+                if (deviceAppList.isNotEmpty()) {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(bottom = 12.dp),
+
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        items(deviceAppList) {
+                            AppListItem(it, deviceList[selectedDevice])
+                        }
+                    }
                 }
             }
         }
+
+
+    }
+}
+
+@OptIn(DelicateCoroutinesApi::class)
+@Composable
+fun AppListItem(application: MobileApplication, mobileDevice: MobileDevice) {
+    var showUninstallDialog: Boolean by remember { mutableStateOf(false) }
+    var showApplicationItem: Boolean by remember { mutableStateOf(true) }
+
+    AnimatedVisibility(showApplicationItem) {
+        Row(
+            modifier = Modifier
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.1F))
+                .fillMaxWidth(0.9F)
+                .height(60.dp)
+                .padding(10.dp),
+
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primary)
+                    .aspectRatio(1F / 1F)
+                    .fillMaxSize(),
+
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = painterResource("icons/image_not_supported.svg"),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.background
+                )
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Text(
+                text = application.id,
+                fontWeight = FontWeight.Light,
+                fontSize = 18.sp
+            )
+
+            Spacer(modifier = Modifier.weight(1F))
+
+            Row {
+                Tooltip(tip = "Open this App") {
+                    IconButton(
+                        onClick = {
+                            GlobalScope.launch(Dispatchers.IO) {
+                                mobileDevice.launchApplication(application)
+                            }
+                        },
+                        content = {
+                            Icon(painterResource("icons/play_arrow.svg"), "Open App")
+                        }
+                    )
+                }
+
+                Tooltip(tip = "Clear all Data") {
+                    IconButton(
+                        onClick = {
+                            GlobalScope.launch(Dispatchers.IO) {
+                                mobileDevice.clearApplicationData(application)
+                            }
+                        },
+                        content = {
+                            Icon(painterResource("icons/folder_off.svg"), "Clear Cache")
+                        }
+                    )
+                }
+
+                Tooltip(tip = "Uninstall this App") {
+                    IconButton(
+                        onClick = {
+                            showUninstallDialog = true
+                        },
+                        content = {
+                            Icon(painterResource("icons/delete.svg"), "Delete App")
+                        }
+                    )
+                }
+            }
+        }
+    }
+
+    if (showUninstallDialog) {
+        DialogConfirmAppUninstall(
+            application = application,
+            onClose = {
+                showUninstallDialog = false
+            },
+            onConfirm = {
+                showUninstallDialog = false
+                showApplicationItem = false
+
+                GlobalScope.launch(Dispatchers.IO) {
+                    mobileDevice.uninstallApplication(application)
+                }
+            }
+        )
     }
 }

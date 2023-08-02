@@ -1,4 +1,4 @@
-package mobile.quickactions
+package quickactions
 
 import androidx.compose.runtime.Composable
 import mobile.MobileDevice

@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mobile.*
@@ -36,10 +37,12 @@ fun CastView() {
         )
     }
 
-    GlobalScope.launch {
-        MobileDeviceRepository.fetchConnectedDevices()
+    LaunchedEffect(Unit) {
+        launch(Dispatchers.IO) {
+            MobileDeviceRepository.fetchConnectedDevices()
 
-        deviceList = MobileDeviceRepository.deviceList
+            deviceList = MobileDeviceRepository.deviceList
+        }
     }
 
     var selectedDevice: Int by remember { mutableStateOf(0) }

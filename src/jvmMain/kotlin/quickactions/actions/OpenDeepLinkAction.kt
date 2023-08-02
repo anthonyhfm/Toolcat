@@ -1,4 +1,4 @@
-package mobile.quickactions.actions
+package quickactions.actions
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -26,12 +26,12 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.*
 import mobile.MobileDevice
 import mobile.firmware.openDeepLink
-import mobile.quickactions.QuickAction
-import mobile.quickactions.QuickActionAvailability
-import mobile.quickactions.QuickActionSize
-import ui.views.dialogs.BaseDialog
-import ui.views.dialogs.DeviceInformationSlot
-import ui.views.dialogs.deviceInformationList
+import quickactions.QuickAction
+import quickactions.QuickActionAvailability
+import quickactions.QuickActionSize
+import ui.dialogs.BaseDialog
+import ui.dialogs.DeviceInformationSlot
+import ui.dialogs.deviceInformationList
 
 class OpenDeepLinkAction : QuickAction {
     override val actionSize: QuickActionSize = QuickActionSize.SMALL
