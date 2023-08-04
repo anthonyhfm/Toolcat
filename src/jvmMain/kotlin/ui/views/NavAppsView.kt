@@ -68,13 +68,13 @@ fun AppsView() {
                             Text(
                                 text = deviceList[selectedDevice].getName(),
                                 fontSize = 16.sp,
-                                color = Color.Black
+                                color = MaterialTheme.colorScheme.onBackground
                             )
 
                             Icon(
                                 painterResource("icons/expand_more.svg"),
                                 null,
-                                tint = Color.Black
+                                tint = MaterialTheme.colorScheme.onBackground
                             )
                         }
                     }
@@ -181,7 +181,8 @@ fun AppListItem(application: MobileApplication, mobileDevice: MobileDevice) {
             Text(
                 text = application.id,
                 fontWeight = FontWeight.Light,
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Spacer(modifier = Modifier.weight(1F))
@@ -195,7 +196,11 @@ fun AppListItem(application: MobileApplication, mobileDevice: MobileDevice) {
                             }
                         },
                         content = {
-                            Icon(painterResource("icons/play_arrow.svg"), "Open App")
+                            Icon(
+                                painter = painterResource("icons/play_arrow.svg"),
+                                contentDescription = "Open App",
+                                tint = MaterialTheme.colorScheme.onBackground
+                            )
                         }
                     )
                 }
@@ -208,7 +213,11 @@ fun AppListItem(application: MobileApplication, mobileDevice: MobileDevice) {
                             }
                         },
                         content = {
-                            Icon(painterResource("icons/folder_off.svg"), "Clear Cache")
+                            Icon(
+                                painter = painterResource("icons/folder_off.svg"),
+                                contentDescription = "Clear Cache",
+                                tint = MaterialTheme.colorScheme.onBackground
+                            )
                         }
                     )
                 }
@@ -219,7 +228,11 @@ fun AppListItem(application: MobileApplication, mobileDevice: MobileDevice) {
                             showUninstallDialog = true
                         },
                         content = {
-                            Icon(painterResource("icons/delete.svg"), "Delete App")
+                            Icon(
+                                painter = painterResource("icons/delete.svg"),
+                                contentDescription = "Delete App",
+                                tint = MaterialTheme.colorScheme.onBackground
+                            )
                         }
                     )
                 }

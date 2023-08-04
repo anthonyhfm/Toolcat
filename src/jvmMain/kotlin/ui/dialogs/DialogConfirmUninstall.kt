@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
@@ -55,7 +55,7 @@ fun DialogConfirmAppUninstall(
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(24.dp))
-                        .background(MaterialTheme.colors.background)
+                        .background(MaterialTheme.colorScheme.background)
                         .padding(24.dp)
                 ) {
                     Column(
@@ -63,24 +63,26 @@ fun DialogConfirmAppUninstall(
                         verticalArrangement = Arrangement.spacedBy(12.dp),
 
                         modifier = Modifier
-                            .width(360.dp)
+                            .width(300.dp)
                     ) {
                         Text(
                             text = "Uninstall App",
                             fontSize = 22.sp,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .fillMaxWidth(),
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                         Spacer(Modifier.height(12.dp))
 
                         Text(
                             text = "Are you sure that you want to uninstall ${application.id}?",
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.onBackground
                         )
 
                         Row(
-                            horizontalArrangement = Arrangement.End
+                            horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.End)
                         ) {
                             TextButton(
                                 onClick = {

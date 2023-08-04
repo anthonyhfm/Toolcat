@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,6 +22,7 @@ fun SettingsView() {
             .padding(vertical = 32.dp),
 
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         items(settingsClusterList) {
             Row(
@@ -30,7 +32,8 @@ fun SettingsView() {
                 Text(
                     text = it.title,
                     fontWeight = FontWeight.SemiBold,
-                    fontSize = 28.sp
+                    fontSize = 28.sp,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
 

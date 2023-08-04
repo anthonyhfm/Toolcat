@@ -58,15 +58,17 @@ fun CastView() {
             painter = painterResource("icons/cast.svg"),
             contentDescription = "Screen Cast Icon",
             modifier = Modifier
-                .size(96.dp)
+                .size(96.dp),
+            tint = MaterialTheme.colorScheme.onBackground
         )
 
-        Spacer(modifier = Modifier.height(18.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         Text(
             text = "Device Screen Mirroring",
             fontWeight = FontWeight.SemiBold,
-            fontSize = 24.sp
+            fontSize = 24.sp,
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -78,7 +80,8 @@ fun CastView() {
         ) {
             Text(
                 text = "Select a device to mirror its screen.",
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f)
             )
         }
 
@@ -100,13 +103,13 @@ fun CastView() {
                         Text(
                             text = deviceList[selectedDevice].getName(),
                             fontSize = 16.sp,
-                            color = Color.Black
+                            color = MaterialTheme.colorScheme.onBackground
                         )
 
                         Icon(
                             painterResource("icons/expand_more.svg"),
                             null,
-                            tint = Color.Black
+                            tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
                 }

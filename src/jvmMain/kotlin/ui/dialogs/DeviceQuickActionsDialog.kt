@@ -10,7 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Text
@@ -138,7 +138,7 @@ fun DeviceQuickActionsDialog(mobileDevice: MobileDevice, onClose: () -> Unit) {
                 ) {
                     Box(
                         modifier = Modifier
-                            .background(MaterialTheme.colors.background)
+                            .background(MaterialTheme.colorScheme.background)
                             .fillMaxHeight()
                             .width(320.dp)
                             .padding(16.dp)
@@ -166,7 +166,7 @@ fun DeviceQuickActionsDialog(mobileDevice: MobileDevice, onClose: () -> Unit) {
                                             }
                                         }
                                     ) {
-                                        Icon(Icons.Default.ArrowBack, null)
+                                        Icon(Icons.Default.ArrowBack, null, tint = MaterialTheme.colorScheme.onBackground)
                                     }
 
                                     Column(
@@ -184,12 +184,13 @@ fun DeviceQuickActionsDialog(mobileDevice: MobileDevice, onClose: () -> Unit) {
 
                                         Text(
                                             text = "Quick Actions",
-                                            fontSize = 28.sp
+                                            fontSize = 28.sp,
+                                            color = MaterialTheme.colorScheme.onBackground
                                         )
                                         Text(
                                             text = name,
                                             fontSize = 12.sp,
-                                            color = Color.Gray
+                                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                                         )
                                     }
                                 }

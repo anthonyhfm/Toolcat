@@ -11,7 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -30,8 +30,6 @@ import quickactions.QuickAction
 import quickactions.QuickActionAvailability
 import quickactions.QuickActionSize
 import ui.dialogs.BaseDialog
-import ui.dialogs.DeviceInformationSlot
-import ui.dialogs.deviceInformationList
 
 class OpenDeepLinkAction : QuickAction {
     override val actionSize: QuickActionSize = QuickActionSize.SMALL
@@ -85,7 +83,8 @@ class OpenDeepLinkAction : QuickAction {
             Text(
                 text = "Open Deep-Link",
                 maxLines = 1,
-                fontSize = 14.sp
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
     }
@@ -117,7 +116,7 @@ class OpenDeepLinkAction : QuickAction {
                     Box(
                         modifier = Modifier
                             .clip(RoundedCornerShape(24.dp))
-                            .background(MaterialTheme.colors.background)
+                            .background(MaterialTheme.colorScheme.background)
                             .padding(24.dp)
                     ) {
                         Column(
@@ -132,7 +131,8 @@ class OpenDeepLinkAction : QuickAction {
                                 fontSize = 22.sp,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier
-                                    .fillMaxWidth()
+                                    .fillMaxWidth(),
+                                color = MaterialTheme.colorScheme.onBackground
                             )
                             Spacer(Modifier.height(12.dp))
 

@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Divider
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.Text
@@ -46,10 +46,12 @@ fun DeviceInformationSlot(title: String, value: String) {
         Text(
             text = title,
             fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Text(
             text = value,
+            color = MaterialTheme.colorScheme.onBackground
         )
     }
 }
@@ -80,7 +82,7 @@ fun DeviceInformationDialog(mobileDevice: MobileDevice, onClose: () -> Unit) {
                 Box(
                     modifier = Modifier
                         .clip(RoundedCornerShape(24.dp))
-                        .background(MaterialTheme.colors.background)
+                        .background(MaterialTheme.colorScheme.background)
                         .padding(24.dp)
                 ) {
                     Column(
@@ -95,7 +97,8 @@ fun DeviceInformationDialog(mobileDevice: MobileDevice, onClose: () -> Unit) {
                             fontSize = 22.sp,
                             textAlign = TextAlign.Center,
                             modifier = Modifier
-                                .fillMaxWidth()
+                                .fillMaxWidth(),
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                         Spacer(Modifier.height(12.dp))
 

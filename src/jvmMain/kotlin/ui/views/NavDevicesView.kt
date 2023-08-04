@@ -84,7 +84,8 @@ fun DeviceListItem(mobileDevice: MobileDevice) {
         Text(
             text = mobileDevice.getName(),
             fontWeight = FontWeight.Light,
-            fontSize = 18.sp
+            fontSize = 18.sp,
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         mobileDevice.serial?.let {
@@ -106,7 +107,11 @@ fun DeviceListItem(mobileDevice: MobileDevice) {
                         showQuickActionsDialog = true
                     },
                     content = {
-                        Icon(painterResource("icons/bolt.svg"), "Quick Actions for device settings and other stuffs")
+                        Icon(
+                            painter = painterResource("icons/bolt.svg"),
+                            contentDescription = "Quick Actions for device settings and other stuffs",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
                     }
                 )
             }
@@ -126,7 +131,11 @@ fun DeviceListItem(mobileDevice: MobileDevice) {
                         showInformationDialog = true
                     },
                     content = {
-                        Icon(Icons.Default.Info, "Information about the Device")
+                        Icon(
+                            imageVector = Icons.Default.Info,
+                            contentDescription = "Information about the Device",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
                     }
                 )
             }
@@ -136,17 +145,6 @@ fun DeviceListItem(mobileDevice: MobileDevice) {
                     mobileDevice = mobileDevice,
                     onClose = {
                         showInformationDialog = false
-                    }
-                )
-            }
-
-            Tooltip(tip = "Settings") {
-                IconButton(
-                    onClick = {
-                        // TODO: Show Settings Dialog
-                    },
-                    content = {
-                        Icon(Icons.Default.Settings, "Device Settings")
                     }
                 )
             }

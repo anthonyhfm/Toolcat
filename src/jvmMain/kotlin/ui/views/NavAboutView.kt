@@ -2,7 +2,9 @@ package ui.views
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,13 +41,15 @@ fun AboutView() {
                 fontSize = 32.sp,
                 fontWeight = FontWeight.Light,
                 letterSpacing = 4.sp,
-                fontFamily = Inter
+                fontFamily = Inter,
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Text(
                 text = "Made by Anthony Hofmeister",
                 fontWeight = FontWeight.Light,
-                fontFamily = Inter
+                fontFamily = Inter,
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
 
@@ -61,7 +65,8 @@ fun AboutView() {
             Text(
                 text = "Version 1.0.0",
                 fontWeight = FontWeight.Light,
-                fontFamily = Inter
+                fontFamily = Inter,
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
     }

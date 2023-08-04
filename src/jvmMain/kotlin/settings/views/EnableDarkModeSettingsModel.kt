@@ -16,11 +16,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import settings.GlobalSettings
 import settings.SettingsViewModel
+import ui.theme.ToolcatTheme
 
-class IOSSimulatorSupportSettingsModel : SettingsViewModel {
+class EnableDarkModeSettingsModel : SettingsViewModel {
     @Composable
     override fun content() {
-        var checked by remember { mutableStateOf(GlobalSettings.iosSimulatorSupportEnabled) }
+        var checked by remember { mutableStateOf(GlobalSettings.enableDarkMode) }
 
         Row(
             modifier = Modifier
@@ -35,16 +36,9 @@ class IOSSimulatorSupportSettingsModel : SettingsViewModel {
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = "Advanced iOS Simulator Support",
+                    text = "Enable Dark Theme",
                     fontSize = 18.sp,
                     color = MaterialTheme.colorScheme.onBackground
-                )
-
-                Text(
-                    text = "Experimental",
-                    fontWeight = FontWeight.Thin,
-                    fontStyle = FontStyle.Italic,
-                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                 )
             }
 
@@ -53,7 +47,7 @@ class IOSSimulatorSupportSettingsModel : SettingsViewModel {
                 onCheckedChange = {
                     checked = it
 
-                    GlobalSettings.iosSupportEnabled = checked
+                    GlobalSettings.enableDarkMode = checked
                     GlobalSettings.saveGlobalSettings()
                 }
             )

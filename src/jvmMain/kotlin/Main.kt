@@ -1,8 +1,10 @@
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import commands.CommandRegistry
 import settings.GlobalSettings
+import ui.theme.ToolcatTheme
 import ui.views.MainView
 import utils.WindowHandler
 
@@ -18,7 +20,7 @@ fun main(args: Array<String>) = application {
         transparent = WindowHandler.useCustomDecoration()
     ) {
         WindowHandler.windowContent(this) {
-            MaterialTheme {
+            ToolcatTheme.runCompose {
                 MainView()
             }
         }
