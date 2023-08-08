@@ -9,12 +9,12 @@ enum class QuickActionSize {
 }
 
 enum class QuickActionAvailability {
-    ANDROID, IOS, BOTH
+    ANDROID, IOS, ANDROID_SIM, IOS_SIM
 }
 
 interface QuickAction {
     val actionSize: QuickActionSize
-    val availability: QuickActionAvailability
+    val availability: List<QuickActionAvailability>
 
     @Composable
     fun content(mobileDevice: MobileDevice)

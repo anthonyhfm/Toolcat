@@ -27,7 +27,10 @@ import quickactions.QuickActionSize
 
 class ToggleBluetoothAction : QuickAction {
     override val actionSize = QuickActionSize.SMALL
-    override val availability = QuickActionAvailability.ANDROID
+    override val availability = listOf(
+        QuickActionAvailability.ANDROID,
+        QuickActionAvailability.ANDROID_SIM,
+    )
 
     @OptIn(DelicateCoroutinesApi::class)
     @Composable

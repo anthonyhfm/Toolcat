@@ -53,7 +53,7 @@ class IOSSimulatorSupportSettingsModel : SettingsViewModel {
                 onCheckedChange = {
                     checked = it
 
-                    GlobalSettings.iosSupportEnabled = checked
+                    GlobalSettings.iosSimulatorSupportEnabled = checked
                     GlobalSettings.saveGlobalSettings()
                 }
             )

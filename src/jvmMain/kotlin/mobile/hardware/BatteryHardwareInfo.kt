@@ -2,7 +2,6 @@ package mobile.hardware
 
 import mobile.DeviceType
 import mobile.MobileDevice
-import mobile.getProductName
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -16,7 +15,7 @@ fun MobileDevice.getBatteryLevel(): Float {
         }
 
         DeviceType.IOS -> {
-            val process: Process = Runtime.getRuntime().exec("idevicediagnostics -u ${this.uuid} ioregentry AppleSmartBattery")
+            val process: Process = Runtime.getRuntime().exec("idevicediagnostics -u ${this.udid} ioregentry AppleSmartBattery")
             process.waitFor()
 
             val responseLines = BufferedReader(InputStreamReader(process.inputStream)).readLines()

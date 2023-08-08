@@ -28,35 +28,35 @@ import kotlinx.coroutines.*
 import mobile.DeviceType
 import mobile.MobileDevice
 import mobile.getName
+import quickactions.QuickAction
 import quickactions.QuickActionAvailability
 import quickactions.QuickActionSize
 import quickactions.quickActionList
 
 @Composable
 fun QuickActionsList(mobileDevice: MobileDevice) {
-    val largeActions = quickActionList.filter {
-        when (mobileDevice.deviceType) {
-            DeviceType.ANDROID -> {
-                it.actionSize == QuickActionSize.LARGE && (it.availability == QuickActionAvailability.ANDROID || it.availability == QuickActionAvailability.BOTH)
-            }
+    val getActions: (QuickActionSize) -> List<QuickAction> = { size: QuickActionSize ->
+        quickActionList.filter {
+            when (mobileDevice.deviceType) {
+                DeviceType.ANDROID -> {
+                    if (mobileDevice.isEmulator.not())
+                        it.actionSize == size && it.availability.contains(QuickActionAvailability.ANDROID)
+                    else
+                        it.actionSize == size && it.availability.contains(QuickActionAvailability.ANDROID_SIM)
+                }
 
-            DeviceType.IOS -> {
-                it.actionSize == QuickActionSize.LARGE && (it.availability == QuickActionAvailability.IOS || it.availability == QuickActionAvailability.BOTH)
+                DeviceType.IOS -> {
+                    if (mobileDevice.isEmulator.not())
+                        it.actionSize == size && it.availability.contains(QuickActionAvailability.IOS)
+                    else
+                        it.actionSize == size && it.availability.contains(QuickActionAvailability.IOS_SIM)
+                }
             }
         }
     }
 
-    val smallActions = quickActionList.filter {
-        when (mobileDevice.deviceType) {
-            DeviceType.ANDROID -> {
-                it.actionSize == QuickActionSize.SMALL && (it.availability == QuickActionAvailability.ANDROID || it.availability == QuickActionAvailability.BOTH)
-            }
-
-            DeviceType.IOS -> {
-                it.actionSize == QuickActionSize.SMALL && (it.availability == QuickActionAvailability.IOS || it.availability == QuickActionAvailability.BOTH)
-            }
-        }
-    }
+    val largeActions = getActions(QuickActionSize.LARGE)
+    val smallActions = getActions(QuickActionSize.SMALL)
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(12.dp)

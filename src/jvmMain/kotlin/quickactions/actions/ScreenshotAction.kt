@@ -39,7 +39,10 @@ import javax.imageio.ImageIO
 
 class ScreenshotAction : QuickAction {
     override val actionSize: QuickActionSize = QuickActionSize.SMALL
-    override val availability: QuickActionAvailability = QuickActionAvailability.ANDROID
+    override val availability = listOf(
+        QuickActionAvailability.ANDROID,
+        QuickActionAvailability.ANDROID_SIM,
+    )
 
     @OptIn(DelicateCoroutinesApi::class)
     @Composable

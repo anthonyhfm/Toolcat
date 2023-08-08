@@ -1,5 +1,6 @@
 package mobile
 
+import kotlinx.coroutines.DelicateCoroutinesApi
 import settings.GlobalSettings
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -7,7 +8,43 @@ import java.io.InputStreamReader
 object MobileDeviceRepository {
     var deviceList: List<MobileDevice> = listOf()
 
-    fun getConnectedIOSDevices(): List<MobileDevice> {
+    private fun getIOSSimulators(): List<MobileDevice> {
+        var outputList: List<MobileDevice> = listOf()
+
+        val process: Process = Runtime.getRuntime().exec("xcrun simctl list")
+        process.waitFor()
+
+        val commandLineOutputLines = BufferedReader(InputStreamReader(process.inputStream)).readLines()
+
+        val devicePattern = Regex("""(.+?) \(""")
+        val uuidPattern = Regex("""\(([\w-]+)\)""")
+
+        for (line in commandLineOutputLines) {
+            if (line.contains("Booted")) {
+                val deviceMatch = devicePattern.find(line.trimIndent())
+                val uuidMatch = uuidPattern.find(line.trimIndent())
+
+                if (uuidMatch != null && deviceMatch != null) {
+                    val deviceName = deviceMatch.groupValues[1]
+                    val uuid = uuidMatch.groupValues[1]
+
+                    val device = MobileDevice(
+                        udid = uuid,
+                        deviceType = DeviceType.IOS,
+                        isEmulator = true
+                    )
+
+                    device.deviceName = deviceName
+
+                    outputList = outputList.plus(device)
+                }
+            }
+        }
+
+        return outputList
+    }
+
+    private fun getConnectedIOSDevices(): List<MobileDevice> {
         var outputList: List<MobileDevice> = listOf()
 
         val process: Process = Runtime.getRuntime().exec("idevice_id -l")
@@ -20,18 +57,16 @@ object MobileDeviceRepository {
                 continue
             }
 
-            outputList = outputList.plus(
-                MobileDevice(
-                    uuid = line,
-                    deviceType = DeviceType.IOS
-                )
-            )
+            outputList = outputList.plus(MobileDevice(
+                udid = line,
+                deviceType = DeviceType.IOS
+            ))
         }
 
         return outputList
     }
 
-    fun getConnectedAndroidDevices(): List<MobileDevice> {
+    private fun getConnectedAndroidDevices(): List<MobileDevice> {
         var outputList: List<MobileDevice> = listOf()
 
         val process: Process = Runtime.getRuntime().exec("adb devices -l")
@@ -70,6 +105,7 @@ object MobileDeviceRepository {
         return outputList
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     fun fetchConnectedDevices() {
         var outputList: List<MobileDevice> = listOf()
 
@@ -79,6 +115,12 @@ object MobileDeviceRepository {
 
         if (GlobalSettings.iosSupportEnabled) {
             getConnectedIOSDevices().forEach {
+                outputList = outputList.plus(it)
+            }
+        }
+
+        if (GlobalSettings.iosSimulatorSupportEnabled) {
+            getIOSSimulators().forEach {
                 outputList = outputList.plus(it)
             }
         }

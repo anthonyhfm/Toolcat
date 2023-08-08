@@ -31,7 +31,6 @@ import ui.components.Tooltip
 import ui.dialogs.DeviceInformationDialog
 import ui.dialogs.DeviceQuickActionsDialog
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DeviceListItem(mobileDevice: MobileDevice) {
     var showInformationDialog by remember { mutableStateOf(false) }

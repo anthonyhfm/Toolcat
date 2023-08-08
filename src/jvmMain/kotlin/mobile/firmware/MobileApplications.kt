@@ -1,7 +1,5 @@
 package mobile.firmware
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.runBlocking
 import mobile.DeviceType
 import mobile.MobileDevice
 import java.io.BufferedReader
@@ -33,28 +31,66 @@ fun MobileDevice.getApplications(): Array<MobileApplication> {
         }
 
         DeviceType.IOS -> {
-            val process: Process = Runtime.getRuntime().exec("ideviceinstaller -u ${this.uuid} -l")
-            process.waitFor()
+            if (this.isEmulator) {
+                // Command: xcrun simctl listapps ${this.udid}
 
-            val lines = BufferedReader(InputStreamReader(process.inputStream)).readLines()
+                val process: Process = Runtime.getRuntime().exec("xcrun simctl listapps ${this.udid}")
+                process.waitFor()
 
-            lines.forEach { line ->
-                if (lines.indexOf(line) != 0) {
-                    val lineSplits = line.split(",")
+                val lines = BufferedReader(InputStreamReader(process.inputStream)).readLines()
 
-                    val bundleID = lineSplits[0]
+                var appTitle: String? = null
+                var appBundleID: String? = null
 
-                    val bundleName  = lineSplits[2]
-                        .trimIndent()
-                        .trimStart('"')
-                        .trimEnd('"')
+                lines.forEach { line ->
+                    val titleRegex = Regex("CFBundleDisplayName = (.+?);")
+                    val bundleRegex = Regex("CFBundleIdentifier = \"(.+?)\";")
 
-                    appList = appList.plus(
-                        MobileApplication(
-                            name = bundleName,
-                            id = bundleID
+                    titleRegex.find(line.trimIndent())?.let {
+                        appTitle = it.groupValues[1]
+                    }
+
+                    bundleRegex.find(line.trimIndent())?.let {
+                        appBundleID = it.groupValues[1]
+                    }
+
+                    if (appBundleID != null && appTitle != null) {
+                        appList = appList.plus(
+                            MobileApplication(
+                                appTitle!!,
+                                appBundleID!!
+                            )
                         )
-                    )
+
+                        appBundleID = null
+                        appTitle = null
+                    }
+                }
+            }
+            else {
+                val process: Process = Runtime.getRuntime().exec("ideviceinstaller -u ${this.udid} -l")
+                process.waitFor()
+
+                val lines = BufferedReader(InputStreamReader(process.inputStream)).readLines()
+
+                lines.forEach { line ->
+                    if (lines.indexOf(line) != 0) {
+                        val lineSplits = line.split(",")
+
+                        val bundleID = lineSplits[0]
+
+                        val bundleName  = lineSplits[2]
+                            .trimIndent()
+                            .trimStart('"')
+                            .trimEnd('"')
+
+                        appList = appList.plus(
+                            MobileApplication(
+                                name = bundleName,
+                                id = bundleID
+                            )
+                        )
+                    }
                 }
             }
         }
@@ -69,7 +105,14 @@ fun MobileDevice.launchApplication(mobileApplication: MobileApplication) {
             Runtime.getRuntime().exec("adb -s ${this.serial} shell monkey -p ${mobileApplication.id} 1")
         }
 
-        DeviceType.IOS -> TODO("Launching Applications is currently not supported with iOS Devices")
+        DeviceType.IOS -> {
+            if (this.isEmulator) {
+                Runtime.getRuntime().exec("xcrun simctl launch ${this.udid} ${mobileApplication.id}")
+            }
+            else {
+                TODO("It is currently not possible to launch a application on your iOS Device using Toolcat")
+            }
+        }
     }
 }
 
@@ -89,7 +132,9 @@ fun MobileDevice.clearApplicationData(mobileApplication: MobileApplication) {
             Runtime.getRuntime().exec("adb -s ${this.serial} shell pm clear ${mobileApplication.id}")
         }
 
-        DeviceType.IOS -> TODO("Clearing Application Data is currently not supported with iOS Devices")
+        DeviceType.IOS -> {
+            TODO("Clearing Application Data is currently not supported with iOS Devices")
+        }
     }
 }
 
@@ -99,6 +144,13 @@ fun MobileDevice.uninstallApplication(mobileApplication: MobileApplication) {
             Runtime.getRuntime().exec("adb -s ${this.serial} uninstall ${mobileApplication.id}")
         }
 
-        DeviceType.IOS -> TODO("Uninstalling Applications is currently not supported with iOS Devices")
+        DeviceType.IOS -> {
+            if (this.isEmulator) {
+                Runtime.getRuntime().exec("xcrun simctl uninstall ${this.udid} ${mobileApplication.id}")
+            }
+            else {
+                TODO("Uninstalling Applications is currently not supported with iOS Devices")
+            }
+        }
     }
 }

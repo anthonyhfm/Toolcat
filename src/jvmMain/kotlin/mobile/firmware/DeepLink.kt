@@ -10,7 +10,12 @@ fun MobileDevice.openDeepLink(deepLink: String) {
         }
 
         DeviceType.IOS -> {
-            TODO("It is currently not possible to send a deep link to your iOS Device using Toolcat")
+            if (this.isEmulator) {
+                Runtime.getRuntime().exec("xcrun simctl openurl ${this.udid} $deepLink")
+            }
+            else {
+                TODO("It is currently not possible to send a deep link to your iOS Device using Toolcat")
+            }
         }
     }
 }

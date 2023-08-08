@@ -205,36 +205,40 @@ fun AppListItem(application: MobileApplication, mobileDevice: MobileDevice) {
                     )
                 }
 
-                Tooltip(tip = "Clear all Data") {
-                    IconButton(
-                        onClick = {
-                            GlobalScope.launch(Dispatchers.IO) {
-                                mobileDevice.clearApplicationData(application)
+                if (mobileDevice.deviceType != DeviceType.IOS && mobileDevice.isEmulator.not()) {
+                    Tooltip(tip = "Clear all Data") {
+                        IconButton(
+                            onClick = {
+                                GlobalScope.launch(Dispatchers.IO) {
+                                    mobileDevice.clearApplicationData(application)
+                                }
+                            },
+                            content = {
+                                Icon(
+                                    painter = painterResource("icons/folder_off.svg"),
+                                    contentDescription = "Clear Cache",
+                                    tint = MaterialTheme.colorScheme.onBackground
+                                )
                             }
-                        },
-                        content = {
-                            Icon(
-                                painter = painterResource("icons/folder_off.svg"),
-                                contentDescription = "Clear Cache",
-                                tint = MaterialTheme.colorScheme.onBackground
-                            )
-                        }
-                    )
+                        )
+                    }
                 }
 
-                Tooltip(tip = "Uninstall this App") {
-                    IconButton(
-                        onClick = {
-                            showUninstallDialog = true
-                        },
-                        content = {
-                            Icon(
-                                painter = painterResource("icons/delete.svg"),
-                                contentDescription = "Delete App",
-                                tint = MaterialTheme.colorScheme.onBackground
-                            )
-                        }
-                    )
+                if ((mobileDevice.deviceType == DeviceType.IOS && application.id.contains("com.apple.")).not()) {
+                    Tooltip(tip = "Uninstall this App") {
+                        IconButton(
+                            onClick = {
+                                showUninstallDialog = true
+                            },
+                            content = {
+                                Icon(
+                                    painter = painterResource("icons/delete.svg"),
+                                    contentDescription = "Delete App",
+                                    tint = MaterialTheme.colorScheme.onBackground
+                                )
+                            }
+                        )
+                    }
                 }
             }
         }

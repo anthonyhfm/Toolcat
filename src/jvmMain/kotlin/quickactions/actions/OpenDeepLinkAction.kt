@@ -33,7 +33,11 @@ import ui.dialogs.BaseDialog
 
 class OpenDeepLinkAction : QuickAction {
     override val actionSize: QuickActionSize = QuickActionSize.SMALL
-    override val availability: QuickActionAvailability = QuickActionAvailability.ANDROID
+    override val availability = listOf(
+        QuickActionAvailability.ANDROID,
+        QuickActionAvailability.ANDROID_SIM,
+        QuickActionAvailability.IOS_SIM,
+    )
 
     @OptIn(DelicateCoroutinesApi::class)
     @Composable

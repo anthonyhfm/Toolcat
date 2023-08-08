@@ -13,61 +13,95 @@ data class MobileDevice(
     val serial: String? = null,
     val product: String? = null,
     val model: String? = null,
-    val uuid: String? = null,
+    val udid: String? = null,
     val isEmulator: Boolean = false
-)
+) {
+    var deviceName: String? = null
+    var deviceProduct: String? = null
+    var deviceManufacturer: String? = null
+}
 
 fun MobileDevice.getProductName(): String {
-    return when (this.deviceType) {
+    when (this.deviceType) {
         DeviceType.ANDROID -> {
             if (this.isEmulator) {
-                "Emulator"
+                return "Emulator"
             } else {
+                if (this.deviceProduct != null) {
+                    return this.deviceProduct!!
+                }
+
                 val process: Process = Runtime.getRuntime().exec("adb -s ${this.serial} shell getprop ro.product.model")
                 process.waitFor()
 
-                BufferedReader(InputStreamReader(process.inputStream)).readLine()
+                this.deviceProduct = BufferedReader(InputStreamReader(process.inputStream)).readLine()
+
+                return this.deviceProduct!!
             }
         }
 
         DeviceType.IOS -> {
-            val process: Process = Runtime.getRuntime().exec("ideviceinfo -u ${this.uuid} -k ProductType")
+            if (this.deviceProduct != null) {
+                return this.deviceProduct!!
+            }
+
+            if (this.isEmulator) {
+                this.deviceProduct = "Simulator"
+
+                return this.deviceProduct!!
+            }
+
+            val process: Process = Runtime.getRuntime().exec("ideviceinfo -u ${this.udid} -k ProductType")
             process.waitFor()
 
-            BufferedReader(InputStreamReader(process.inputStream)).readLine()
+            this.deviceProduct = BufferedReader(InputStreamReader(process.inputStream)).readLine()
+
+            return this.deviceProduct!!
         }
     }
 }
 
 fun MobileDevice.getManufacturerName(): String {
-    return when (this.deviceType) {
+    when (this.deviceType) {
         DeviceType.ANDROID -> {
             if (this.isEmulator) {
-                "AVD"
+                return "AVD"
             }
             else {
+                if (this.deviceManufacturer != null) {
+                    return this.deviceManufacturer!!
+                }
+
                 val process: Process = Runtime.getRuntime().exec("adb -s ${this.serial} shell getprop ro.product.manufacturer")
                 process.waitFor()
 
-                BufferedReader(InputStreamReader(process.inputStream)).readLine()
+                this.deviceManufacturer =  BufferedReader(InputStreamReader(process.inputStream)).readLine()
+
+                return this.deviceManufacturer!!
             }
         }
 
-        DeviceType.IOS -> "Apple"
+        DeviceType.IOS -> return "Apple"
     }
 }
 
 fun MobileDevice.getName(): String {
-    return when (this.deviceType) {
+    when (this.deviceType) {
         DeviceType.ANDROID -> {
-            getManufacturerName() + " " + getProductName()
+            return getManufacturerName() + " " + getProductName()
         }
 
         DeviceType.IOS -> {
-            val process: Process = Runtime.getRuntime().exec("ideviceinfo -u ${this.uuid} -k DeviceName")
+            if (this.deviceName != null) {
+                return this.deviceName!!
+            }
+
+            val process: Process = Runtime.getRuntime().exec("ideviceinfo -u ${this.udid} -k DeviceName")
             process.waitFor()
 
-            BufferedReader(InputStreamReader(process.inputStream)).readLine()
+            this.deviceName = BufferedReader(InputStreamReader(process.inputStream)).readLine()
+
+            return this.deviceName!!
         }
     }
 }
@@ -87,7 +121,7 @@ fun MobileDevice.getSystemVersion(): String {
         }
 
         DeviceType.IOS -> {
-            val process: Process = Runtime.getRuntime().exec("ideviceinfo -u ${this.uuid} -k ProductVersion")
+            val process: Process = Runtime.getRuntime().exec("ideviceinfo -u ${this.udid} -k ProductVersion")
             process.waitFor()
 
             BufferedReader(InputStreamReader(process.inputStream)).readLine()
