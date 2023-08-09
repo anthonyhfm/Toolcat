@@ -18,12 +18,15 @@ import settings.settingsClusterList
 fun SettingsView() {
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(vertical = 32.dp),
+            .fillMaxSize(),
 
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
+        item {
+            Spacer(Modifier.height(8.dp))
+        }
+
         items(settingsClusterList) {
             Row(
                 modifier = Modifier.height(40.dp).fillMaxWidth(0.8F),
@@ -52,6 +55,10 @@ fun SettingsView() {
                     }
                 }
             }
+        }
+
+        item {
+            Spacer(Modifier.height(8.dp))
         }
     }
 }

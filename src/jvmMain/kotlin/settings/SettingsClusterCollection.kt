@@ -1,9 +1,6 @@
 package settings
 
-import settings.views.CheckForUpdatesSettingsModel
-import settings.views.EnableDarkModeSettingsModel
-import settings.views.IOSSimulatorSupportSettingsModel
-import settings.views.IOSSupportSettingsModel
+import settings.views.*
 
 val settingsClusterList: Array<SettingsCluster> = arrayOf(
     SettingsCluster(
@@ -22,7 +19,8 @@ val settingsClusterList: Array<SettingsCluster> = arrayOf(
     SettingsCluster(
         title = "Appearance",
         settings = arrayOf(
-            EnableDarkModeSettingsModel()
+            EnableDarkModeSettingsModel(),
+            ThemeSelectionSettingsModel()
         )
     )
 )

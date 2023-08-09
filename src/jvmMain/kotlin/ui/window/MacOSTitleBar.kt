@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.zIndex
+import settings.GlobalSettings
+import ui.theme.ToolcatTheme
 import kotlin.system.exitProcess
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -30,10 +32,16 @@ fun MacOSTitleBar(window: FrameWindowScope) {
     var closeButtonDown by remember { mutableStateOf(false) }
     var minimizeButtonDown by remember { mutableStateOf(false) }
 
+    val titleBarColors = if (GlobalSettings.enableDarkMode) {
+        ToolcatTheme.currentThemeSet.darkTitleBarColors
+    } else {
+        ToolcatTheme.currentThemeSet.lightTitleBarColors
+    }
+
     window.WindowDraggableArea {
         Box(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.primary)
+                .background(titleBarColors.background)
                 .fillMaxWidth()
                 .height(30.dp)
         ) {
@@ -53,7 +61,7 @@ fun MacOSTitleBar(window: FrameWindowScope) {
                 ) {
                     Text(
                         text = window.window.title,
-                        color = Color.White,
+                        color = titleBarColors.text,
                         fontSize = 14.sp
                     )
                 }

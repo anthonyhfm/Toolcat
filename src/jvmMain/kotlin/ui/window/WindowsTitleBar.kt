@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.window.WindowDraggableArea
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -19,11 +18,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.FrameWindowScope
+import settings.GlobalSettings
+import ui.theme.ToolcatTheme
 import kotlin.system.exitProcess
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun WindowsTitleBarButton(
+    normalColor: Color,
     hoverColor: Color = Color.Black.copy(alpha = 0.1F),
     iconPainter: Painter,
     iconSize: Dp,
@@ -47,7 +49,7 @@ fun WindowsTitleBarButton(
         Icon(
             painter = iconPainter,
             contentDescription = "Title Bar Button",
-            tint = Color.White,
+            tint = normalColor,
             modifier = Modifier.size(iconSize)
         )
     }
@@ -55,10 +57,16 @@ fun WindowsTitleBarButton(
 
 @Composable
 fun WindowsTitleBar(window: FrameWindowScope) {
+    val titleBarColors = if (GlobalSettings.enableDarkMode) {
+        ToolcatTheme.currentThemeSet.darkTitleBarColors
+    } else {
+        ToolcatTheme.currentThemeSet.lightTitleBarColors
+    }
+
     window.WindowDraggableArea {
         Row(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.primary)
+                .background(titleBarColors.background)
                 .fillMaxWidth()
                 .height(32.dp)
         ) {
@@ -74,13 +82,13 @@ fun WindowsTitleBar(window: FrameWindowScope) {
                 Icon(
                     painter = painterResource("icons/toolcat-logo.png"),
                     contentDescription = "Toolcat Icon",
-                    tint = Color.White,
+                    tint = titleBarColors.text,
                     modifier = Modifier.size(14.dp)
                 )
 
                 Text(
                     text = window.window.title,
-                    color = Color.White,
+                    color = titleBarColors.text,
                     letterSpacing = 1.sp
                 )
             }
@@ -89,6 +97,7 @@ fun WindowsTitleBar(window: FrameWindowScope) {
                 Modifier.fillMaxHeight()
             ) {
                 WindowsTitleBarButton(
+                    normalColor = titleBarColors.icons,
                     iconPainter = painterResource("icons/titlebar/win/minimize.svg"),
                     iconSize = 18.dp
                 ) {
@@ -105,6 +114,7 @@ fun WindowsTitleBar(window: FrameWindowScope) {
                  */
 
                 WindowsTitleBarButton(
+                    normalColor = titleBarColors.icons,
                     hoverColor = Color.Red.copy(alpha = 0.6F),
                     iconPainter = painterResource("icons/titlebar/win/close.svg"),
                     iconSize = 18.dp
