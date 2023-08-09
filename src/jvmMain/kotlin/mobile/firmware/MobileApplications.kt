@@ -154,3 +154,15 @@ fun MobileDevice.uninstallApplication(mobileApplication: MobileApplication) {
         }
     }
 }
+
+fun MobileDevice.killApplication(mobileApplication: MobileApplication) {
+    when (this.deviceType) {
+        DeviceType.ANDROID -> {
+            Runtime.getRuntime().exec("adb shell -s ${this.serial} am force-stop ${mobileApplication.id}")
+        }
+
+        DeviceType.IOS -> {
+            TODO("Killing Applications is currently not supported with iOS Devices")
+        }
+    }
+}

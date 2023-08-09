@@ -228,6 +228,25 @@ fun AppListItem(application: MobileApplication, mobileDevice: MobileDevice) {
                     )
                 }
 
+                if (mobileDevice.deviceType == DeviceType.ANDROID) {
+                    Tooltip(tip = "Kill this App") {
+                        IconButton(
+                            onClick = {
+                                GlobalScope.launch(Dispatchers.IO) {
+                                    mobileDevice.killApplication(application)
+                                }
+                            },
+                            content = {
+                                Icon(
+                                    painter = painterResource("icons/cancel.svg"),
+                                    contentDescription = "Kill App",
+                                    tint = MaterialTheme.colorScheme.onBackground
+                                )
+                            }
+                        )
+                    }
+                }
+
                 if (mobileDevice.deviceType != DeviceType.IOS && mobileDevice.isEmulator.not()) {
                     Tooltip(tip = "Clear all Data") {
                         IconButton(
