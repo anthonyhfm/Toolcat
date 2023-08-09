@@ -19,14 +19,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import mobile.*
+import ui.components.NoDeviceFound
 import ui.components.Tooltip
 import ui.dialogs.DeviceInformationDialog
 import ui.dialogs.DeviceQuickActionsDialog
@@ -167,79 +164,20 @@ fun DeviceList(deviceList: List<MobileDevice>) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun NoDevicesFoundView(onRefresh: () -> Unit) {
-    Scaffold(
-        floatingActionButton = {
-            ExtendedFloatingActionButton(
-                icon = { Icon(Icons.Default.Refresh, contentDescription = "Icon for the Device List Refresh FAB") },
-                text = {
-                    Text("Refresh")
-                },
-                onClick = { onRefresh() }
-            )
-        }
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(
-                painter = painterResource("icons/mobile_off.svg"),
-                contentDescription = "No Mobile",
-                modifier = Modifier
-                    .size(96.dp)
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Text(
-                text = "No devices found.",
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 28.sp
-            )
-
-            Spacer(modifier = Modifier.height(36.dp))
-
-            Row(
-                Modifier.fillMaxWidth(0.75F)
-            ) {
-                Text(
-                    text = "If there is a device connected that should be listed here try pressing on the Refresh button. If that still does not fix the issue, try reconnecting the device and press the Refresh button again.",
-                    textAlign = TextAlign.Center
-                )
-            }
-        }
-    }
-}
-
 @OptIn(DelicateCoroutinesApi::class)
 @Composable
 fun DevicesView() {
-    var deviceList: List<MobileDevice> by remember {
-        mutableStateOf(listOf())
-    }
+    var deviceList: List<MobileDevice> by remember { mutableStateOf(listOf()) }
 
-    LaunchedEffect(Unit) {
-        launch(Dispatchers.IO) {
-            MobileDeviceRepository.fetchConnectedDevices()
-
+    LaunchedEffect(Dispatchers.IO) {
+        while (true) {
             deviceList = MobileDeviceRepository.deviceList
+            delay(10)
         }
     }
 
     if (deviceList.isEmpty()) {
-        NoDevicesFoundView(onRefresh = {
-            GlobalScope.launch {
-                MobileDeviceRepository.fetchConnectedDevices()
-
-                deviceList = MobileDeviceRepository.deviceList
-            }
-        })
+        NoDeviceFound()
     }
     else {
         DeviceList(deviceList)

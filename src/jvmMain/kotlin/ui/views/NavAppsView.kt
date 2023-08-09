@@ -16,12 +16,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import mobile.*
 import mobile.firmware.*
+import ui.components.LoadingAnimation
+import ui.components.NoDeviceFound
 import ui.components.Tooltip
 import ui.dialogs.DialogConfirmAppUninstall
 
@@ -29,25 +28,27 @@ import ui.dialogs.DialogConfirmAppUninstall
 @Composable
 fun AppsView() {
     var dropdownExpanded by remember { mutableStateOf(false) }
-    var deviceList: List<MobileDevice> by remember {
-        mutableStateOf(
-            listOf()
-        )
-    }
+    var deviceList: List<MobileDevice> by remember { mutableStateOf(listOf()) }
     var deviceAppList: List<MobileApplication> by remember { mutableStateOf(listOf()) }
 
     var selectedDevice: Int by remember { mutableStateOf(0) }
 
-    LaunchedEffect(Unit) {
-        MobileDeviceRepository.fetchConnectedDevices()
+    LaunchedEffect(Dispatchers.IO) {
+        while (true) {
+            deviceList = MobileDeviceRepository.deviceList
 
-        deviceList = MobileDeviceRepository.deviceList
+            delay(50)
+        }
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
+        if (deviceList.isEmpty()) {
+            NoDeviceFound()
+        }
+
         AnimatedVisibility(deviceList.isNotEmpty()) {
             Row(
                 horizontalArrangement = Arrangement.End,
@@ -65,11 +66,13 @@ fun AppsView() {
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Text(
-                                text = deviceList[selectedDevice].getName(),
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onBackground
-                            )
+                            deviceList.getOrNull(selectedDevice)?.getName()?.let {
+                                Text(
+                                    text = it,
+                                    fontSize = 16.sp,
+                                    color = MaterialTheme.colorScheme.onBackground
+                                )
+                            }
 
                             Icon(
                                 painterResource("icons/expand_more.svg"),
@@ -89,6 +92,8 @@ fun AppsView() {
                                 onClick = {
                                     dropdownExpanded = false
                                     selectedDevice = deviceList.indexOf(it)
+
+                                    deviceAppList = listOf()
                                     deviceAppList = deviceList[selectedDevice].getApplications().toList()
                                 },
                                 leadingIcon = {
@@ -112,13 +117,19 @@ fun AppsView() {
             }
         }
 
-        if (deviceList.isNotEmpty()) {
+        if (deviceList.isNotEmpty() && deviceList.getOrNull(selectedDevice) != null) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                LaunchedEffect(Unit) {
-                    deviceAppList = deviceList[selectedDevice].getApplications().toList()
+                GlobalScope.launch(Dispatchers.IO) {
+                    while (true) {
+                        deviceList.getOrNull(selectedDevice)?.let {
+                            deviceAppList = it.getApplications().toList()
+                        }
+
+                        delay(1000)
+                    }
                 }
 
                 if (deviceAppList.isNotEmpty()) {
@@ -131,8 +142,20 @@ fun AppsView() {
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         items(deviceAppList) {
-                            AppListItem(it, deviceList[selectedDevice])
+                            if (deviceList.isNotEmpty()) {
+                                AppListItem(it, deviceList[selectedDevice])
+                            }
                         }
+                    }
+                }
+                else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+
+                        contentAlignment = Alignment.Center
+                    ) {
+                        LoadingAnimation()
                     }
                 }
             }

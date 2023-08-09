@@ -1,6 +1,5 @@
 package mobile
 
-import kotlinx.coroutines.DelicateCoroutinesApi
 import settings.GlobalSettings
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -105,26 +104,55 @@ object MobileDeviceRepository {
         return outputList
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
     fun fetchConnectedDevices() {
         var outputList: List<MobileDevice> = listOf()
 
-        getConnectedAndroidDevices().forEach {
-            outputList = outputList.plus(it)
+        getConnectedAndroidDevices().forEach { device ->
+            outputList = outputList.plus(device)
         }
 
         if (GlobalSettings.iosSupportEnabled) {
-            getConnectedIOSDevices().forEach {
-                outputList = outputList.plus(it)
+            getConnectedIOSDevices().forEach { device ->
+                outputList = outputList.plus(device)
             }
         }
 
         if (GlobalSettings.iosSimulatorSupportEnabled) {
-            getIOSSimulators().forEach {
-                outputList = outputList.plus(it)
+            getIOSSimulators().forEach { device ->
+                outputList = outputList.plus(device)
             }
         }
 
-        deviceList = outputList
+        deviceList.forEach { listedDevice ->
+            when (listedDevice.deviceType) {
+                DeviceType.ANDROID -> {
+                    if (outputList.find { it.serial == listedDevice.serial } == null) {
+                        deviceList = deviceList.filter { it.serial != listedDevice.serial }
+                    }
+                }
+
+                DeviceType.IOS -> {
+                    if (outputList.find { it.udid == listedDevice.udid } == null) {
+                        deviceList = deviceList.filter { it.udid == listedDevice.udid }
+                    }
+                }
+            }
+        }
+
+        outputList.forEach { outputDevice ->
+            when (outputDevice.deviceType) {
+                DeviceType.ANDROID -> {
+                    if (deviceList.find { it.serial == outputDevice.serial } == null) {
+                        deviceList = deviceList.plus(outputDevice)
+                    }
+                }
+
+                DeviceType.IOS -> {
+                    if (deviceList.find { it.udid == outputDevice.udid } == null) {
+                        deviceList = deviceList.plus(outputDevice)
+                    }
+                }
+            }
+        }
     }
 }

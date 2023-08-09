@@ -1,13 +1,14 @@
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import commands.CommandRegistry
+import kotlinx.coroutines.*
+import mobile.MobileDeviceRepository
 import settings.GlobalSettings
 import ui.theme.ToolcatTheme
 import ui.views.MainView
 import utils.WindowHandler
 
+@OptIn(DelicateCoroutinesApi::class)
 fun main(args: Array<String>) = application {
     GlobalSettings.loadGlobalSettings()
 
@@ -22,6 +23,14 @@ fun main(args: Array<String>) = application {
         WindowHandler.windowContent(this) {
             ToolcatTheme.runCompose {
                 MainView()
+            }
+        }
+
+        GlobalScope.launch {
+            while (true) {
+                MobileDeviceRepository.fetchConnectedDevices()
+
+                delay(100)
             }
         }
     }
