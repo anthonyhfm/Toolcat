@@ -1,13 +1,12 @@
 package quickactions
 
-import quickactions.actions.OpenDeepLinkAction
-import quickactions.actions.ScreenshotAction
-import quickactions.actions.ToggleBluetoothAction
-import quickactions.actions.ToggleWifiAction
+import quickactions.actions.*
 
 val quickActionList: Array<QuickAction> = arrayOf(
     ToggleWifiAction(),
     ToggleBluetoothAction(),
     ScreenshotAction(),
-    OpenDeepLinkAction()
+    OpenDeepLinkAction(),
+    ShutdownAction(),
+    RestartAction()
 )
