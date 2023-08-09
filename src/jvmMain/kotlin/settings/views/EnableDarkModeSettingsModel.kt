@@ -17,8 +17,16 @@ import androidx.compose.ui.unit.sp
 import settings.GlobalSettings
 import settings.SettingsViewModel
 import ui.theme.ToolcatTheme
+import utils.OperatingSystem
 
 class EnableDarkModeSettingsModel : SettingsViewModel {
+    override val osSupport: List<OperatingSystem> = listOf(
+        OperatingSystem.WINDOWS,
+        OperatingSystem.MACOS,
+        OperatingSystem.LINUX,
+        OperatingSystem.UNKNOWN,
+    )
+
     @Composable
     override fun content() {
         var checked by remember { mutableStateOf(GlobalSettings.enableDarkMode) }
@@ -43,9 +51,9 @@ class EnableDarkModeSettingsModel : SettingsViewModel {
             }
 
             Switch(
-                checked = checked,
+                checked = checked.value,
                 onCheckedChange = {
-                    checked = it
+                    checked.value = it
 
                     GlobalSettings.enableDarkMode = checked
                     GlobalSettings.saveGlobalSettings()

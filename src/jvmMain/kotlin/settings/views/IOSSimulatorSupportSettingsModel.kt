@@ -10,22 +10,31 @@ import androidx.compose.material3.Switch
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import settings.GlobalSettings
 import settings.SettingsViewModel
+import utils.Device
+import utils.OperatingSystem
 
 class IOSSimulatorSupportSettingsModel : SettingsViewModel {
+    override val osSupport: List<OperatingSystem> = listOf(
+        OperatingSystem.MACOS,
+    )
+
     @Composable
     override fun content() {
         var checked by remember { mutableStateOf(GlobalSettings.iosSimulatorSupportEnabled) }
+        val supported: Boolean = osSupport.contains(Device.getOS())
 
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .height(40.dp),
+                .height(40.dp)
+                .alpha(if (supported) 1F else 0.4f),
 
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
@@ -41,7 +50,7 @@ class IOSSimulatorSupportSettingsModel : SettingsViewModel {
                 )
 
                 Text(
-                    text = "Experimental",
+                    text = if (supported) "Experimental" else "Not Supported",
                     fontWeight = FontWeight.Thin,
                     fontStyle = FontStyle.Italic,
                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
@@ -51,10 +60,12 @@ class IOSSimulatorSupportSettingsModel : SettingsViewModel {
             Switch(
                 checked = checked,
                 onCheckedChange = {
-                    checked = it
+                    if (supported) {
+                        checked = it
 
-                    GlobalSettings.iosSimulatorSupportEnabled = checked
-                    GlobalSettings.saveGlobalSettings()
+                        GlobalSettings.iosSimulatorSupportEnabled = checked
+                        GlobalSettings.saveGlobalSettings()
+                    }
                 }
             )
         }

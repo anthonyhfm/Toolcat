@@ -10,21 +10,31 @@ enum class OperatingSystem {
 }
 
 object Device {
+    private var operatingSystem: OperatingSystem? = null
+
     fun getOS(): OperatingSystem {
+        if (operatingSystem != null) {
+            return operatingSystem!!
+        }
+
         val os = System.getProperty("os.name").lowercase(Locale.getDefault())
 
         if (os.contains("windows")) {
-            return OperatingSystem.WINDOWS
+            operatingSystem = OperatingSystem.WINDOWS
         }
 
         if (os.contains("mac os x")) {
-            return OperatingSystem.MACOS
+            operatingSystem = OperatingSystem.MACOS
         }
 
         if (os.contains("linux")) {
-            return OperatingSystem.LINUX
+            operatingSystem = OperatingSystem.LINUX
         }
 
-        return OperatingSystem.UNKNOWN
+        if(operatingSystem == null) {
+            operatingSystem = OperatingSystem.UNKNOWN
+        }
+
+        return operatingSystem!!
     }
 }
