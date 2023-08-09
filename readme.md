@@ -1,4 +1,8 @@
-# Toolcat
+<div align="center">
+  <a>
+    <img src="logo.svg">
+  </a>
+</div>
 
 ## Requirements:
 ### Android Support:
