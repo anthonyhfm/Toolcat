@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.FrameWindowScope
 import settings.GlobalSettings
+import ui.theme.ToolcatColorSchemeSet
 import ui.theme.ToolcatTheme
 import kotlin.system.exitProcess
 
@@ -57,10 +58,12 @@ fun WindowsTitleBarButton(
 
 @Composable
 fun WindowsTitleBar(window: FrameWindowScope) {
-    val titleBarColors = if (GlobalSettings.enableDarkMode) {
-        ToolcatTheme.currentThemeSet.darkTitleBarColors
+    val currentThemeSet: ToolcatColorSchemeSet = ToolcatTheme.themeCollection[GlobalSettings.selectedTheme.value]
+
+    val titleBarColors = if (GlobalSettings.enableDarkMode.value) {
+        currentThemeSet.darkTitleBarColors
     } else {
-        ToolcatTheme.currentThemeSet.lightTitleBarColors
+        currentThemeSet.lightTitleBarColors
     }
 
     window.WindowDraggableArea {

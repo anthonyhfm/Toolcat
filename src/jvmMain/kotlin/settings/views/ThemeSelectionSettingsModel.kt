@@ -23,8 +23,16 @@ import settings.GlobalSettings
 import settings.SettingsViewModel
 import ui.components.ThemePreview
 import ui.theme.ToolcatTheme
+import utils.OperatingSystem
 
 class ThemeSelectionSettingsModel : SettingsViewModel {
+    override val osSupport: List<OperatingSystem> = listOf(
+        OperatingSystem.WINDOWS,
+        OperatingSystem.MACOS,
+        OperatingSystem.LINUX,
+        OperatingSystem.UNKNOWN,
+    )
+
     @Composable
     override fun content() {
         Column(
@@ -45,7 +53,9 @@ class ThemeSelectionSettingsModel : SettingsViewModel {
 
             LazyRow(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 items(ToolcatTheme.themeCollection) {
                     Column(
@@ -57,7 +67,7 @@ class ThemeSelectionSettingsModel : SettingsViewModel {
                                 .border(
                                     BorderStroke(
                                         4.dp,
-                                        if (GlobalSettings.selectedTheme == ToolcatTheme.themeCollection.indexOf(it)) {
+                                        if (GlobalSettings.selectedTheme.value == ToolcatTheme.themeCollection.indexOf(it)) {
                                             MaterialTheme.colorScheme.primary
                                         }
                                         else {
@@ -68,7 +78,7 @@ class ThemeSelectionSettingsModel : SettingsViewModel {
                                 )
                                 .padding(8.dp)
                                 .clickable {
-                                    GlobalSettings.selectedTheme = ToolcatTheme.themeCollection.indexOf(it)
+                                    GlobalSettings.selectedTheme.value = ToolcatTheme.themeCollection.indexOf(it)
                                     GlobalSettings.saveGlobalSettings()
                                 }
                         ) {

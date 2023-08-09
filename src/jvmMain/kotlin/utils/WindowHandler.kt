@@ -16,9 +16,12 @@ object WindowHandler {
     var windowCornerRadius: Int = 0
 
     fun useCustomDecoration(): Boolean {
-        val os = System.getProperty("os.name").lowercase(Locale.getDefault())
+        return when (Device.getOS()) {
+            OperatingSystem.WINDOWS -> true
+            OperatingSystem.MACOS -> true
 
-        return os.contains("windows") || os.contains("mac os x")
+            else -> false
+        }
     }
 
     @Composable

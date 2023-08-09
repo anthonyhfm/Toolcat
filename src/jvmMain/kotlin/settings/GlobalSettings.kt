@@ -1,24 +1,26 @@
 package settings
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import java.util.prefs.Preferences
 
 object GlobalSettings {
     var iosSupportEnabled: Boolean = false
     var iosSimulatorSupportEnabled: Boolean = false
-    var enableDarkMode: Boolean = false
-    var selectedTheme: Int = 0
+    var enableDarkMode: MutableState<Boolean> = mutableStateOf(false)
+    var selectedTheme: MutableState<Int> = mutableStateOf(0)
 
     fun saveGlobalSettings() {
         Preferences.userRoot().putBoolean("ios-support", iosSupportEnabled)
         Preferences.userRoot().putBoolean("ios-simulator-support", iosSimulatorSupportEnabled)
-        Preferences.userRoot().putBoolean("dark-theme", enableDarkMode)
-        Preferences.userRoot().putInt("selected-theme", selectedTheme)
+        Preferences.userRoot().putBoolean("dark-theme", enableDarkMode.value)
+        Preferences.userRoot().putInt("selected-theme", selectedTheme.value)
     }
 
     fun loadGlobalSettings() {
         iosSupportEnabled = Preferences.userRoot().getBoolean("ios-support", iosSupportEnabled)
         iosSimulatorSupportEnabled = Preferences.userRoot().getBoolean("ios-simulator-support", iosSimulatorSupportEnabled)
-        enableDarkMode = Preferences.userRoot().getBoolean("dark-theme", enableDarkMode)
-        selectedTheme = Preferences.userRoot().getInt("selected-theme", selectedTheme)
+        enableDarkMode.value = Preferences.userRoot().getBoolean("dark-theme", enableDarkMode.value)
+        selectedTheme.value = Preferences.userRoot().getInt("selected-theme", selectedTheme.value)
     }
 }

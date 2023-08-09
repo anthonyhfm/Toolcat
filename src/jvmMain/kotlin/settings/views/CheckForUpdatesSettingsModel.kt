@@ -14,8 +14,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import settings.SettingsViewModel
 import ui.theme.ToolcatTheme
+import utils.OperatingSystem
 
 class CheckForUpdatesSettingsModel : SettingsViewModel {
+    override val osSupport: List<OperatingSystem> = listOf(
+        OperatingSystem.WINDOWS,
+        OperatingSystem.MACOS,
+        OperatingSystem.LINUX,
+        OperatingSystem.UNKNOWN,
+    )
+
     @Composable
     override fun content() {
         Row(

@@ -22,20 +22,23 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.FrameWindowScope
 import androidx.compose.ui.zIndex
 import settings.GlobalSettings
+import ui.theme.ToolcatColorSchemeSet
 import ui.theme.ToolcatTheme
 import kotlin.system.exitProcess
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MacOSTitleBar(window: FrameWindowScope) {
+    val currentThemeSet: ToolcatColorSchemeSet = ToolcatTheme.themeCollection[GlobalSettings.selectedTheme.value]
+
     var hoveringButtons by remember { mutableStateOf(false) }
     var closeButtonDown by remember { mutableStateOf(false) }
     var minimizeButtonDown by remember { mutableStateOf(false) }
 
-    val titleBarColors = if (GlobalSettings.enableDarkMode) {
-        ToolcatTheme.currentThemeSet.darkTitleBarColors
+    val titleBarColors = if (GlobalSettings.enableDarkMode.value) {
+        currentThemeSet.darkTitleBarColors
     } else {
-        ToolcatTheme.currentThemeSet.lightTitleBarColors
+        currentThemeSet.lightTitleBarColors
     }
 
     window.WindowDraggableArea {
