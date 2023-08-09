@@ -20,16 +20,9 @@ import ui.theme.ToolcatTheme
 import utils.OperatingSystem
 
 class EnableDarkModeSettingsModel : SettingsViewModel {
-    override val osSupport: List<OperatingSystem> = listOf(
-        OperatingSystem.WINDOWS,
-        OperatingSystem.MACOS,
-        OperatingSystem.LINUX,
-        OperatingSystem.UNKNOWN,
-    )
-
     @Composable
     override fun content() {
-        var checked by remember { mutableStateOf(GlobalSettings.enableDarkMode) }
+        val checked by remember { mutableStateOf(GlobalSettings.enableDarkMode) }
 
         Row(
             modifier = Modifier
