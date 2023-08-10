@@ -9,11 +9,15 @@ class JoviColorScheme : ToolcatColorSchemeSet {
     override val name: String = "Jovi Theme"
 
     override val lightColorScheme = lightColorScheme(
+        background = Color(0xfffff5fe),
+        surface = Color(0xfffff5fe),
         primary = Color(0xfff87bff),
-        primaryContainer = Color(0xfff87bff)
+        primaryContainer = Color(0xfffccfff),
+        secondary = Color(0xffc662cc),
+        secondaryContainer = Color(0xffe4cae6)
     )
     override val lightTitleBarColors = TitleBarColors(
-        background = Color(0xffa552a9),
+        background = Color(0xfffd962cf),
         text = Color.White,
         icons = Color.White
     )
