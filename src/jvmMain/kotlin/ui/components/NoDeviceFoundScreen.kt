@@ -24,7 +24,8 @@ fun NoDeviceFound() {
             painter = painterResource("icons/mobile_off.svg"),
             contentDescription = "No Mobile",
             modifier = Modifier
-                .size(96.dp)
+                .size(96.dp),
+            tint = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -32,7 +33,8 @@ fun NoDeviceFound() {
         Text(
             text = "No devices found.",
             fontWeight = FontWeight.SemiBold,
-            fontSize = 28.sp
+            fontSize = 28.sp,
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(modifier = Modifier.height(36.dp))
@@ -42,7 +44,8 @@ fun NoDeviceFound() {
         ) {
             Text(
                 text = "It seems like there are no devices connected. If there are but they dont get displayed try reconnecting it. If that still does not work, try adjusting Toolcat or Device Settings (Developer Mode)",
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
     }
