@@ -10,14 +10,10 @@ import androidx.compose.material3.Switch
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import settings.GlobalSettings
 import settings.SettingsViewModel
-import ui.theme.ToolcatTheme
-import utils.OperatingSystem
 
 class EnableDarkModeSettingsModel : SettingsViewModel {
     @Composable

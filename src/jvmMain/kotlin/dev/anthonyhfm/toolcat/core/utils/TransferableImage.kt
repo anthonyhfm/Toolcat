@@ -1,4 +1,4 @@
-package utils
+package dev.anthonyhfm.toolcat.core.utils
 
 import java.awt.Image
 import java.awt.datatransfer.DataFlavor
@@ -6,7 +6,6 @@ import java.awt.datatransfer.Transferable
 import java.awt.datatransfer.UnsupportedFlavorException
 
 class TransferableImage(val image: Image) : Transferable {
-
     override fun getTransferData(flavor: DataFlavor): Any {
         if (!flavor.equals(DataFlavor.imageFlavor)) {
             throw UnsupportedFlavorException(flavor)

@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import settings.GlobalSettings
 import settings.SettingsViewModel
-import utils.Device
-import utils.OperatingSystem
+import dev.anthonyhfm.toolcat.core.utils.Device
+import dev.anthonyhfm.toolcat.core.utils.OperatingSystem
 
 class IOSSupportSettingsModel : SettingsViewModel {
     override val osSupport: List<OperatingSystem> = listOf(

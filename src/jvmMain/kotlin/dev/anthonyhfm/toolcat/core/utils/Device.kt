@@ -1,4 +1,4 @@
-package utils
+package dev.anthonyhfm.toolcat.core.utils
 
 import java.util.*
 

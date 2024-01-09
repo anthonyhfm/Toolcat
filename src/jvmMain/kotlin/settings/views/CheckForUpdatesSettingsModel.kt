@@ -13,8 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import settings.SettingsViewModel
-import ui.theme.ToolcatTheme
-import utils.OperatingSystem
 
 class CheckForUpdatesSettingsModel : SettingsViewModel {
     @Composable

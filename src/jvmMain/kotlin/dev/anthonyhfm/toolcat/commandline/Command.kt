@@ -1,7 +1,5 @@
-package commands
+package dev.anthonyhfm.toolcat.commandline
 
 interface Command {
-    val commandName: String
-
     fun executeCommand(args: List<String>)
 }

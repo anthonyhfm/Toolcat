@@ -10,31 +10,24 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import mobile.MobileDevice
-import mobile.firmware.disableWifi
-import mobile.firmware.enableWifi
 import mobile.firmware.getScreenshot
-import mobile.firmware.getWiFiActivated
 import quickactions.QuickAction
 import quickactions.QuickActionAvailability
 import quickactions.QuickActionSize
-import org.jetbrains.skiko.toBitmap
-import utils.TransferableImage
+import dev.anthonyhfm.toolcat.core.utils.TransferableImage
 import java.awt.Toolkit
 import java.awt.image.BufferedImage
-import java.io.InputStream
 import javax.imageio.ImageIO
 
 class ScreenshotAction : QuickAction {

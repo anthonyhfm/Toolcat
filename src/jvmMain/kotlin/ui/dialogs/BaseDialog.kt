@@ -9,7 +9,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
-import utils.WindowHandler
 import kotlin.math.roundToInt
 
 @ExperimentalComposeUiApi
@@ -45,11 +44,11 @@ class BaseModelPopupPositionProvider : PopupPositionProvider {
         if (x + popupContentSize.width > windowSize.width) {
             x -= popupContentSize.width
         }
-        if (y + popupContentSize.height > windowSize.height - WindowHandler.titleBarOffset) {
+        if (y + popupContentSize.height > windowSize.height) {
             y -= popupContentSize.height + anchor.height
         }
         x = x.coerceAtLeast(0.toFloat())
-        y = y.coerceAtLeast(WindowHandler.titleBarOffset.toFloat())
+        y = y.coerceAtLeast(0f)
 
         return IntOffset(x.roundToInt(), y.roundToInt())
     }

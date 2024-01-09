@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "dev.anthonyhfm"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 repositories {
     google()
@@ -39,9 +39,9 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "MainKt"
+        mainClass = "dev.anthonyhfm.toolcat.main.ToolcatWindowKt"
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Exe, TargetFormat.Deb)
+            targetFormats(TargetFormat.Pkg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Toolcat"
             packageVersion = "1.0.0"
 
