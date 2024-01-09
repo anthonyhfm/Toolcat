@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.FrameWindowScope
+import settings.GlobalSettings
 import ui.window.MacOSTitleBar
 import ui.window.WindowsTitleBar
 import java.util.*
@@ -26,7 +27,7 @@ object WindowHandler {
 
     @Composable
     fun windowContent(window: FrameWindowScope, content: @Composable () -> Unit) {
-        if (useCustomDecoration()) {
+        if (useCustomDecoration() && GlobalSettings.customTitleBar.value) {
             val os = System.getProperty("os.name").lowercase(Locale.getDefault())
             val isMacOS = os.contains("mac os x")
 

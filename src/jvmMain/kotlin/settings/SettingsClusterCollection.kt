@@ -3,12 +3,12 @@ package settings
 import settings.views.*
 
 val settingsClusterList: Array<SettingsCluster> = arrayOf(
-    /*SettingsCluster(
+    SettingsCluster(
         title = "General",
         settings = arrayOf(
-            CheckForUpdatesSettingsModel()
+            CustomWindowTitleBarModel()
         )
-    ),*/
+    ),
     SettingsCluster(
         title = "Apple Devices",
         settings = arrayOf(
