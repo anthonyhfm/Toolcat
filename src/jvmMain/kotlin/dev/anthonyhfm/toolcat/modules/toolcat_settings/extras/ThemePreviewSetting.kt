@@ -1,4 +1,4 @@
-package dev.anthonyhfm.toolcat.modules.settings.extras
+package dev.anthonyhfm.toolcat.modules.toolcat_settings.extras
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import dev.anthonyhfm.toolcat.core.utils.GlobalSettings
 import dev.anthonyhfm.toolcat.main.theme.ToolcatColorSchemeSet
 import dev.anthonyhfm.toolcat.main.theme.ToolcatTheme
-import dev.anthonyhfm.toolcat.modules.settings.presets.SettingModel
+import dev.anthonyhfm.toolcat.modules.toolcat_settings.presets.SettingModel
 
 class ThemePreviewSetting : SettingModel {
     @Composable

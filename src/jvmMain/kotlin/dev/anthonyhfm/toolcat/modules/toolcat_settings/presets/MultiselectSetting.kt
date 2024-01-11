@@ -1,4 +1,4 @@
-package dev.anthonyhfm.toolcat.modules.settings.presets
+package dev.anthonyhfm.toolcat.modules.toolcat_settings.presets
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState

@@ -1,4 +1,4 @@
-package dev.anthonyhfm.toolcat.modules.about
+package dev.anthonyhfm.toolcat.modules.toolcat_about
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box

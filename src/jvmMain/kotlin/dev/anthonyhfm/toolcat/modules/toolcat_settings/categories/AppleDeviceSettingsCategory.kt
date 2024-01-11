@@ -1,7 +1,7 @@
-package dev.anthonyhfm.toolcat.modules.settings.categories
+package dev.anthonyhfm.toolcat.modules.toolcat_settings.categories
 
 import dev.anthonyhfm.toolcat.core.utils.GlobalSettings
-import dev.anthonyhfm.toolcat.modules.settings.presets.ToggleSetting
+import dev.anthonyhfm.toolcat.modules.toolcat_settings.presets.ToggleSetting
 
 internal val AppleDeviceSettingsCategory = SettingsCategory(
     name = "Apple Devices",

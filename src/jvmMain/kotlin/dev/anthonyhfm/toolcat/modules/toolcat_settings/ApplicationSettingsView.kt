@@ -1,4 +1,4 @@
-package dev.anthonyhfm.toolcat.modules.settings
+package dev.anthonyhfm.toolcat.modules.toolcat_settings
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn

@@ -1,11 +1,11 @@
-package dev.anthonyhfm.toolcat.modules.settings
+package dev.anthonyhfm.toolcat.modules.toolcat_settings
 
 import androidx.compose.runtime.Composable
 import dev.anthonyhfm.toolcat.core.module.ModuleViewModel
-import dev.anthonyhfm.toolcat.modules.settings.categories.AppleDeviceSettingsCategory
-import dev.anthonyhfm.toolcat.modules.settings.categories.GeneralSettingsCategory
-import dev.anthonyhfm.toolcat.modules.settings.categories.SettingsCategory
-import dev.anthonyhfm.toolcat.modules.settings.categories.ThemeSettingsCategory
+import dev.anthonyhfm.toolcat.modules.toolcat_settings.categories.AppleDeviceSettingsCategory
+import dev.anthonyhfm.toolcat.modules.toolcat_settings.categories.GeneralSettingsCategory
+import dev.anthonyhfm.toolcat.modules.toolcat_settings.categories.SettingsCategory
+import dev.anthonyhfm.toolcat.modules.toolcat_settings.categories.ThemeSettingsCategory
 
 object SettingsModuleViewModel : ModuleViewModel {
     override val name: String = "Settings"
