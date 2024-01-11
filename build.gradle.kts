@@ -1,9 +1,9 @@
-import org.jetbrains.compose.desktop.application.dsl.MacOSSigningSettings
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
+    kotlin("plugin.serialization") version "1.8.0"
 }
 
 group = "dev.anthonyhfm"
@@ -17,7 +17,7 @@ repositories {
 
 kotlin {
     jvm {
-        jvmToolchain(11)
+        jvmToolchain(17)
         withJava()
     }
     sourceSets {
@@ -26,9 +26,11 @@ kotlin {
                 implementation(compose.desktop.currentOs)
                 implementation("org.jetbrains.compose.material:material-icons-core-desktop:1.4.1")
                 implementation("org.jetbrains.compose.material3:material3-desktop:1.4.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
                 // Reserved for upcoming feature
                 // implementation("com.github.serezhka:java-airplay-lib:1.0.5")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
 
                 runtimeOnly("org.jetbrains.compose.material3:material3-desktop:1.4.1")
             }
@@ -47,10 +49,14 @@ compose.desktop {
 
             macOS {
                 bundleID = "dev.anthonyhfm.toolcat"
+                dockName = "Toolcat"
 
                 iconFile.set(project.file("src/jvmMain/resources/desktop-icons/mac-icon.icns"))
             }
             windows {
+                shortcut = true
+                console = true
+
                 iconFile.set(project.file("src/jvmMain/resources/desktop-icons/windows-icon.ico"))
             }
             linux {
