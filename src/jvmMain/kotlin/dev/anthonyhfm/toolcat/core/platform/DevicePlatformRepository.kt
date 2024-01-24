@@ -1,9 +1,11 @@
 package dev.anthonyhfm.toolcat.core.platform
 
-interface DeviceRepository<Real, Simulator> {
-    var connectedDeviceList: MutableList<Real>
-    var simulatedDeviceList: MutableList<Simulator>
+import androidx.compose.runtime.MutableState
 
-    fun fetchConnectedDevices()
-    fun fetchSimulatedDevices()
+interface DeviceRepository<Real, Simulator> {
+    var devices: MutableState<List<Real>>
+    var emulators: MutableState<List<Simulator>>
+
+    fun fetchDevices()
+    fun fetchEmulators()
 }
