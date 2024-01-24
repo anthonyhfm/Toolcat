@@ -33,6 +33,7 @@ fun VerticalScrollColumn(
 ) {
     var scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
+    val canScroll: Boolean = scrollState.canScrollForward || scrollState.canScrollBackward
 
     Row(
         modifier = modifier
@@ -49,7 +50,7 @@ fun VerticalScrollColumn(
             content()
         }
 
-        AnimatedVisibility (scrollState.canScrollForward || scrollState.canScrollBackward) {
+        if (canScroll) {
             BoxWithConstraints(
                 modifier = Modifier
                     .fillMaxHeight()
