@@ -1,13 +1,13 @@
 package dev.anthonyhfm.toolcat.modules.toolcat_settings
 
 import androidx.compose.runtime.Composable
-import dev.anthonyhfm.toolcat.core.module.ModuleViewModel
+import dev.anthonyhfm.toolcat.core.module.ToolcatModule
 import dev.anthonyhfm.toolcat.modules.toolcat_settings.categories.AppleDeviceSettingsCategory
 import dev.anthonyhfm.toolcat.modules.toolcat_settings.categories.GeneralSettingsCategory
 import dev.anthonyhfm.toolcat.modules.toolcat_settings.categories.SettingsCategory
 import dev.anthonyhfm.toolcat.modules.toolcat_settings.categories.ThemeSettingsCategory
 
-object SettingsModuleViewModel : ModuleViewModel {
+object SettingsModuleViewModel : ToolcatModule {
     override val name: String = "Settings"
     override val iconResource: String = "icons/settings_filled.svg"
 

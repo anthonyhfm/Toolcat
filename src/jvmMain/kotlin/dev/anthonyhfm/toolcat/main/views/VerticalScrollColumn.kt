@@ -31,7 +31,7 @@ fun VerticalScrollColumn(
     horizontalAlignment: Alignment.Horizontal = Alignment.Start,
     content: @Composable ColumnScope.() -> Unit
 ) {
-    var scrollState = rememberScrollState()
+    val scrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
     val canScroll: Boolean = scrollState.canScrollForward || scrollState.canScrollBackward
 

@@ -13,9 +13,9 @@ import kotlin.math.roundToInt
 
 @ExperimentalComposeUiApi
 class BaseModelPopupPositionProvider : PopupPositionProvider {
-    val positionPx: Offset = Offset(0F, 0F)
-    val offsetPx: Offset = Offset(0F, 0F)
-    val isRelativeToAnchor: Boolean = false
+    private val positionPx: Offset = Offset(0F, 0F)
+    private val offsetPx: Offset = Offset(0F, 0F)
+    private val isRelativeToAnchor: Boolean = false
     val alignment: Alignment = Alignment.BottomEnd
 
     override fun calculatePosition(
@@ -56,16 +56,12 @@ class BaseModelPopupPositionProvider : PopupPositionProvider {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun BaseDialog(content: @Composable () -> Unit) {
+fun Dialog(onClose: () -> Unit, content: @Composable () -> Unit) {
     Popup(
         popupPositionProvider = BaseModelPopupPositionProvider(),
+        onDismissRequest = { onClose() },
         focusable = true
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            content()
-        }
+        content()
     }
 }

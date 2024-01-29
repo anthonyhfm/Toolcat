@@ -6,6 +6,11 @@ import java.io.InputStreamReader
 import java.lang.Exception
 
 object Shell {
+    fun run(cmd: String) {
+        val process: Process = Runtime.getRuntime().exec(cmd)
+        process.waitFor()
+    }
+
     fun getResponse(cmd: String): String {
         val process: Process = Runtime.getRuntime().exec(cmd)
         process.waitFor()

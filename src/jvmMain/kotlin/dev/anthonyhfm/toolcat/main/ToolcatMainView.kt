@@ -9,7 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import dev.anthonyhfm.toolcat.core.module.ModuleViewModel
+import dev.anthonyhfm.toolcat.core.module.ToolcatModule
 import dev.anthonyhfm.toolcat.modules.app_overview.AppOverviewModuleViewModel
 import dev.anthonyhfm.toolcat.modules.device_overview.DeviceOverviewModuleViewModel
 import dev.anthonyhfm.toolcat.modules.screen_cast.ScreenCastModuleViewModel
@@ -20,7 +20,7 @@ import dev.anthonyhfm.toolcat.modules.toolcat_settings.SettingsModuleViewModel
 fun ToolcatMainView() {
     var selectedView by remember { mutableStateOf(0) }
 
-    val navigationItems: List<ModuleViewModel> = listOf(
+    val navigationItems: List<ToolcatModule> = listOf(
         DeviceOverviewModuleViewModel,
         AppOverviewModuleViewModel,
         ScreenCastModuleViewModel,
@@ -31,7 +31,7 @@ fun ToolcatMainView() {
     Row {
         NavigationRail {
             navigationItems.forEachIndexed { index, item ->
-                if (index == navigationItems.count() -1) {
+                if (index == navigationItems.count() -2) {
                     Spacer(modifier = Modifier.weight(1F))
                 }
 

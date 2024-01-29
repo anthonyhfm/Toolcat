@@ -21,11 +21,6 @@ fun MainView() {
 
     val navigationItems: List<NavigationItem> = listOf(
         NavigationItem(
-            name = "Devices",
-            icon = { Icon(painterResource("icons/smartphone.svg"), "") },
-            view = { DevicesView() }
-        ),
-        NavigationItem(
             name = "Apps",
             icon = { Icon(painterResource("icons/apps.svg"), "") },
             view = { AppsView() }

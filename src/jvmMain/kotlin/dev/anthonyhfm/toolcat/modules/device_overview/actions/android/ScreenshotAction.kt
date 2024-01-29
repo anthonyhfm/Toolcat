@@ -1,64 +1,71 @@
-package quickactions.actions
+package dev.anthonyhfm.toolcat.modules.device_overview.actions.android
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asAwtImage
 import androidx.compose.ui.graphics.toComposeImageBitmap
+import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogState
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import mobile.MobileDevice
-import mobile.firmware.getScreenshot
-import quickactions.QuickAction
-import quickactions.QuickActionAvailability
-import quickactions.QuickActionSize
+import dev.anthonyhfm.toolcat.core.platform.android.AndroidDevice
+import dev.anthonyhfm.toolcat.core.platform.android.system.getScreenshot
+import dev.anthonyhfm.toolcat.core.platform.android.system.name
 import dev.anthonyhfm.toolcat.core.utils.TransferableImage
+import dev.anthonyhfm.toolcat.modules.device_overview.actions.QuickActionModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import mobile.firmware.getScreenshot
+import java.awt.Dimension
 import java.awt.Toolkit
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
-class ScreenshotAction : QuickAction {
-    override val actionSize: QuickActionSize = QuickActionSize.SMALL
-    override val availability = listOf(
-        QuickActionAvailability.ANDROID,
-        QuickActionAvailability.ANDROID_SIM,
-    )
-
-    @OptIn(DelicateCoroutinesApi::class)
+class ScreenshotAction(override val device: AndroidDevice) : QuickActionModel<AndroidDevice>(device) {
     @Composable
-    override fun content(mobileDevice: MobileDevice) {
+    override fun Content() {
+        val scope = rememberCoroutineScope()
         var image by remember { mutableStateOf<BufferedImage?>(null) }
         var showImage by remember { mutableStateOf(false) }
 
         Column(
             modifier = Modifier
-                .fillMaxSize(1f),
+                .fillMaxWidth(0.5f)
+                .padding(vertical = 8.dp)
+                .aspectRatio(1f / 1f),
 
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
         ) {
             Box(
                 modifier = Modifier
                     .clip(CircleShape)
                     .background(Color(145, 77, 255))
-                    .aspectRatio(1F)
-                    .weight(1F)
+                    .size(64.dp)
                     .clickable {
-                        GlobalScope.launch {
-                            val inputStream = mobileDevice.getScreenshot()
+                        scope.launch(Dispatchers.IO) {
+                            val inputStream = device.getScreenshot()
 
                             if (inputStream != null) {
                                 image = ImageIO.read(inputStream)
@@ -100,39 +107,33 @@ class ScreenshotAction : QuickAction {
 
     @Composable
     private fun ScreenshotPreviewWindow(image: BufferedImage, onClose: () -> Unit) {
-        Window(
-            visible = true,
+        var changeSize: Boolean by remember { mutableStateOf(true) }
+
+        Dialog(
             onCloseRequest = { onClose() },
-            title = "Screenshot",
-            state = WindowState(width = image.width.dp / 3, height = image.height.dp / 3 + 60.dp)
+            title = "Screenshot [${device.name}]",
         ) {
-            Column(
+            LaunchedEffect(Unit) {
+                delay(100)
+
+                if (changeSize) {
+                    window.size = Dimension(image.width, image.height)
+                    changeSize = false
+                }
+            }
+
+            Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Black),
+                    .background(Color.White),
 
-                horizontalAlignment = Alignment.CenterHorizontally,
+                contentAlignment = Alignment.Center,
             ) {
-                Image(bitmap = image.toComposeImageBitmap(), "Screenshot", modifier = Modifier.weight(1F))
-
-                Row(
-                    modifier = Modifier
-                        .height(60.dp)
-                        .fillMaxWidth(),
-
-                    horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Button(
-                        onClick = {
-                            val transferable = TransferableImage(image)
-
-                            Toolkit.getDefaultToolkit().systemClipboard.setContents(transferable, null)
-                        }
-                    ) {
-                        Text("Copy to Clipboard")
-                    }
-                }
+                Image(
+                    bitmap = image.toComposeImageBitmap(),
+                    contentDescription = "Screenshot",
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
     }

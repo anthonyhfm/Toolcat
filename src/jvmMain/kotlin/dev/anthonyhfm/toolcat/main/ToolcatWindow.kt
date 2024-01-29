@@ -7,11 +7,10 @@ import dev.anthonyhfm.toolcat.commandline.CommandRegistry
 import dev.anthonyhfm.toolcat.core.platform.android.AndroidDeviceRepository
 import dev.anthonyhfm.toolcat.core.utils.GlobalSettings
 import dev.anthonyhfm.toolcat.main.theme.ToolcatTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import ui.views.MainView
+import kotlinx.coroutines.*
+import kotlin.concurrent.thread
 
+@OptIn(DelicateCoroutinesApi::class)
 fun main(args: Array<String>) = application {
     GlobalSettings.loadGlobalSettings()
     CommandRegistry.executeCommand(args.toList())
@@ -27,11 +26,12 @@ fun main(args: Array<String>) = application {
             ToolcatMainView()
         }
 
-        scope.launch(Dispatchers.IO) {
+        scope.launch {
             while (true) {
-                AndroidDeviceRepository.fetchConnectedDevices()
+                AndroidDeviceRepository.fetchDevices()
+                AndroidDeviceRepository.fetchEmulators()
 
-                delay(100)
+                delay(250)
             }
         }
     }

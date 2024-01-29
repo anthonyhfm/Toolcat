@@ -18,6 +18,7 @@ object AndroidDeviceRepository: DeviceRepository<AndroidDevice, AndroidDevice> {
                 .map {
                     AndroidDevice(
                         serial = it.toString(),
+                        emulator = false,
                         adb = it
                     )
                 }
@@ -34,6 +35,7 @@ object AndroidDeviceRepository: DeviceRepository<AndroidDevice, AndroidDevice> {
             .map {
                 AndroidDevice(
                     serial = it.toString(),
+                    emulator = true,
                     adb = it
                 )
             }

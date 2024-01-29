@@ -1,9 +1,8 @@
 package dev.anthonyhfm.toolcat.core.module
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.painter.Painter
 
-interface ModuleViewModel {
+interface ToolcatModule {
     val name: String
     val iconResource: String
 

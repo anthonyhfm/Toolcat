@@ -1,107 +1,46 @@
-package ui.dialogs
+package dev.anthonyhfm.toolcat.modules.device_overview.dialogs
 
-import androidx.compose.animation.*
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Popup
+import dev.anthonyhfm.toolcat.core.platform.android.AndroidDevice
+import dev.anthonyhfm.toolcat.core.platform.android.system.name
+import dev.anthonyhfm.toolcat.modules.device_overview.views.QuickActionListView
 import kotlinx.coroutines.*
-import mobile.DeviceType
-import mobile.MobileDevice
-import mobile.getName
-import quickactions.QuickAction
-import quickactions.QuickActionAvailability
-import quickactions.QuickActionSize
-import quickactions.quickActionList
+import ui.dialogs.Dialog
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun QuickActionsList(mobileDevice: MobileDevice) {
-    val getActions: (QuickActionSize) -> List<QuickAction> = { size: QuickActionSize ->
-        quickActionList.filter {
-            when (mobileDevice.deviceType) {
-                DeviceType.ANDROID -> {
-                    if (mobileDevice.isEmulator.not())
-                        it.actionSize == size && it.availability.contains(QuickActionAvailability.ANDROID)
-                    else
-                        it.actionSize == size && it.availability.contains(QuickActionAvailability.ANDROID_SIM)
-                }
-
-                DeviceType.IOS -> {
-                    if (mobileDevice.isEmulator.not())
-                        it.actionSize == size && it.availability.contains(QuickActionAvailability.IOS)
-                    else
-                        it.actionSize == size && it.availability.contains(QuickActionAvailability.IOS_SIM)
-                }
-            }
-        }
-    }
-
-    val largeActions = getActions(QuickActionSize.LARGE)
-    val smallActions = getActions(QuickActionSize.SMALL)
-
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        items(largeActions) {
-            Row(
-                modifier = Modifier
-                    .height(100.dp),
-            ) {
-                Box(Modifier.weight(1F)) {
-                    it.content(mobileDevice)
-                }
-            }
-        }
-
-        items(smallActions.count()) {
-            if (it % 2 == 0) {
-                Row(
-                    modifier = Modifier
-                        .height(100.dp),
-
-                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Box(Modifier.weight(1F)) {
-                        smallActions[it].content(mobileDevice)
-                    }
-
-                    if (smallActions.getOrNull(it + 1) != null) {
-                        Box(Modifier.weight(1F)) {
-                            smallActions[it + 1].content(mobileDevice)
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalComposeUiApi::class, DelicateCoroutinesApi::class)
-@Composable
-fun DeviceQuickActionsDialog(mobileDevice: MobileDevice, onClose: () -> Unit) {
+fun DeviceQuickActionsDialog(device: Any, onClose: () -> Unit) {
+    val scope = rememberCoroutineScope()
     var isDialogVisible by remember { mutableStateOf(false) }
     var isSheetVisible by remember { mutableStateOf(false) }
+    var mouseOnDialog by remember { mutableStateOf(false) }
 
-    BaseDialog {
+    Dialog(
+        onClose = {
+            onClose()
+        }
+    ) {
         AnimatedVisibility(
             visible = isDialogVisible,
             enter = fadeIn(
@@ -115,24 +54,20 @@ fun DeviceQuickActionsDialog(mobileDevice: MobileDevice, onClose: () -> Unit) {
             Row(
                 modifier = Modifier
                     .background(Color.Black.copy(alpha = 0.4f))
-                    .fillMaxSize(),
-
-                verticalAlignment = Alignment.Bottom,
-            ) {
-                Box(
-                    modifier = Modifier
-                        .weight(1F)
-                        .fillMaxHeight()
-                        .onPointerEvent(PointerEventType.Release) {
-                            GlobalScope.launch {
+                    .fillMaxSize()
+                    .onPointerEvent(PointerEventType.Press) {
+                        if (!mouseOnDialog) {
+                            scope.launch {
                                 isSheetVisible = false
                                 isDialogVisible = false
                                 delay(250)
                                 onClose()
                             }
-                        },
-                )
+                        }
+                    },
 
+                horizontalArrangement = Arrangement.End
+            ) {
                 AnimatedVisibility(
                     visible = isSheetVisible,
                 ) {
@@ -141,6 +76,12 @@ fun DeviceQuickActionsDialog(mobileDevice: MobileDevice, onClose: () -> Unit) {
                             .background(MaterialTheme.colorScheme.background)
                             .fillMaxHeight()
                             .width(320.dp)
+                            .onPointerEvent(PointerEventType.Enter) {
+                                mouseOnDialog = true
+                            }
+                            .onPointerEvent(PointerEventType.Exit) {
+                                mouseOnDialog = false
+                            }
                             .padding(16.dp)
                     ) {
                         Column(
@@ -158,7 +99,7 @@ fun DeviceQuickActionsDialog(mobileDevice: MobileDevice, onClose: () -> Unit) {
                                 ) {
                                     IconButton(
                                         onClick = {
-                                            GlobalScope.launch {
+                                            scope.launch {
                                                 isSheetVisible = false
                                                 isDialogVisible = false
                                                 delay(250)
@@ -176,8 +117,12 @@ fun DeviceQuickActionsDialog(mobileDevice: MobileDevice, onClose: () -> Unit) {
                                         var name by remember { mutableStateOf<String>("") }
 
                                         DisposableEffect(Unit) {
-                                            val job = GlobalScope.launch(Dispatchers.Default) {
-                                                name = mobileDevice.getName()
+                                            val job = scope.launch(Dispatchers.Default) {
+                                                name = when (device) {
+                                                    is AndroidDevice -> { device.name }
+
+                                                    else -> TODO("Device Name Fetch not implemented (DeviceQuickActionsDialog)")
+                                                }
                                             }
                                             onDispose { job.cancel() }
                                         }
@@ -196,7 +141,7 @@ fun DeviceQuickActionsDialog(mobileDevice: MobileDevice, onClose: () -> Unit) {
                                 }
                             }
 
-                            QuickActionsList(mobileDevice)
+                            QuickActionListView(device)
                         }
                     }
                 }

@@ -11,9 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import dev.anthonyhfm.toolcat.core.module.ModuleViewModel
+import dev.anthonyhfm.toolcat.core.module.ToolcatModule
 
-object AboutModuleViewModel : ModuleViewModel {
+object AboutModuleViewModel : ToolcatModule {
     override val name: String = "About"
     override val iconResource: String = "icons/info_filled.svg"
 

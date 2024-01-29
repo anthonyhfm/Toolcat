@@ -1,4 +1,4 @@
-package quickactions.actions
+package dev.anthonyhfm.toolcat.modules.device_overview.actions.android
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -6,50 +6,50 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.*
-import mobile.MobileDevice
+import dev.anthonyhfm.toolcat.core.platform.android.AndroidDevice
+import dev.anthonyhfm.toolcat.core.platform.android.system.openDeepLink
+import dev.anthonyhfm.toolcat.modules.device_overview.actions.QuickActionModel
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import mobile.firmware.openDeepLink
-import quickactions.QuickAction
-import quickactions.QuickActionAvailability
-import quickactions.QuickActionSize
-import ui.dialogs.BaseDialog
+import ui.dialogs.Dialog
 
-class OpenDeepLinkAction : QuickAction {
-    override val actionSize: QuickActionSize = QuickActionSize.SMALL
-    override val availability = listOf(
-        QuickActionAvailability.ANDROID,
-        QuickActionAvailability.ANDROID_SIM,
-        QuickActionAvailability.IOS_SIM,
-    )
-
-    @OptIn(DelicateCoroutinesApi::class)
+class OpenDeepLinkAction(override val device: AndroidDevice) : QuickActionModel<AndroidDevice>(device) {
     @Composable
-    override fun content(mobileDevice: MobileDevice) {
+    override fun Content() {
+        val scope = rememberCoroutineScope()
         var deepLinkDialogVisible by remember { mutableStateOf(false) }
 
         Column(
             modifier = Modifier
-                .fillMaxSize(1f),
+                .fillMaxWidth(0.5f)
+                .padding(vertical = 8.dp)
+                .aspectRatio(1f / 1f),
 
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
         ) {
             if (deepLinkDialogVisible) {
                 OpenDeepLinkDialog(
@@ -57,8 +57,8 @@ class OpenDeepLinkAction : QuickAction {
                         deepLinkDialogVisible = false
                     },
                     onSend = {
-                        GlobalScope.launch {
-                            mobileDevice.openDeepLink(it)
+                        scope.launch {
+                            device.openDeepLink(it)
                         }
                     }
                 )
@@ -68,8 +68,7 @@ class OpenDeepLinkAction : QuickAction {
                 modifier = Modifier
                     .clip(CircleShape)
                     .background(Color(255, 128, 31))
-                    .aspectRatio(1F)
-                    .weight(1F)
+                    .size(64.dp)
                     .clickable {
                         deepLinkDialogVisible = true
                     },
@@ -85,7 +84,7 @@ class OpenDeepLinkAction : QuickAction {
             }
 
             Text(
-                text = "Open Deep-Link",
+                text = "Open Deeplink",
                 maxLines = 1,
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onBackground
@@ -93,13 +92,18 @@ class OpenDeepLinkAction : QuickAction {
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class, ExperimentalMaterial3Api::class)
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
     @Composable
     private fun OpenDeepLinkDialog(onClose: () -> Unit, onSend: (String) -> Unit) {
+        val scope = rememberCoroutineScope()
         var isDialogVisible by remember { mutableStateOf(false ) }
         var deepLinkURL by remember  { mutableStateOf("") }
 
-        BaseDialog {
+        Dialog(
+            onClose = {
+                onClose()
+            }
+        ) {
             AnimatedVisibility(
                 visible = isDialogVisible,
                 enter = fadeIn(
@@ -142,8 +146,25 @@ class OpenDeepLinkAction : QuickAction {
 
                             OutlinedTextField(
                                 value = deepLinkURL,
+                                singleLine = true,
                                 onValueChange = { deepLinkURL = it },
-                                label = { Text("Deep Link") }
+                                label = { Text("Deep Link") },
+                                modifier = Modifier
+                                    .onKeyEvent {
+                                        if (it.key.keyCode == Key.Enter.keyCode) {
+                                            if (deepLinkURL.isNotBlank() && deepLinkURL.isNotEmpty()) {
+                                                isDialogVisible = false
+
+                                                scope.launch {
+                                                    onSend(deepLinkURL)
+                                                    delay(250)
+                                                    onClose()
+                                                }
+                                            }
+                                        }
+
+                                        return@onKeyEvent true
+                                    }
                             )
 
                             Row(
@@ -153,7 +174,7 @@ class OpenDeepLinkAction : QuickAction {
                                     onClick = {
                                         isDialogVisible = false
 
-                                        GlobalScope.launch {
+                                        scope.launch {
                                             delay(250)
                                             onClose()
                                         }
@@ -166,7 +187,7 @@ class OpenDeepLinkAction : QuickAction {
                                     onClick = {
                                         isDialogVisible = false
 
-                                        GlobalScope.launch {
+                                        scope.launch {
                                             onSend(deepLinkURL)
                                             delay(250)
                                             onClose()

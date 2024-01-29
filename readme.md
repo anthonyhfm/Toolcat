@@ -6,8 +6,7 @@
 
 ## Requirements:
 ### Android Support:
-- Android Development CLI Tools (ADB)
-- scrcpy
+- scrcpy (for screen mirroring)
 
 ### iOS Support:
 - libimobiledevice
