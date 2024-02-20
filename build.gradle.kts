@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "dev.anthonyhfm"
-version = "1.0.0"
+version = "1.1.0"
 
 repositories {
     google()
@@ -42,7 +42,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Pkg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Toolcat"
-            packageVersion = "1.0.0"
+            packageVersion = version.toString()
 
             macOS {
                 bundleID = "dev.anthonyhfm.toolcat"
@@ -58,8 +58,6 @@ compose.desktop {
             }
             linux {
                 iconFile.set(project.file("src/jvmMain/resources/desktop-icons/linux-icon.png"))
-
-                menuGroup = "Development"
             }
         }
     }

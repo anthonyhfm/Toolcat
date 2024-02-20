@@ -19,8 +19,6 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.*
 import mobile.*
 import mobile.firmware.*
-import ui.components.LoadingAnimation
-import ui.components.NoDeviceFound
 import ui.components.Tooltip
 import ui.dialogs.DialogConfirmAppUninstall
 
@@ -45,10 +43,6 @@ fun AppsView() {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        if (deviceList.isEmpty()) {
-            NoDeviceFound()
-        }
-
         AnimatedVisibility(deviceList.isNotEmpty()) {
             Row(
                 horizontalArrangement = Arrangement.End,
@@ -155,7 +149,6 @@ fun AppsView() {
 
                         contentAlignment = Alignment.Center
                     ) {
-                        LoadingAnimation()
                     }
                 }
             }
