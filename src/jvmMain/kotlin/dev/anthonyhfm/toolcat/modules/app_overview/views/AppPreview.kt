@@ -6,6 +6,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -63,7 +66,7 @@ fun AppPreview() {
 
                     }
                 ) {
-                    Icon(Icons.Default.ExitToApp, null)
+                    Icon(painterResource("icons/play_arrow.svg"), null)
                 }
 
                 IconButton(
@@ -71,7 +74,7 @@ fun AppPreview() {
 
                     }
                 ) {
-                    Icon(Icons.Default.ExitToApp, null)
+                    Icon(Icons.Outlined.Info, null)
                 }
 
                 IconButton(
@@ -79,7 +82,7 @@ fun AppPreview() {
 
                     }
                 ) {
-                    Icon(Icons.Default.ExitToApp, null)
+                    Icon(Icons.Default.MoreVert, null)
                 }
             }
         }

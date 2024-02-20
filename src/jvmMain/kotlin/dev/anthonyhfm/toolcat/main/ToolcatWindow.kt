@@ -25,7 +25,7 @@ fun main(args: Array<String>) = application {
             ToolcatMainView()
         }
 
-        scope.launch {
+        GlobalScope.launch(Dispatchers.IO) {
             while (true) {
                 AndroidDeviceRepository.fetchDevices()
                 AndroidDeviceRepository.fetchEmulators()
