@@ -67,10 +67,8 @@ class ScreenshotAction(override val device: AndroidDevice) : QuickActionModel<An
                         scope.launch(Dispatchers.IO) {
                             val inputStream = device.getScreenshot()
 
-                            if (inputStream != null) {
-                                image = ImageIO.read(inputStream)
-                                showImage = true
-                            }
+                            image = ImageIO.read(inputStream)
+                            showImage = true
                         }
                     },
 

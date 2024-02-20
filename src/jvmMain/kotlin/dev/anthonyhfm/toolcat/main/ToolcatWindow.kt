@@ -22,7 +22,6 @@ fun main(args: Array<String>) = application {
         val scope = rememberCoroutineScope()
 
         ToolcatTheme.runCompose {
-            // MainView()
             ToolcatMainView()
         }
 
