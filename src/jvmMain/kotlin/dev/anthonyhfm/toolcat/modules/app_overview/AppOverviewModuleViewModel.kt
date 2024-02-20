@@ -9,6 +9,6 @@ object AppOverviewModuleViewModel : ToolcatModule {
 
     @Composable
     override fun ModuleView() {
-
+        AppOverviewView()
     }
 }
