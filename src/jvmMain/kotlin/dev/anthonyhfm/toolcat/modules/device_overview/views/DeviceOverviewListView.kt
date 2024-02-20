@@ -36,41 +36,55 @@ internal fun DeviceOverviewListView() {
         "Apple Emulators" to AppleDeviceRepository.emulators.value
     )
 
-    VerticalScrollColumn(
-        modifier = Modifier
-            .fillMaxSize(),
+    var devicesAvailable = false
 
-        verticalArrangement = Arrangement.spacedBy(32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(Modifier)
+    repositoryLists.forEach {
+        if (it.value.isNotEmpty()) {
+            devicesAvailable = true
+        }
+    }
 
-        repositoryLists.forEach { (key, list) ->
-            if (list.isNotEmpty()) {
-                when (list[0]) {
-                    is AndroidDevice -> {
-                        DeviceCollectionView(key) {
-                            list.forEach { AndroidDeviceOverviewItem(it as AndroidDevice) }
+    AnimatedVisibility(devicesAvailable) {
+        VerticalScrollColumn(
+            modifier = Modifier
+                .fillMaxSize(),
+
+            verticalArrangement = Arrangement.spacedBy(32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(Modifier)
+
+            repositoryLists.forEach { (key, list) ->
+                if (list.isNotEmpty()) {
+                    when (list[0]) {
+                        is AndroidDevice -> {
+                            DeviceCollectionView(key) {
+                                list.forEach { AndroidDeviceOverviewItem(it as AndroidDevice) }
+                            }
                         }
-                    }
 
-                    is AppleDevice -> {
-                        DeviceCollectionView(key) {
-                            list.forEach { AppleDeviceOverviewItem(it as AppleDevice) }
+                        is AppleDevice -> {
+                            DeviceCollectionView(key) {
+                                list.forEach { AppleDeviceOverviewItem(it as AppleDevice) }
+                            }
                         }
-                    }
 
-                    is SimulatedAppleDevice -> {
-                        DeviceCollectionView(key) {
-                            list.forEach { SimulatedAppleDeviceOverviewItem(it as SimulatedAppleDevice) }
+                        is SimulatedAppleDevice -> {
+                            DeviceCollectionView(key) {
+                                list.forEach { SimulatedAppleDeviceOverviewItem(it as SimulatedAppleDevice) }
+                            }
                         }
-                    }
 
-                    else -> { println("Unsupported Device in Device Overview") }
+                        else -> { println("Unsupported Device in Device Overview") }
+                    }
                 }
             }
-        }
 
-        Spacer(Modifier)
+            Spacer(Modifier)
+        }
+    }
+
+    AnimatedVisibility(!devicesAvailable) {
+        EmptyDeviceRepositories()
     }
 }

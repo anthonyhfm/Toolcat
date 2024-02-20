@@ -28,16 +28,20 @@ object AndroidDeviceRepository: DeviceRepository<AndroidDevice, AndroidDevice> {
     }
 
     override fun fetchEmulators() {
-        emulators.value = Dadb.list()
-            .filter {
-                it.toString().contains("emulator")
-            }
-            .map {
-                AndroidDevice(
-                    serial = it.toString(),
-                    emulator = true,
-                    adb = it
-                )
-            }
+        try {
+            emulators.value = Dadb.list()
+                .filter {
+                    it.toString().contains("emulator")
+                }
+                .map {
+                    AndroidDevice(
+                        serial = it.toString(),
+                        emulator = true,
+                        adb = it
+                    )
+                }
+        } catch (ex: Exception) {
+            println(ex.localizedMessage)
+        }
     }
 }

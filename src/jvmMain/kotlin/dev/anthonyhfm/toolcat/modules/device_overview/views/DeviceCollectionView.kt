@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import dev.anthonyhfm.toolcat.main.theme.Inter
 
 @Composable
-internal fun DeviceCollectionView(title: String, content: @Composable () -> Unit) {
+internal fun DeviceCollectionView(title: String, enabled: Boolean = true, content: @Composable () -> Unit) {
     var showContent: Boolean by remember { mutableStateOf(true) }
 
     Column(
@@ -37,27 +37,29 @@ internal fun DeviceCollectionView(title: String, content: @Composable () -> Unit
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .size(32.dp)
-                    .clickable {
-                        showContent = !showContent
-                    },
-
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource("icons/chevron_right.svg"),
-                    contentDescription = null,
+            if (enabled) {
+                Box(
                     modifier = Modifier
-                        .rotate(
-                            animateFloatAsState(
-                                targetValue = if (showContent) 90f else 0f
-                            ).value
-                        )
-                        .size(24.dp)
-                )
+                        .clip(CircleShape)
+                        .size(32.dp)
+                        .clickable {
+                            showContent = !showContent
+                        },
+
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = painterResource("icons/chevron_right.svg"),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .rotate(
+                                animateFloatAsState(
+                                    targetValue = if (showContent) 90f else 0f
+                                ).value
+                            )
+                            .size(24.dp)
+                    )
+                }
             }
 
             Text(
@@ -73,7 +75,9 @@ internal fun DeviceCollectionView(title: String, content: @Composable () -> Unit
         }
 
         AnimatedVisibility(showContent) {
-            Column {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
                 content()
             }
         }

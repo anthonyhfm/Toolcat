@@ -30,6 +30,9 @@ internal fun AndroidDeviceOverviewItem(androidDevice: AndroidDevice) {
     var showInformationDialog by remember { mutableStateOf(false) }
     var showQuickActionsDialog by remember { mutableStateOf(false) }
 
+    var deviceName: String by remember { mutableStateOf(androidDevice.name) }
+    var deviceSerialNumber: String by remember { mutableStateOf(androidDevice.serial) }
+
     Row(
         modifier = Modifier
             .clip(CircleShape)
@@ -60,14 +63,14 @@ internal fun AndroidDeviceOverviewItem(androidDevice: AndroidDevice) {
         Spacer(modifier = Modifier.width(8.dp))
 
         Text(
-            text = androidDevice.name,
+            text = deviceName,
             fontWeight = FontWeight.Light,
             fontSize = 18.sp,
             color = MaterialTheme.colorScheme.onBackground
         )
 
         Text(
-            text = androidDevice.serial,
+            text = deviceSerialNumber,
             fontWeight = FontWeight.Light,
             fontStyle = FontStyle.Italic,
             color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8F)

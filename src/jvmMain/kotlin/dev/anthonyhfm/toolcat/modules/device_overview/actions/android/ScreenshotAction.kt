@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -13,32 +12,19 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asAwtImage
 import androidx.compose.ui.graphics.toComposeImageBitmap
-import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogState
-import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.WindowState
+import androidx.compose.ui.window.*
 import dev.anthonyhfm.toolcat.core.platform.android.AndroidDevice
 import dev.anthonyhfm.toolcat.core.platform.android.system.getScreenshot
 import dev.anthonyhfm.toolcat.core.platform.android.system.name
-import dev.anthonyhfm.toolcat.core.utils.TransferableImage
 import dev.anthonyhfm.toolcat.modules.device_overview.actions.QuickActionModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import mobile.firmware.getScreenshot
-import java.awt.Dimension
-import java.awt.Toolkit
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
@@ -105,21 +91,21 @@ class ScreenshotAction(override val device: AndroidDevice) : QuickActionModel<An
 
     @Composable
     private fun ScreenshotPreviewWindow(image: BufferedImage, onClose: () -> Unit) {
-        var changeSize: Boolean by remember { mutableStateOf(true) }
+        val dialogState: DialogState by remember {
+            mutableStateOf(
+                DialogState(
+                    size = DpSize(image.width.dp / 2, image.height.dp / 2)
+                )
+            )
+        }
 
-        Dialog(
-            onCloseRequest = { onClose() },
+        DialogWindow(
+            onCloseRequest = {
+                onClose()
+            },
             title = "Screenshot [${device.name}]",
+            state = dialogState
         ) {
-            LaunchedEffect(Unit) {
-                delay(100)
-
-                if (changeSize) {
-                    window.size = Dimension(image.width, image.height)
-                    changeSize = false
-                }
-            }
-
             Box(
                 modifier = Modifier
                     .fillMaxSize()

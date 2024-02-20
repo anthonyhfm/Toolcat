@@ -1,6 +1,5 @@
 package dev.anthonyhfm.toolcat.modules.device_overview.actions.android
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -13,23 +12,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import dev.anthonyhfm.toolcat.core.platform.android.AndroidDevice
-import dev.anthonyhfm.toolcat.core.platform.android.system.getScreenshot
-import dev.anthonyhfm.toolcat.core.platform.android.system.name
 import dev.anthonyhfm.toolcat.core.platform.android.system.navigateBack
 import dev.anthonyhfm.toolcat.core.platform.android.system.navigateHome
 import dev.anthonyhfm.toolcat.modules.device_overview.actions.QuickActionModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.awt.Dimension
-import java.awt.image.BufferedImage
-import javax.imageio.ImageIO
 
 class NavigationSimulatorAction(override val device: AndroidDevice) : QuickActionModel<AndroidDevice>(device) {
     private data class NavigationButton(

@@ -10,9 +10,7 @@ val AndroidDevice.name: String
     get() {
         return if (!emulator) {
             "$manufacturer $model"
-        } else {
-            // If the Device is Emulated fetch the AVD Name
-
+        } else { // If the Device is Emulated fetch the AVD Name
             adb.shell("getprop ro.boot.qemu.avd_name").output.trimIndent()
         }
     }
