@@ -33,6 +33,8 @@ This is a feature list that I either have already implemented or planned. You ar
 - Others
   - [ ] Installing, Downloading and Managing Apps
   - [ ] Recovering Apple Devices with *.ipsw files
+  - [ ] Screen Mirroring
+  - ... More to come
 
 ## Platform specific platform support
 
