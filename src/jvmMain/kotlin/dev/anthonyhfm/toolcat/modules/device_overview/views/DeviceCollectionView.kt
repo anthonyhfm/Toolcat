@@ -57,7 +57,8 @@ internal fun DeviceCollectionView(title: String, enabled: Boolean = true, conten
                                     targetValue = if (showContent) 90f else 0f
                                 ).value
                             )
-                            .size(24.dp)
+                            .size(24.dp),
+                        tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
             }
