@@ -24,6 +24,8 @@ fun main(args: Array<String>) = application {
     ) {
         WindowManager.configure(window)
 
+
+
         ToolcatTheme.runCompose {
             Column {
                 WindowManager.platformPadding()
