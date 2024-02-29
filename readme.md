@@ -6,7 +6,7 @@
 
 Toolcat is a Development Toolkit for Mobile Applications for Android and iOS *(iOS very experimental)*
 
-## Features:
+## Features
 
 This is a feature list that I either have already implemented or planned. You are always welcome to write your suggestions in the [Issues](https://github.com/anthonyhfm/toolcat/issues) tab
 
