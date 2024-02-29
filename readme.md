@@ -64,6 +64,8 @@ npm install -g @hydraulic/conveyor
 
 After the installation is done, you can open the root directory of this project and run:
 ```shell
+./gradlew build
+
 conveyor make site
 ```
 
