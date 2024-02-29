@@ -49,7 +49,7 @@ fun AppPreview() {
                 )
 
                 Text(
-                    text = "App"
+                    text = "App Label"
                 )
             }
 

@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import dev.anthonyhfm.kit.desktop.WindowManager
 import dev.anthonyhfm.toolcat.core.module.ToolcatModule
 import dev.anthonyhfm.toolcat.modules.app_overview.AppOverviewModuleViewModel
 import dev.anthonyhfm.toolcat.modules.device_overview.DeviceOverviewModuleViewModel

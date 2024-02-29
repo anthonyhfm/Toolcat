@@ -4,12 +4,23 @@ import dev.anthonyhfm.toolcat.core.platform.android.AndroidDevice
 import dev.anthonyhfm.toolcat.core.utils.Shell
 import java.io.File
 
+data class AndroidApp(
+    val packageID: String,
+    val label: String
+)
+
 fun AndroidDevice.getAppPackages(): List<String> {
-    return adb.shell("cmd package list packages -3")
+    val packageList = adb.shell("cmd package list packages -3")
         .output.trimIndent()
         .lines().map {
             it.removePrefix("package:")
         }
+
+    println("${packageList.size} Packages Found")
+
+
+
+    return packageList
 }
 
 fun AndroidDevice.installApp(path: String) {

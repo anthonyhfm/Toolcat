@@ -4,14 +4,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import dev.anthonyhfm.toolcat.core.platform.android.AndroidDeviceRepository
+import dev.anthonyhfm.toolcat.core.platform.android.system.getAppPackages
 import dev.anthonyhfm.toolcat.modules.app_overview.views.AppPreview
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 internal fun AppOverviewView() {
+    // val packages: List<String> by remember { mutableStateOf(AndroidDeviceRepository.devices.value[0].getAppPackages()) }
+
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -24,7 +31,7 @@ internal fun AppOverviewView() {
             horizontalArrangement = Arrangement.spacedBy(18.dp, Alignment.CenterHorizontally),
             verticalArrangement = Arrangement.spacedBy(22.dp)
         ) {
-            for (i in 0 .. 16) {
+            for (i in 0..16) {
                 AppPreview()
             }
         }
