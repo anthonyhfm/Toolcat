@@ -1,12 +1,14 @@
-package dev.anthonyhfm.toolcat.commandline
+package dev.anthonyhfm.toolcat.core.cmd
 
-import dev.anthonyhfm.toolcat.commandline.commands.VersionCommand
+import dev.anthonyhfm.toolcat.core.cmd.commands.DoctorCommand
+import dev.anthonyhfm.toolcat.core.cmd.commands.VersionCommand
 import kotlin.system.exitProcess
 
 object CommandRegistry {
     private val commandList: Map<String, Command> = mapOf(
         "--version" to VersionCommand(),
         "-v" to VersionCommand(),
+        "doctor" to DoctorCommand()
     )
 
     fun executeCommand(args: List<String>) {
