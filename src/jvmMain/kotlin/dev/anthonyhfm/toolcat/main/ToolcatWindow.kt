@@ -1,6 +1,7 @@
 package dev.anthonyhfm.toolcat.main
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
@@ -23,8 +24,6 @@ fun main(args: Array<String>) = application {
         title = "Toolcat"
     ) {
         WindowManager.configure(window)
-
-
 
         ToolcatTheme.runCompose {
             Column {

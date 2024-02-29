@@ -64,7 +64,8 @@ internal fun DeviceCollectionView(title: String, enabled: Boolean = true, conten
 
             Text(
                 text = title,
-                fontFamily = Inter
+                fontFamily = Inter,
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             Divider(
