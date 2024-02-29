@@ -1,40 +1,72 @@
 <div align="center">
   <a>
-    <img src="logo.svg">
+    <img src="src/jvmMain/resources/logo/toolcat-logo-readme.svg">
   </a>
 </div>
 
-## Requirements:
-### Android Support:
-- scrcpy (for screen mirroring)
+Toolcat is a Development Toolkit for Mobile Applications for Android and iOS *(iOS very experimental)*
 
-### iOS Support:
-- libimobiledevice
-- ideviceinstaller
+## Features:
 
+This is a feature list that I either have already implemented or planned. Suggestions are always welcome to write in the [Issues](https://github.com/anthonyhfm/toolcat/issues) tab
 
-## Install necessary tools:
+**Android Development**:
+- Basic
+  - [x] Listing all connected Android Devices and Emulators
+  - [x] Showing advanced device information
+  - [ ] Connecting via wireless ADB
+- Quick Actions
+    - [x] Taking screenshots
+    - [x] Navigation simulation
+    - [ ] Coffeination
+    - [ ] Sending deeplinks
+- Others
+  - [ ] Screen Mirroring
+  - [ ] Installing, Downloading and Managing Apps
+  - [ ] Layout Inspection
+  - [ ] Monitoring Logcat
 
-### Mac OS
+**iOS Support**
+- Basic
+  - [ ] Listing all connected iOS Devices and Simulators
+  - ... More to come
+- Others
+  - [ ] Installing, Downloading and Managing Apps
+  - [ ] Recovering Apple Devices with *.ipsw files
+
+## Platform specific platform support
+
+|        | Android Devices | Android Emulators | iOS Devices              | iOS Simulators |
+|--------| --------------- | ----------------- |--------------------------|----------------|
+| Windows | Yes | Yes | No                       | No             |
+| Linux  | Yes | Yes | Install libimobiledevice | No             |
+| MacOS  | Yes | Yes | Install libimobiledevice | Yes            |
+
+## How do I connect my device?
+
+1. Enable developer mode on your phone
+2. Connect your device via USB
+3. Trust your computer if a dialog pops up
+
+Done! You should be ready to go :)
+
+## Build it yourself
+
+This project is built with [Hydraulic Conveyor](https://www.hydraulic.dev/). 
+
+Install the Conveyor [npm package](https://www.npmjs.com/package/@hydraulic/conveyor):
 
 ```shell
-# iOS Support
-brew install libimobiledevice ideviceinstaller
-# Android Screen Mirroring
-brew install scrcpy
+npm install -g @hydraulic/conveyor
 ```
 
-### Linux
-
-Ubuntu:
+After the installation is done, you can open the root directory of this project and run:
 ```shell
-sudo apt-get update
-sudo apt-get install usbmuxd libimobiledevice6 libimobiledevice-utils ideviceinstaller
-sudo apt-get install scrcpy
+conveyor make site
 ```
 
-### Windows
-- Install the Android CLI Tools
-- Install scrcpy from the [official repository](https://github.com/Genymobile/scrcpy) and put it in the PATH
+This should build executables for all platforms in the `/output` directory.
 
-_iOS Support is currently not given under Windows_
+-----
+
+Made with 💚 by [Anthony Hofmeister](https://github.com/anthonyhfm)

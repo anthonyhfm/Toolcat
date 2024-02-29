@@ -59,8 +59,13 @@ object AboutModuleViewModel : ToolcatModule {
                         color = MaterialTheme.colorScheme.onBackground
                     )
 
+                    val version = when (val versionProperty = System.getProperty("app.version")) {
+                        null -> "Debug build"
+                        else -> "Version $versionProperty"
+                    }
+
                     Text(
-                        text = "Version 1.1.0",
+                        text = version,
                         fontFamily = Inter,
                         color = MaterialTheme.colorScheme.onBackground.copy(0.8f)
                     )

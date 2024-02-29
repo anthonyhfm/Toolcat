@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import dev.anthonyhfm.toolcat.main.theme.Inter
 
 @Composable
 fun AppPreview() {
@@ -49,7 +50,9 @@ fun AppPreview() {
                 )
 
                 Text(
-                    text = "App Label"
+                    text = "App Label",
+                    fontFamily = Inter,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
 
@@ -66,7 +69,7 @@ fun AppPreview() {
 
                     }
                 ) {
-                    Icon(painterResource("icons/play_arrow.svg"), null)
+                    Icon(painterResource("icons/play_arrow.svg"), null, tint = MaterialTheme.colorScheme.onBackground)
                 }
 
                 IconButton(
@@ -74,7 +77,7 @@ fun AppPreview() {
 
                     }
                 ) {
-                    Icon(Icons.Outlined.Info, null)
+                    Icon(Icons.Outlined.Info, null, tint = MaterialTheme.colorScheme.onBackground)
                 }
 
                 IconButton(
@@ -82,7 +85,7 @@ fun AppPreview() {
 
                     }
                 ) {
-                    Icon(Icons.Default.MoreVert, null)
+                    Icon(Icons.Default.MoreVert, null, tint = MaterialTheme.colorScheme.onBackground)
                 }
             }
         }
