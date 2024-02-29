@@ -12,7 +12,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.anthonyhfm.toolcat.core.module.ToolcatModule
+import dev.anthonyhfm.toolcat.core.utils.GlobalSettings
 import dev.anthonyhfm.toolcat.main.theme.Inter
+import kotlinx.coroutines.GlobalScope
 import java.util.jar.JarFile
 
 object AboutModuleViewModel : ToolcatModule {
@@ -32,8 +34,13 @@ object AboutModuleViewModel : ToolcatModule {
                 verticalArrangement = Arrangement.spacedBy(18.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                val suffix = when (GlobalSettings.enableDarkMode.value) {
+                    true -> "white"
+                    false -> "black"
+                }
+
                 Image(
-                    painter = painterResource("icons/toolcat-logo.png"),
+                    painter = painterResource("logo/toolcat-$suffix.png"),
                     contentDescription = null,
                     modifier = Modifier
                         .height(180.dp)
@@ -62,6 +69,8 @@ object AboutModuleViewModel : ToolcatModule {
 
             Text(
                 text = "Made with \uD83D\uDC9A by Anthony Hofmeister",
+                fontFamily = Inter,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .padding(vertical = 24.dp)
                     .align(Alignment.BottomCenter)
