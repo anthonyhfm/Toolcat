@@ -9,11 +9,19 @@ internal val GeneralSettingsCategory = SettingsCategory(
     settings = arrayOf(
         ToggleSetting(
             displayText = "Active Device Rescan",
-            state = mutableStateOf(true),
+            state = GlobalSettings.activeRescan,
             onValueChange = {
                 GlobalSettings.activeRescan.value = it
                 GlobalSettings.saveGlobalSettings()
             }
-        )
+        ),
+        ToggleSetting(
+            displayText = "Show Advanced Settings",
+            state = GlobalSettings.advancedSettings,
+            onValueChange = {
+                GlobalSettings.advancedSettings.value = it
+                GlobalSettings.saveGlobalSettings()
+            }
+        ),
     )
 )
