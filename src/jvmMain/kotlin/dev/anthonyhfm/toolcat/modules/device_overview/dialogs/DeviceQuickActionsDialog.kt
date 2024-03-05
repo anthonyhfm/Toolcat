@@ -141,6 +141,8 @@ fun DeviceQuickActionsDialog(device: Any, onClose: () -> Unit) {
                                 }
                             }
 
+                            Spacer(Modifier.height(20.dp))
+
                             QuickActionListView(device)
                         }
                     }

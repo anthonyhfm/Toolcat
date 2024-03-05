@@ -1,6 +1,8 @@
 package dev.anthonyhfm.toolcat.modules.device_overview
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,7 +40,11 @@ internal fun DeviceOverviewView(vm: DeviceOverviewModuleViewModel) {
         }
     }
 
-    AnimatedVisibility(devicesAvailable) {
+    AnimatedVisibility(
+        visible = devicesAvailable,
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
         VerticalScrollColumn(
             modifier = Modifier
                 .fillMaxSize(),
@@ -78,7 +84,11 @@ internal fun DeviceOverviewView(vm: DeviceOverviewModuleViewModel) {
         }
     }
 
-    AnimatedVisibility(!devicesAvailable) {
+    AnimatedVisibility(
+        visible = !devicesAvailable,
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
         EmptyDeviceRepositories()
     }
 }

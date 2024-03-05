@@ -45,29 +45,15 @@ class OpenDeepLinkAction(override val device: AndroidDevice) : QuickActionModel<
         Column(
             modifier = Modifier
                 .fillMaxWidth(0.5f)
-                .padding(vertical = 8.dp)
-                .aspectRatio(1f / 1f),
+                .padding(vertical = 8.dp),
 
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
         ) {
-            if (deepLinkDialogVisible) {
-                OpenDeepLinkDialog(
-                    onClose = {
-                        deepLinkDialogVisible = false
-                    },
-                    onSend = {
-                        scope.launch {
-                            device.openDeepLink(it)
-                        }
-                    }
-                )
-            }
-
             Box(
                 modifier = Modifier
                     .clip(CircleShape)
-                    .background(Color(255, 128, 31))
+                    .background(MaterialTheme.colorScheme.tertiary)
                     .size(64.dp)
                     .clickable {
                         deepLinkDialogVisible = true
@@ -81,6 +67,19 @@ class OpenDeepLinkAction(override val device: AndroidDevice) : QuickActionModel<
                     tint = Color.White,
                     modifier = Modifier.size(28.dp)
                 )
+
+                if (deepLinkDialogVisible) {
+                    OpenDeepLinkDialog(
+                        onClose = {
+                            deepLinkDialogVisible = false
+                        },
+                        onSend = {
+                            scope.launch {
+                                device.openDeepLink(it)
+                            }
+                        }
+                    )
+                }
             }
 
             Text(

@@ -38,8 +38,7 @@ class ScreenshotAction(override val device: AndroidDevice) : QuickActionModel<An
         Column(
             modifier = Modifier
                 .fillMaxWidth(0.5f)
-                .padding(vertical = 8.dp)
-                .aspectRatio(1f / 1f),
+                .padding(vertical = 8.dp),
 
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically)
@@ -47,7 +46,7 @@ class ScreenshotAction(override val device: AndroidDevice) : QuickActionModel<An
             Box(
                 modifier = Modifier
                     .clip(CircleShape)
-                    .background(Color(145, 77, 255))
+                    .background(MaterialTheme.colorScheme.tertiary)
                     .size(64.dp)
                     .clickable {
                         scope.launch(Dispatchers.IO) {

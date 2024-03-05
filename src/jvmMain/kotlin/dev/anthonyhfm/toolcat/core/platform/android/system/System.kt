@@ -3,7 +3,15 @@ package dev.anthonyhfm.toolcat.core.platform.android.system
 import dev.anthonyhfm.toolcat.core.platform.android.AndroidDevice
 
 fun AndroidDevice.forceReboot() {
-    adb.shell("reboot")
+    try {
+        adb.shell("reboot")
+    } catch (ex: Exception) {
+        // An Exception is thrown. Always.
+        // This is because the data stream between Toolcat and the device breaks
+        // due to the device restarting. So this is pretty normal ig.
+
+        // Nothing to fix here
+    }
 }
 
 val AndroidDevice.name: String

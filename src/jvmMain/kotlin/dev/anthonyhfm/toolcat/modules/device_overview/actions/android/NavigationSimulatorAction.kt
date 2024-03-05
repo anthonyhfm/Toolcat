@@ -67,7 +67,7 @@ class NavigationSimulatorAction(override val device: AndroidDevice) : QuickActio
                     Box(
                         modifier = Modifier
                             .clip(CircleShape)
-                            .background(Color.Gray)
+                            .background(MaterialTheme.colorScheme.tertiary)
                             .size(64.dp)
                             .clickable {
                                 scope.launch(Dispatchers.IO) {
