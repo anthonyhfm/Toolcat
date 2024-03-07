@@ -34,7 +34,11 @@ fun DialogConfirmAppUninstall(
 ) {
     var isDialogVisible by remember { mutableStateOf(false ) }
 
-    BaseDialog {
+    Dialog(
+        onClose = {
+            onClose()
+        }
+    ) {
         AnimatedVisibility(
             visible = isDialogVisible,
             enter = fadeIn(

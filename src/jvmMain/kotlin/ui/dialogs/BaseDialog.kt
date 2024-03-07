@@ -9,14 +9,13 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
-import utils.WindowHandler
 import kotlin.math.roundToInt
 
 @ExperimentalComposeUiApi
 class BaseModelPopupPositionProvider : PopupPositionProvider {
-    val positionPx: Offset = Offset(0F, 0F)
-    val offsetPx: Offset = Offset(0F, 0F)
-    val isRelativeToAnchor: Boolean = false
+    private val positionPx: Offset = Offset(0F, 0F)
+    private val offsetPx: Offset = Offset(0F, 0F)
+    private val isRelativeToAnchor: Boolean = false
     val alignment: Alignment = Alignment.BottomEnd
 
     override fun calculatePosition(
@@ -45,11 +44,11 @@ class BaseModelPopupPositionProvider : PopupPositionProvider {
         if (x + popupContentSize.width > windowSize.width) {
             x -= popupContentSize.width
         }
-        if (y + popupContentSize.height > windowSize.height - WindowHandler.titleBarOffset) {
+        if (y + popupContentSize.height > windowSize.height) {
             y -= popupContentSize.height + anchor.height
         }
         x = x.coerceAtLeast(0.toFloat())
-        y = y.coerceAtLeast(WindowHandler.titleBarOffset.toFloat())
+        y = y.coerceAtLeast(0f)
 
         return IntOffset(x.roundToInt(), y.roundToInt())
     }
@@ -57,16 +56,12 @@ class BaseModelPopupPositionProvider : PopupPositionProvider {
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun BaseDialog(content: @Composable () -> Unit) {
+fun Dialog(onClose: () -> Unit, content: @Composable () -> Unit) {
     Popup(
         popupPositionProvider = BaseModelPopupPositionProvider(),
+        onDismissRequest = { onClose() },
         focusable = true
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            content()
-        }
+        content()
     }
 }

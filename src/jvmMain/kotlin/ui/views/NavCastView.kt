@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.*
 import mobile.*
-import ui.components.NoDeviceFound
 
 @Composable
 fun CastView() {
@@ -30,7 +29,6 @@ fun CastView() {
     var selectedDevice: Int by remember { mutableStateOf(0) }
 
     if (deviceList.isEmpty()) {
-        NoDeviceFound()
     } else {
         Column(
             modifier = Modifier

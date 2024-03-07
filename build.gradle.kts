@@ -1,63 +1,65 @@
-import org.jetbrains.compose.desktop.application.dsl.MacOSSigningSettings
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
+
+    kotlin("plugin.serialization") version "1.8.0"
+    id("dev.hydraulic.conveyor") version "1.8"
 }
 
 group = "dev.anthonyhfm"
-version = "1.0-SNAPSHOT"
+version = "1.1.0"
 
 repositories {
-    google()
     mavenCentral()
-    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    google()
+    maven { url = uri("https://jitpack.io") }
+    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/compose/dev") }
 }
 
 kotlin {
     jvm {
-        jvmToolchain(11)
         withJava()
     }
+    jvmToolchain(17)
+
     sourceSets {
-        val jvmMain by getting {
+        val jvmMain: KotlinSourceSet by getting {
             dependencies {
+                implementation(kotlin("stdlib-jdk8"))
                 implementation(compose.desktop.currentOs)
+
                 implementation("org.jetbrains.compose.material:material-icons-core-desktop:1.4.1")
                 implementation("org.jetbrains.compose.material3:material3-desktop:1.4.1")
-
-                // Reserved for upcoming feature
-                // implementation("com.github.serezhka:java-airplay-lib:1.0.5")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+                implementation("dev.mobile:dadb:1.2.7")
 
                 runtimeOnly("org.jetbrains.compose.material3:material3-desktop:1.4.1")
             }
         }
-        val jvmTest by getting
     }
+}
+
+dependencies {
+    // Use the configurations created by the Conveyor plugin to tell Gradle/Conveyor where to find the artifacts for each platform.
+    linuxAmd64(compose.desktop.linux_x64)
+    macAmd64(compose.desktop.macos_x64)
+    macAarch64(compose.desktop.macos_arm64)
+    windowsAmd64(compose.desktop.windows_x64)
 }
 
 compose.desktop {
     application {
-        mainClass = "MainKt"
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Exe, TargetFormat.Deb)
-            packageName = "Toolcat"
-            packageVersion = "1.0.0"
-
-            macOS {
-                bundleID = "dev.anthonyhfm.toolcat"
-
-                iconFile.set(project.file("src/jvmMain/resources/desktop-icons/mac-icon.icns"))
-            }
-            windows {
-                iconFile.set(project.file("src/jvmMain/resources/desktop-icons/windows-icon.ico"))
-            }
-            linux {
-                iconFile.set(project.file("src/jvmMain/resources/desktop-icons/linux-icon.png"))
-
-                menuGroup = "Development"
-            }
-        }
+        mainClass = "dev.anthonyhfm.toolcat.main.ToolcatWindowKt"
     }
 }
+
+// region Work around temporary Compose bugs.
+configurations.all {
+    attributes {
+        // https://github.com/JetBrains/compose-jb/issues/1404#issuecomment-1146894731
+        attribute(Attribute.of("ui", String::class.java), "awt")
+    }
+}
+// endregion

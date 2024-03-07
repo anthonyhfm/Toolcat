@@ -21,39 +21,15 @@ fun MainView() {
 
     val navigationItems: List<NavigationItem> = listOf(
         NavigationItem(
-            name = "Devices",
-            icon = { Icon(painterResource("icons/smartphone.svg"), "") },
-            view = { DevicesView() }
-        ),
-        NavigationItem(
-            name = "Apps",
-            icon = { Icon(painterResource("icons/apps.svg"), "") },
-            view = { AppsView() }
-        ),
-        NavigationItem(
             name = "Cast",
             icon = { Icon(painterResource("icons/cast.svg"), "") },
             view = { CastView() }
         ),
-        NavigationItem(
-            name = "Settings",
-            icon = { Icon(Icons.Default.Settings, "") },
-            view = { SettingsView() }
-        ),
-        NavigationItem(
-            name = "About",
-            icon = { Icon(Icons.Default.Info, "") },
-            view = { AboutView() }
-        )
     )
 
     Row {
         NavigationRail {
             navigationItems.forEachIndexed { index, item ->
-                if (index == navigationItems.count() -1) {
-                    Spacer(modifier = Modifier.weight(1F))
-                }
-
                 NavigationRailItem(
                     icon = { item.icon() },
                     label = { Text(item.name) },

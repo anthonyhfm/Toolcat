@@ -1,6 +1,5 @@
 package mobile
 
-import settings.GlobalSettings
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
@@ -111,7 +110,7 @@ object MobileDeviceRepository {
             outputList = outputList.plus(device)
         }
 
-        if (GlobalSettings.iosSupportEnabled) {
+        /* if (GlobalSettings.iosSupportEnabled) {
             getConnectedIOSDevices().forEach { device ->
                 outputList = outputList.plus(device)
             }
@@ -121,7 +120,7 @@ object MobileDeviceRepository {
             getIOSSimulators().forEach { device ->
                 outputList = outputList.plus(device)
             }
-        }
+        }*/
 
         deviceList.forEach { listedDevice ->
             when (listedDevice.deviceType) {
