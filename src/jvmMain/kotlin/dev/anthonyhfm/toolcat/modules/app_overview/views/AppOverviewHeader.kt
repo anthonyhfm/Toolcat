@@ -49,7 +49,6 @@ fun AppOverviewHeader() {
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun AppOverviewDeviceSelector(
     selected: Int,
