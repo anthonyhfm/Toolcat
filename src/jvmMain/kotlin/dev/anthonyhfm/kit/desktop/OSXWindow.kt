@@ -15,13 +15,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Window
 import dev.anthonyhfm.toolcat.main.theme.Inter
 
 object OSXWindow {
     fun macosCustomize(window: ComposeWindow) {
         window.rootPane.putClientProperty("apple.awt.fullWindowContent", true)
         window.rootPane.putClientProperty("apple.awt.transparentTitleBar", true)
-        window.rootPane.putClientProperty( "apple.awt.windowTitleVisible", false)
+        window.rootPane.putClientProperty("apple.awt.windowTitleVisible", false)
         System.setProperty("apple.laf.useScreenMenuBar", "true")
         System.setProperty("apple.awt.application.name", "Toolcat")
     }

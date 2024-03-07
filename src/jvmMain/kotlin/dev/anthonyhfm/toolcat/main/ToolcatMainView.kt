@@ -9,6 +9,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import dev.anthonyhfm.kit.desktop.WindowManager
 import dev.anthonyhfm.toolcat.core.module.ToolcatModule
+import dev.anthonyhfm.toolcat.main.theme.Inter
 import dev.anthonyhfm.toolcat.modules.app_overview.AppOverviewModuleViewModel
 import dev.anthonyhfm.toolcat.modules.device_overview.DeviceOverviewModuleViewModel
 import dev.anthonyhfm.toolcat.modules.screen_cast.ScreenCastModuleViewModel
@@ -36,7 +37,7 @@ fun ToolcatMainView() {
 
                 NavigationRailItem(
                     icon = { Icon(painterResource(item.iconResource), null) },
-                    label = { Text(item.name) },
+                    label = { Text(item.name, fontFamily = Inter) },
                     selected = selectedView == index,
                     onClick = { selectedView = index }
                 )

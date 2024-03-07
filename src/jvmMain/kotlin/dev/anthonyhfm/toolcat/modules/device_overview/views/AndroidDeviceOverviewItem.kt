@@ -1,8 +1,12 @@
 package dev.anthonyhfm.toolcat.modules.device_overview.views
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.TooltipArea
+import androidx.compose.foundation.TooltipPlacement
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.outlined.Info
@@ -21,17 +25,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.anthonyhfm.toolcat.core.platform.android.AndroidDevice
 import dev.anthonyhfm.toolcat.core.platform.android.system.name
+import dev.anthonyhfm.toolcat.main.theme.Inter
 import dev.anthonyhfm.toolcat.modules.device_overview.dialogs.DeviceInfoDialog
 import dev.anthonyhfm.toolcat.modules.device_overview.dialogs.DeviceQuickActionsDialog
-import ui.components.Tooltip
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun AndroidDeviceOverviewItem(androidDevice: AndroidDevice) {
     var showInformationDialog by remember { mutableStateOf(false) }
     var showQuickActionsDialog by remember { mutableStateOf(false) }
 
-    var deviceName: String by remember { mutableStateOf(androidDevice.name) }
-    var deviceSerialNumber: String by remember { mutableStateOf(androidDevice.serial) }
+    val deviceName: String by remember { mutableStateOf(androidDevice.name) }
 
     Row(
         modifier = Modifier
@@ -64,22 +68,30 @@ internal fun AndroidDeviceOverviewItem(androidDevice: AndroidDevice) {
 
         Text(
             text = deviceName,
-            fontWeight = FontWeight.Light,
+            fontWeight = FontWeight.Medium,
             fontSize = 18.sp,
+            fontFamily = Inter,
             color = MaterialTheme.colorScheme.onBackground
-        )
-
-        Text(
-            text = deviceSerialNumber,
-            fontWeight = FontWeight.Light,
-            fontStyle = FontStyle.Italic,
-            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8F)
         )
 
         Spacer(modifier = Modifier.weight(1F))
 
         Row {
-            Tooltip(tip = "Actions") {
+            TooltipArea(
+                tooltip = {
+                    Text(
+                        text = "Device Actions",
+                        fontFamily = Inter,
+                        color = MaterialTheme.colorScheme.background,
+                        modifier = Modifier
+                            .offset(y = 4.dp)
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(MaterialTheme.colorScheme.onBackground.copy(0.9f))
+                            .padding(horizontal = 12.dp, vertical = 6.dp)
+                    )
+                },
+                tooltipPlacement = TooltipPlacement.ComponentRect()
+            ) {
                 IconButton(
                     onClick = {
                         showQuickActionsDialog = true
@@ -103,7 +115,21 @@ internal fun AndroidDeviceOverviewItem(androidDevice: AndroidDevice) {
                 )
             }
 
-            Tooltip(tip = "Info") {
+            TooltipArea(
+                tooltip = {
+                    Text(
+                        text = "Device Information",
+                        fontFamily = Inter,
+                        color = MaterialTheme.colorScheme.background,
+                        modifier = Modifier
+                            .offset(y = 4.dp)
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(MaterialTheme.colorScheme.onBackground.copy(0.9f))
+                            .padding(horizontal = 12.dp, vertical = 6.dp)
+                    )
+                },
+                tooltipPlacement = TooltipPlacement.ComponentRect()
+            ) {
                 IconButton(
                     onClick = {
                         showInformationDialog = true

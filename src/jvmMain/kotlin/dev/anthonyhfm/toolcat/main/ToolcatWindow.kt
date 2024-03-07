@@ -2,6 +2,7 @@ package dev.anthonyhfm.toolcat.main
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.application
 import dev.anthonyhfm.kit.desktop.WindowManager
 import dev.anthonyhfm.toolcat.core.cmd.CommandRegistry
@@ -17,7 +18,7 @@ fun main(args: Array<String>) = application {
 
     Window(
         onCloseRequest = ::exitApplication,
-        title = "Toolcat"
+        title = "Toolcat",
     ) {
         WindowManager.configure(window)
 

@@ -22,6 +22,7 @@ import androidx.compose.ui.window.*
 import dev.anthonyhfm.toolcat.core.platform.android.AndroidDevice
 import dev.anthonyhfm.toolcat.core.platform.android.system.getScreenshot
 import dev.anthonyhfm.toolcat.core.platform.android.system.name
+import dev.anthonyhfm.toolcat.main.theme.Inter
 import dev.anthonyhfm.toolcat.modules.device_overview.actions.QuickActionModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -71,6 +72,7 @@ class ScreenshotAction(override val device: AndroidDevice) : QuickActionModel<An
                 text = "Screenshot",
                 maxLines = 1,
                 fontSize = 14.sp,
+                fontFamily = Inter,
                 color = MaterialTheme.colorScheme.onBackground
             )
         }

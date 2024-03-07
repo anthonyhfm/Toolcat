@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.anthonyhfm.toolcat.main.theme.Inter
 
 class ToggleSetting(
     val displayText: String,
@@ -36,6 +37,7 @@ class ToggleSetting(
                 Text(
                     text = displayText,
                     fontSize = 18.sp,
+                    fontFamily = Inter,
                     color = MaterialTheme.colorScheme.onBackground
                 )
             }

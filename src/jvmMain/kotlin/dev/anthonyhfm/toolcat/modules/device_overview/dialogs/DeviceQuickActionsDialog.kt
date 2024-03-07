@@ -21,12 +21,12 @@ import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.onPointerEvent
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Popup
 import dev.anthonyhfm.toolcat.core.platform.android.AndroidDevice
 import dev.anthonyhfm.toolcat.core.platform.android.system.name
+import dev.anthonyhfm.toolcat.main.theme.Inter
+import dev.anthonyhfm.toolcat.main.views.Dialog
 import dev.anthonyhfm.toolcat.modules.device_overview.views.QuickActionListView
 import kotlinx.coroutines.*
-import ui.dialogs.Dialog
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -130,11 +130,13 @@ fun DeviceQuickActionsDialog(device: Any, onClose: () -> Unit) {
                                         Text(
                                             text = "Quick Actions",
                                             fontSize = 28.sp,
+                                            fontFamily = Inter,
                                             color = MaterialTheme.colorScheme.onBackground
                                         )
                                         Text(
                                             text = name,
-                                            fontSize = 12.sp,
+                                            fontSize = 14.sp,
+                                            fontFamily = Inter,
                                             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                                         )
                                     }

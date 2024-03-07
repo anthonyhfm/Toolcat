@@ -28,13 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.anthonyhfm.toolcat.core.platform.android.AndroidDevice
 import dev.anthonyhfm.toolcat.core.platform.android.system.openDeepLink
+import dev.anthonyhfm.toolcat.main.theme.Inter
+import dev.anthonyhfm.toolcat.main.views.Dialog
 import dev.anthonyhfm.toolcat.modules.device_overview.actions.QuickActionModel
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import mobile.firmware.openDeepLink
-import ui.dialogs.Dialog
 
 class OpenDeepLinkAction(override val device: AndroidDevice) : QuickActionModel<AndroidDevice>(device) {
     @Composable
@@ -136,6 +134,7 @@ class OpenDeepLinkAction(override val device: AndroidDevice) : QuickActionModel<
                             Text(
                                 text = "Open a Deep-Link",
                                 fontSize = 22.sp,
+                                fontFamily = Inter,
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier
                                     .fillMaxWidth(),

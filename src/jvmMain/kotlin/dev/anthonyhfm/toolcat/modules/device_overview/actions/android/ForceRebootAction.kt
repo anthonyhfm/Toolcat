@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.anthonyhfm.toolcat.core.platform.android.AndroidDevice
 import dev.anthonyhfm.toolcat.core.platform.android.system.forceReboot
+import dev.anthonyhfm.toolcat.main.theme.Inter
 import dev.anthonyhfm.toolcat.modules.device_overview.actions.QuickActionModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -61,6 +62,7 @@ class ForceRebootAction(override val device: AndroidDevice) : QuickActionModel<A
                 text = "Reboot",
                 maxLines = 1,
                 fontSize = 14.sp,
+                fontFamily = Inter,
                 color = MaterialTheme.colorScheme.onBackground
             )
         }

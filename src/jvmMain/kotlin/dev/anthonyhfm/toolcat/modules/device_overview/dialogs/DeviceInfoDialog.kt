@@ -24,11 +24,11 @@ import dev.anthonyhfm.toolcat.core.platform.android.AndroidDevice
 import dev.anthonyhfm.toolcat.core.platform.apple.AppleDevice
 import dev.anthonyhfm.toolcat.core.platform.apple.SimulatedAppleDevice
 import dev.anthonyhfm.toolcat.main.theme.Inter
+import dev.anthonyhfm.toolcat.main.views.Dialog
 import dev.anthonyhfm.toolcat.main.views.VerticalScrollColumn
 import dev.anthonyhfm.toolcat.modules.device_overview.informations.DeviceInformation
 import dev.anthonyhfm.toolcat.modules.device_overview.informations.DeviceInformationCluster
 import dev.anthonyhfm.toolcat.modules.device_overview.informations.collections.getInformationClusterList
-import ui.dialogs.Dialog
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
