@@ -22,7 +22,9 @@ fun AndroidDevice.installApp(path: String) {
 }
 
 fun AndroidDevice.saveApp(packageID: String, destination: File) {
-    val path = adb.shell("pm path $packageID").allOutput.trimIndent().removePrefix("package:")
+    val path = adb.shell("pm path $packageID").allOutput.trimIndent().removePrefix("package:").split("\n")[0]
+
+    println(path)
 
     adb.pull(destination, path)
 }

@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.anthonyhfm.kit.desktop.toasts.Toast
 import dev.anthonyhfm.toolcat.core.platform.android.AndroidDevice
 import dev.anthonyhfm.toolcat.core.platform.android.system.*
 import dev.anthonyhfm.toolcat.main.theme.Inter
@@ -163,6 +164,7 @@ private fun AppMoreOptions(
                     val success = saveAndroidPackageFile(appPackage, device)
 
                     if (success) {
+                        Toast.infoToast("The .apk file has been downloaded.")
                         onDismiss()
                     }
                 }
