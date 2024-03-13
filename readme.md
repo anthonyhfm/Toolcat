@@ -18,11 +18,12 @@ This is a feature list that I either have already implemented or planned. You ar
 - Quick Actions
     - [x] Taking screenshots
     - [x] Navigation simulation
-    - [ ] Coffeination
-    - [ ] Sending deeplinks
+    - [x] Coffeination
+    - [x] Sending deeplinks
 - Others
   - [ ] Screen Mirroring
-  - [ ] Installing, Downloading and Managing Apps
+  - [ ] Installing Apps
+  - [x] Downloading and Managing Apps
   - [ ] Layout Inspection
   - [ ] Monitoring Logcat
 
