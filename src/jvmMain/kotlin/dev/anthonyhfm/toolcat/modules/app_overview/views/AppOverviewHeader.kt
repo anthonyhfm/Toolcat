@@ -13,24 +13,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.anthonyhfm.toolcat.main.theme.Inter
-import java.awt.BorderLayout
-import kotlin.math.exp
 
 @Composable
-fun AppOverviewHeader() {
-    val options: List<String> = listOf(
-        "Samsung Galaxy Tab S9",
-        "Google Pixel 7",
-        "Poco M4 Pro"
-    )
-
-    var selected: Int by remember { mutableStateOf(0) }
-
+fun AppOverviewHeader(
+    selected: Int,
+    onSelectionChanged: (Int) -> Unit,
+    selections: List<String>
+) {
     Row(
         modifier = Modifier
             .padding(horizontal = 24.dp)
@@ -39,13 +35,15 @@ fun AppOverviewHeader() {
 
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AppOverviewDeviceSelector(
-            selected = selected,
-            onSelectionChanged = {
-                selected = it
-            },
-            options = options
-        )
+        if (selections.isNotEmpty()) {
+            AppOverviewDeviceSelector(
+                selected = selected,
+                onSelectionChanged = {
+                    onSelectionChanged(it)
+                },
+                options = selections
+            )
+        }
     }
 }
 
@@ -66,7 +64,6 @@ private fun AppOverviewDeviceSelector(
             .clickable {
                 expanded = true
             }
-
             .padding(horizontal = 16.dp, vertical = 6.dp)
     ) {
         Icon(

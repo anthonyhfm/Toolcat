@@ -9,9 +9,12 @@ object AndroidDeviceRepository: DeviceRepository<AndroidDevice, AndroidDevice> {
     override var devices: MutableState<List<AndroidDevice>> = mutableStateOf(listOf())
     override var emulators: MutableState<List<AndroidDevice>> = mutableStateOf(listOf())
 
+    private var previousDeviceCount: Int = 0
+    private var previousEmulatorCount: Int = 0
+
     override fun fetchDevices() {
         try {
-            devices.value = Dadb.list()
+            val newDevices = Dadb.list()
                 .filter {
                     !it.toString().contains("emulator")
                 }
@@ -22,6 +25,11 @@ object AndroidDeviceRepository: DeviceRepository<AndroidDevice, AndroidDevice> {
                         adb = it
                     )
                 }
+
+            if (newDevices.size != previousDeviceCount) {
+                devices.value = newDevices
+                previousDeviceCount = newDevices.size
+            }
         } catch (ex: Exception) {
             println(ex.localizedMessage)
         }
@@ -29,7 +37,7 @@ object AndroidDeviceRepository: DeviceRepository<AndroidDevice, AndroidDevice> {
 
     override fun fetchEmulators() {
         try {
-            emulators.value = Dadb.list()
+            val newEmulators = Dadb.list()
                 .filter {
                     it.toString().contains("emulator")
                 }
@@ -40,6 +48,11 @@ object AndroidDeviceRepository: DeviceRepository<AndroidDevice, AndroidDevice> {
                         adb = it
                     )
                 }
+
+            if (newEmulators.size != previousEmulatorCount) {
+                emulators.value = newEmulators
+                previousEmulatorCount = newEmulators.size
+            }
         } catch (ex: Exception) {
             println(ex.localizedMessage)
         }

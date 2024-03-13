@@ -1,44 +1,85 @@
 package dev.anthonyhfm.toolcat.modules.app_overview
 
-import androidx.compose.foundation.VerticalScrollbar
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.rememberScrollbarAdapter
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import dev.anthonyhfm.toolcat.core.platform.android.AndroidDevice
 import dev.anthonyhfm.toolcat.core.platform.android.AndroidDeviceRepository
 import dev.anthonyhfm.toolcat.core.platform.android.system.getAppPackages
+import dev.anthonyhfm.toolcat.core.platform.android.system.name
 import dev.anthonyhfm.toolcat.core.utils.GlobalSettings
 import dev.anthonyhfm.toolcat.main.views.VerticalScrollColumn
+import dev.anthonyhfm.toolcat.modules.app_overview.views.*
 import dev.anthonyhfm.toolcat.modules.app_overview.views.AppList
-import dev.anthonyhfm.toolcat.modules.app_overview.views.AppOverviewHeader
-import dev.anthonyhfm.toolcat.modules.app_overview.views.AppPreview
 import dev.anthonyhfm.toolcat.modules.app_overview.views.LegacyAppList
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun AppOverviewView() {
-    Column {
-        AppOverviewHeader()
+    var devices: List<AndroidDevice> by remember { mutableStateOf(AndroidDeviceRepository.devices.value + AndroidDeviceRepository.emulators.value) }
+    var selections: List<String> by remember { mutableStateOf(devices.map { it.name }) }
+    var selectedSerial: String? by remember { mutableStateOf(null) }
 
-        Divider(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth(0.9f)
-        )
+    LaunchedEffect(AndroidDeviceRepository.devices.value) {
+        devices = AndroidDeviceRepository.devices.value + AndroidDeviceRepository.emulators.value
+        selections = devices.map { it.name }
+    }
 
-        VerticalScrollColumn {
-            if (GlobalSettings.useLegacyAppList.value) {
-                LegacyAppList()
+    LaunchedEffect(AndroidDeviceRepository.emulators.value) {
+        devices = AndroidDeviceRepository.devices.value + AndroidDeviceRepository.emulators.value
+        selections = devices.map { it.name }
+    }
+
+    AnimatedVisibility(
+        visible = devices.isNotEmpty(),
+        enter = fadeIn(),
+        exit = fadeOut(),
+    ) {
+        Column {
+            if (selectedSerial != null) {
+                AppOverviewHeader(
+                    selected = devices.indexOf(devices.find { it.serial == selectedSerial }),
+                    onSelectionChanged = {
+                        selectedSerial = devices[it].serial
+                    },
+                    selections = selections
+                )
             } else {
-                AppList()
+                LaunchedEffect(Unit) {
+                    selectedSerial = devices[0].serial
+                }
+            }
+
+            Divider(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth(0.9f)
+            )
+
+            devices.find { it.serial == selectedSerial }?.let {
+                if (GlobalSettings.useLegacyAppList.value) {
+                    LegacyAppList(it)
+                } else {
+                    AppList()
+                }
             }
         }
+    }
+
+    AnimatedVisibility(
+        visible = devices.isEmpty(),
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
+        AppOverviewNoDevices()
     }
 }
