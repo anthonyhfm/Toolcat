@@ -3,13 +3,11 @@ package dev.anthonyhfm.toolcat.modules.app_overview.views
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dev.anthonyhfm.toolcat.core.platform.android.AndroidDevice
 import dev.anthonyhfm.toolcat.core.platform.android.system.getAppPackages
@@ -55,7 +53,11 @@ internal fun LegacyAppList(device: AndroidDevice) {
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 deviceAppList.forEach {
-                    LegacyAppPreview()
+                    LegacyAppPreview(device, it) {
+                        scope.launch(Dispatchers.IO) {
+                            deviceAppList = device.getAppPackages()
+                        }
+                    }
                 }
             }
         }

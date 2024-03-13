@@ -2,6 +2,7 @@ package dev.anthonyhfm.toolcat.core.platform.android.system
 
 import dev.anthonyhfm.toolcat.core.platform.android.AndroidDevice
 import dev.anthonyhfm.toolcat.core.utils.Shell
+import okio.Sink
 import java.io.File
 
 fun AndroidDevice.getAppPackages(): List<String> {
@@ -18,6 +19,12 @@ fun AndroidDevice.installApp(path: String) {
     val file = File(path)
 
     adb.install(file)
+}
+
+fun AndroidDevice.saveApp(packageID: String, destination: File) {
+    val path = adb.shell("pm path $packageID").allOutput.trimIndent().removePrefix("package:")
+
+    adb.pull(destination, path)
 }
 
 fun AndroidDevice.removeApp(packageID: String) {
