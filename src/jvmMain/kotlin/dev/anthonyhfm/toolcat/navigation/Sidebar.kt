@@ -1,5 +1,6 @@
 package dev.anthonyhfm.toolcat.navigation
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -65,14 +66,29 @@ object Sidebar {
 
     @Composable
     fun View() {
-        var moreModulesModule: ToolcatModule by remember { mutableStateOf(MoreModulesModule()) }
+        val moreModulesModule: ToolcatModule by remember { mutableStateOf(MoreModulesModule()) }
         var pinned: List<ToolcatModule> by remember { mutableStateOf(listOf()) }
+        var unpinnedModule: ToolcatModule? by remember { mutableStateOf(null) }
 
         LaunchedEffect(pinnedModules.value) {
             pinned = listOf()
 
             pinnedModules.value.forEach {
                 pinned = pinned.plus(ModuleRegistry.getModuleById(it))
+            }
+        }
+
+        LaunchedEffect(Navigation.currentModule.value) {
+            if (!pinnedModules.value.contains(Navigation.currentModule.value)) {
+                val module = ModuleRegistry.getModuleById(Navigation.currentModule.value)
+
+                if (module.showInRegistry) {
+                    unpinnedModule = module
+                } else {
+                    unpinnedModule = null
+                }
+            } else {
+                unpinnedModule = null
             }
         }
 
@@ -89,6 +105,19 @@ object Sidebar {
                         selected = Navigation.currentModule.value == it.moduleID,
                         onClick = {
                             Navigation.openPage(it.moduleID)
+                        }
+                    )
+                }
+
+                if(unpinnedModule != null) {
+                    Divider(Modifier.width(40.dp).padding(vertical = 8.dp).align(Alignment.CenterHorizontally))
+
+                    NavigationRailItem(
+                        icon = { Icon(painterResource(unpinnedModule!!.iconResource), null) },
+                        label = { Text(unpinnedModule!!.name, fontFamily = Inter) },
+                        selected = Navigation.currentModule.value == unpinnedModule!!.moduleID,
+                        onClick = {
+                            Navigation.openPage(unpinnedModule!!.moduleID)
                         }
                     )
                 }
