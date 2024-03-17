@@ -146,6 +146,7 @@ private fun AppMoreOptions(
         ) {
             DropdownMenuItem(
                 modifier = Modifier
+                    .height(42.dp)
                     .padding(horizontal = 8.dp)
                     .clip(RoundedCornerShape(6.dp))
                     .background(MaterialTheme.colorScheme.secondaryContainer),
@@ -172,6 +173,7 @@ private fun AppMoreOptions(
 
             DropdownMenuItem(
                 modifier = Modifier
+                    .height(42.dp)
                     .padding(horizontal = 8.dp)
                     .clip(RoundedCornerShape(6.dp))
                     .background(MaterialTheme.colorScheme.secondaryContainer),
@@ -194,6 +196,7 @@ private fun AppMoreOptions(
 
             DropdownMenuItem(
                 modifier = Modifier
+                    .height(42.dp)
                     .padding(horizontal = 8.dp)
                     .clip(RoundedCornerShape(6.dp))
                     .background(MaterialTheme.colorScheme.secondaryContainer),
@@ -221,6 +224,7 @@ private fun AppMoreOptions(
 
             DropdownMenuItem(
                 modifier = Modifier
+                    .height(42.dp)
                     .padding(horizontal = 8.dp)
                     .clip(RoundedCornerShape(6.dp))
                     .background(MaterialTheme.colorScheme.errorContainer),

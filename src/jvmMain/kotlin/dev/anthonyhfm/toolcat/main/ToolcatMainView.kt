@@ -7,49 +7,37 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import dev.anthonyhfm.kit.desktop.WindowManager
+import dev.anthonyhfm.toolcat.core.module.ModuleRegistry
 import dev.anthonyhfm.toolcat.core.module.ToolcatModule
 import dev.anthonyhfm.toolcat.main.theme.Inter
-import dev.anthonyhfm.toolcat.modules.app_overview.AppOverviewModuleViewModel
-import dev.anthonyhfm.toolcat.modules.device_overview.DeviceOverviewModuleViewModel
-import dev.anthonyhfm.toolcat.modules.screen_cast.ScreenCastModuleViewModel
-import dev.anthonyhfm.toolcat.modules.toolcat_about.AboutModuleViewModel
-import dev.anthonyhfm.toolcat.modules.toolcat_settings.SettingsModuleViewModel
+import dev.anthonyhfm.toolcat.modules.app_overview.AppOverviewModule
+import dev.anthonyhfm.toolcat.modules.device_overview.DeviceOverviewModule
+import dev.anthonyhfm.toolcat.modules.more_modules.MoreModulesModule
+import dev.anthonyhfm.toolcat.modules.screen_cast.ScreenCastModule
+import dev.anthonyhfm.toolcat.modules.toolcat_about.AboutModule
+import dev.anthonyhfm.toolcat.modules.toolcat_settings.SettingsModule
+import dev.anthonyhfm.toolcat.navigation.Navigation
+import dev.anthonyhfm.toolcat.navigation.Sidebar
 
 @Composable
 fun ToolcatMainView() {
-    var selectedView by remember { mutableStateOf(0) }
+    var module: ToolcatModule? by remember { mutableStateOf(null) }
 
-    val navigationItems: List<ToolcatModule> = listOf(
-        DeviceOverviewModuleViewModel,
-        AppOverviewModuleViewModel,
-        ScreenCastModuleViewModel,
-        SettingsModuleViewModel,
-        AboutModuleViewModel
-    )
+    LaunchedEffect(Navigation.currentModule.value) {
+        module = ModuleRegistry.getModuleById(Navigation.currentModule.value)
+    }
 
     Row {
-        NavigationRail {
-            navigationItems.forEachIndexed { index, item ->
-                if (index == navigationItems.count() -2) {
-                    Spacer(modifier = Modifier.weight(1F))
-                }
-
-                NavigationRailItem(
-                    icon = { Icon(painterResource(item.iconResource), null) },
-                    label = { Text(item.name, fontFamily = Inter) },
-                    selected = selectedView == index,
-                    onClick = { selectedView = index }
-                )
-            }
-        }
+        Sidebar.View()
 
         Box(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.background)
                 .fillMaxSize()
         ) {
-            navigationItems[selectedView].ModuleView()
+            if (module != null) {
+                module!!.ModuleView()
+            }
         }
     }
 }

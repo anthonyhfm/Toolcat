@@ -16,7 +16,6 @@ import dev.anthonyhfm.toolcat.core.platform.apple.AppleDevice
 import dev.anthonyhfm.toolcat.core.platform.apple.AppleDeviceRepository
 import dev.anthonyhfm.toolcat.core.platform.apple.SimulatedAppleDevice
 import dev.anthonyhfm.toolcat.main.views.VerticalScrollColumn
-import dev.anthonyhfm.toolcat.modules.device_overview.views.*
 import dev.anthonyhfm.toolcat.modules.device_overview.views.AndroidDeviceOverviewItem
 import dev.anthonyhfm.toolcat.modules.device_overview.views.AppleDeviceOverviewItem
 import dev.anthonyhfm.toolcat.modules.device_overview.views.DeviceCollectionView
@@ -24,7 +23,7 @@ import dev.anthonyhfm.toolcat.modules.device_overview.views.EmptyDeviceRepositor
 import dev.anthonyhfm.toolcat.modules.device_overview.views.SimulatedAppleDeviceOverviewItem
 
 @Composable
-internal fun DeviceOverviewView(vm: DeviceOverviewModuleViewModel) {
+internal fun DeviceOverviewView(vm: DeviceOverviewModule) {
     val repositoryLists: Map<String, List<Any>> = mapOf(
         "Android Devices" to AndroidDeviceRepository.devices.value,
         "Android Emulators" to AndroidDeviceRepository.emulators.value,

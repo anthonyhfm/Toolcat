@@ -7,9 +7,11 @@ import dev.anthonyhfm.toolcat.modules.toolcat_settings.categories.GeneralSetting
 import dev.anthonyhfm.toolcat.modules.toolcat_settings.categories.SettingsCategory
 import dev.anthonyhfm.toolcat.modules.toolcat_settings.categories.ThemeSettingsCategory
 
-object SettingsModuleViewModel : ToolcatModule {
+class SettingsModule : ToolcatModule {
     override val name: String = "Settings"
     override val iconResource: String = "icons/settings_filled.svg"
+    override val moduleID: String = "toolcat.settings"
+    override val showInRegistry: Boolean = false
 
     private var settingsCategories: List<SettingsCategory> = listOf(
         GeneralSettingsCategory,

@@ -17,7 +17,7 @@ import dev.anthonyhfm.toolcat.modules.toolcat_settings.categories.AdvancedSettin
 import dev.anthonyhfm.toolcat.modules.toolcat_settings.categories.SettingsCategory
 
 @Composable
-internal fun ApplicationSettingsView(vm: SettingsModuleViewModel) {
+internal fun ApplicationSettingsView(vm: SettingsModule) {
     VerticalScrollColumn(
         modifier = Modifier
             .fillMaxSize(),

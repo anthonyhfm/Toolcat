@@ -14,12 +14,12 @@ import androidx.compose.ui.unit.sp
 import dev.anthonyhfm.toolcat.core.module.ToolcatModule
 import dev.anthonyhfm.toolcat.core.utils.GlobalSettings
 import dev.anthonyhfm.toolcat.main.theme.Inter
-import kotlinx.coroutines.GlobalScope
-import java.util.jar.JarFile
 
-object AboutModuleViewModel : ToolcatModule {
+class AboutModule : ToolcatModule {
     override val name: String = "About"
     override val iconResource: String = "icons/info_filled.svg"
+    override val moduleID: String = "toolcat.about"
+    override val showInRegistry: Boolean = false
 
     @Composable
     override fun ModuleView() {
